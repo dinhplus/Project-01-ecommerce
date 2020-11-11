@@ -1,0 +1,80 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.container{
+    width: 100%;
+    height: 900px;
+    /* border: 1px solid #3555e6;
+    border-radius: 10px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 5px;
+}
+.login-form{
+    font-size: 18px;
+    width: 400px;
+    /* height: 200px; */
+    border: 1px solid #73b5f7;
+    border-radius: 8px;
+    padding: 0px 30px 30px 30px;
+    background: #bdbec26e;
+    box-shadow: 0px 0px 5px 5px #807e7e
+    /* -webkit-border-radius:10px 5px; */
+}
+form label{
+    margin: 10px 0px;
+    padding: 10px 0px;
+}
+form label input{
+    border:1px solid rgb(125, 179, 233);
+    border-radius: 5px;
+    width: calc(96%);
+    height: 40px;
+    padding: 5px 10px;
+    margin: 20px 0;
+    font-size: 16px;
+}
+form div #submit{
+    width: 50%;
+    height: 50px;
+    background: #1b6ab9;
+    color: #fff;
+    border-radius: 15px;
+    border: 1px solid #fff;
+    margin: 10px;
+    font-size: 20px;
+    padding: 10px;
+}
+form div #submit:hover {
+    background: #2ba0c4;
+    border: rgb(107, 202, 209);
+}
+#login-form-action a{
+    text-decoration: none;
+    color: rgb(94, 144, 236);
+}
+#register {
+    text-align: center;
+    color: rgb(80, 114, 189);
+}
+#register button{
+    width: 50%;
+    height: 50px;
+    background: #187e4b;
+    color: #fff;
+    border-radius: 15px;
+    border: 1px solid #fff;
+    margin: 10px;
+    font-size: 20px;
+    padding: 10px;
+    margin: 10px 25%;
+}
+#register:hover button{
+    background: #07c054;
+    border: rgb(107, 202, 209);
+}
+.warning{
+    display: none;
+}
+/* #sub */
