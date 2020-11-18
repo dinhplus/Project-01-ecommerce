@@ -1,5 +1,7 @@
 <?php
 use Controller\BaseController as Controller;
+
+require_once(ROOT."Models/User.php");
 class TestController extends Controller{
     public function __construct() {
         $this->layout = "defaultAplication";

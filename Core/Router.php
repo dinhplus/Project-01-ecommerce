@@ -44,7 +44,7 @@ class Router{
                 if ($stack[1] != NULL) {
                     $callback["callback"] = array("controller" => $stack[0], "action" => $stack[1]);
                     $Ctrl = $callback["callback"]["controller"];
-                    $file = ROOT . "Controllers/" . $Ctrl . ".php";
+                    $file = ROOT . "Controllers\\" . $Ctrl . ".php";
                     require_once($file);
                     $controller = new $Ctrl;
                     call_user_func_array([$controller, $callback["callback"]["action"]], $params);
@@ -101,6 +101,6 @@ class Router{
 }
 
 
-require_once(ROOT."Routers/api.php");
-require_once(ROOT."Routers/web.php");
+require_once(ROOT."Routers\\api.php");
+require_once(ROOT."Routers\\web.php");
 Router::route();

@@ -12,7 +12,7 @@ class BaseController
 
     var $vars = [];
     var $layout = "defaultAplication";
-
+    var $messageLayout = [];
     function set($data)
     {
         $this->vars = array_merge($this->vars, $data);
@@ -23,12 +23,12 @@ class BaseController
 
         extract($this->vars);
         ob_start();
-        include_once(ROOT . "Views/" . ucfirst(str_replace('Controller', '', get_class($this))) . '/' . $filename . '.php');
+        include_once(ROOT . "Views\\" . ucfirst(str_replace('Controller', '', get_class($this))) . '\\' . $filename . '.php');
         $content_for_layout = ob_get_clean();
         if ($this->layout == false) {
             $content_for_layout;
         } else {
-            require_once(ROOT . "Views/Layouts/" . $this->layout . '.php');
+            require_once(ROOT . "Views\\Layouts\\" . $this->layout . '.php');
         }
     }
 

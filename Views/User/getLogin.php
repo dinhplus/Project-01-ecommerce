@@ -1,18 +1,20 @@
+
 <div class="login-form">
     <form action="/acount/login" method="post">
         <h1 align="center">
             Login
         </h1>
-        <hr><br><br>
+        <hr><span id="message" class = "warning" ><?php if(isset($message)){echo($message);} ?></span><br><br>
+
         <label for="">
             User Name <br>
             <input type="text" name="username" id="username" placeholder="Username or email...">
-            <span id="username-err" class="warning"></span>
+            <span id="username-err" class="warning err"></span>
         </label><br>
         <label for="">
             Password <br>
             <input type="password" name="password" id="password" placeholder="Password...">
-            <span id="password-err" class="warning"></span>
+            <span id="password-err" class="warning err"></span>
         </label><br>
         <div id="login-form-action">
         &emsp;
