@@ -26,7 +26,9 @@ class UserController extends Controller{
 
             $data["message"] = "Username or password are invalid!";
             $this->set($data);
-            $this->render("getLogin");
+            // $this->render("getLogin");
+            // header("Location:"."http://".HOST."/acount/login");
+            $this->getLogin();
         }
         else{
             $userInfor = [
@@ -50,7 +52,49 @@ class UserController extends Controller{
 
     }
 
+    public function getRegister()
+    {
+        $this->render("getRegister");
+    }
 
+    public function storeUser()
+    {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+
+        $user = $this->userModel->fetchUser($username,$password);
+
+        if(!$user || $user === []){
+
+            $acount = [
+                "username" => $username,
+                "password" => $password,
+                "email" => null,
+                "birthdate" => null,
+                "address" => null,
+                "phone" => null,
+                "avatar_ref" => null,
+                "user_level" => 1
+            ];
+            $storedUser = $this->userModel->storeUser($acount);
+
+
+            setcookie("username",$acount["username"], time() + (86400 * 7), "/");
+            setcookie("user_level",$acount["user_level"], time() + (86400 * 7), "/");
+            // setcookie("username",$userInfor["username"], time() + (86400 * 7), "/");
+            header("Location:"."http://".HOST);
+
+        }
+        else{
+
+            $data["message"] = "The usename is already in use, please try an other";
+            $this->set($data);
+            // $this->render("getLogin");
+            header("Location:"."http://".HOST."/acount/register");
+
+        }
+
+    }
 }
 
 

@@ -27,7 +27,7 @@
                     <a class="nav-link" href="/acount">Acount</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Management</a>
+                    <a class="nav-link" href="/manager">Management</a>
                 </li>
 
             </ul>
@@ -38,7 +38,9 @@
         </div>
     </nav>
     <main role="main" class="container">
+        <div class = "menu-side">
 
+        </div>
         <div class="starter-template">
 
             <?php

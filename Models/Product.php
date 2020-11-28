@@ -2,52 +2,36 @@
 
 use Model\CoreModel as Model;
 
-class User extends Model
+class Product extends Model
 {
-    //UserModel
-    // public function fetchUser($username,$password){
-    //     // $querry = "SELECT * FROM (SELECT * FROM users WHERE email = :acount OR username = :acount) WHERE password = :password";
-    //     $querry = "SELECT * FROM user WHERE email = :acount OR username = :acount";
-    //     $req = DB::getConnection()->prepare($querry);
-    //     return $req->execute([
-    //         'acount'=>$username,
-    //         'password'=>$password
-    //     ]);
+    public function getProductQuantity(){
+        $querry = "SELECT count(id) as quantity from products";
 
-    // }
-
-    public function fetchUser($username,$password){
-        // $querry = "SELECT * FROM users WHERE username = :acount AND password = :password";
-        $querry = "SELECT * FROM (SELECT * FROM users WHERE email = :acount OR username = :acount) acount WHERE password = :password";
+    }
+    public function getProducts($condition)
+    {
+        $querry = "SELECT * FROM  products WHERE :condition";
         $req = DB::getConnection()->prepare($querry);
         $req->setFetchMode(PDO::FETCH_ASSOC);
-
-        $req->execute([
-            'acount' => $username,
-            'password' => $password
-        ]);
-
-        return $req->fetch();
+        return $req;
+        // return $req->execute([
+        //     "condition" => $condition
+        // ]);
     }
-
-    public function storeUser($acount){
-        $querry = "INSERT INTO users(username, password, email, birth_date, address, phone , avatar_ref, user_level) VALUES(:username, :password, :email, :birthdate, :address, :phone , :avatar_ref, :user_level)";
+    public function storeProduct($product){
+        $querry = "INSERT INTO products(name, description, price, quantity, img_ref)
+                    VALUES(:name, :description, :price, :quantity, :img_ref)";
         $req = DB::getConnection()->prepare($querry);
 
         // $req->setFetchMode(PDO::FETCH_ASSOC);
 
-        $req->execute([
-            "username" => $acount["username"],
-            "password" => $acount["password"],
-            "email" => $acount["email"],
-            "birthdate" => $acount["birthdate"],
-            "address" => $acount["address"],
-            "phone" => $acount["phone"],
-            "avatar_ref" => $acount["avatar_ref"],
-            "user_level" => $acount["user_level"],
+        return  $req->execute([
+            "name" => $product["name"],
+            "description" => $product["description"],
+            "price" => $product["price"],
+            "quantity" => $product["quantity"],
+            "img_ref" => $product["img_ref"]
         ]);
-        $temp = $req->fetch();
-        echo($temp);
     }
 
     public function create($title, $description)
