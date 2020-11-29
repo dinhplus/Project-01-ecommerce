@@ -1,4 +1,14 @@
 <?php
+Router::GET( "/dashboard/admin-manager/create-admin", "AdminController@createAdmin");
+Router::POST( "/dashboard/admin-manager/store-admin","AdminController@storeAdmin");
+Router::GET("/dashboard/login", "AdminController@getLogin");
+Router::POST("/dashboard/login", "AdminController@postLogin");
+Router::GET("/dashboard/logout", "AdminController@logout");
+
+
+
+
+
 
 Router::GET("/acount/login","UserController@getLogin");
 Router::POST("/acount/login","UserController@postLogin");

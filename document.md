@@ -4,7 +4,7 @@
     ```
     method: GET && POST
     router: "/dashboard/login"
-    action: "AdminController@Login"
+    action: "AdminController@getLogin" && "AdminController@postLogin"
     permistion: "all"
     description: " To be define later"
     ```
