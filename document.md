@@ -137,7 +137,7 @@
     ```
 
 8. Release product
-        ```
+    ```
     method: POST
     router: "/dashboard/product-manager/release-product?id=:id"
     action: "ProductController@changeProductStatus"
@@ -352,7 +352,7 @@
     permistion: "self user"
     description: "show all order for this customer with status , linked to Order detail"
     ```
-8. Show Order list
+9. Show Order list
 
     ```
     method: GET
