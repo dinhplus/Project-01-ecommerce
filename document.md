@@ -65,10 +65,28 @@
 
 8. show admin detail
     ```
-    method: get
+    method: GET
     router: "/dashboard/admin-manager/admin-information?id=:id"
     action: "AdminController@storeAdmin"
     permistion: "master_admin/self"
+    description: " To be define later"
+    ```
+9. change admin password
+
+    ```
+    method: GET
+    router: "/dashboard/admin-manager/change-password?id=:id"
+    action: "AdminController@editPassword"
+    permistion: "master_admin/self"
+    description: " To be define later"
+    ```
+10. UPDATE ADMIN PASSWORD
+
+    ```
+    method: POST
+    router: "/dashboard/admin-manager/update-password?id=:id"
+    action: "AdminController@updatePassword"
+    permistion: "self"
     description: " To be define later"
     ```
 
@@ -122,7 +140,7 @@
     ```
     method: POST
     router: "/dashboard/product-manager/update-product"
-    action: "ProductController@storeProduct"
+    action: "ProductController@updateProduct"
     permistion: "master"
     description: " update product base on product_id"
     ```
