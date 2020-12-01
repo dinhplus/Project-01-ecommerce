@@ -18,12 +18,14 @@ class BaseController
         $this->vars = array_merge($this->vars, $data);
     }
 
-    function render($filename)
+    function render($filename, $isFileDir = false)
     {
 
         extract($this->vars);
         ob_start();
-        include_once(ROOT . "Views\\" . ucfirst(str_replace('Controller', '', get_class($this))) . '\\' . $filename . '.php');
+        if(!$isFileDir){
+            include_once(ROOT . "Views\\" . ucfirst(str_replace('Controller', '', get_class($this))) . '\\' . $filename . '.php');
+        } else include_once($filename);
         $content_for_layout = ob_get_clean();
         if ($this->layout == false) {
             $content_for_layout;
@@ -32,6 +34,14 @@ class BaseController
         }
     }
 
+    public function popup($urlRedirect,$popupMessage, $popupImage = false){
+        $this->layout = "blankLayout";
+        $data["popupMessage"] = $popupMessage;
+        $data["popupImage"] = $popupImage;
+        $data["urlRedirect"] = $urlRedirect;
+        $this->set($data);
+        $this->render(ROOT."Views\\Layouts\\Common\\popup.php",true);
+    }
     private function secure_input($data)
     {
         $data = trim($data);

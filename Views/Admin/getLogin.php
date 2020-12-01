@@ -13,7 +13,7 @@
         </label><br>
         <label for="password">
             Password <br>
-            <input type="text" name="password" id="password" placeholder="Password..."   value="<?php if(isset($inputted)) echo($inputted["password"])?>">
+            <input type="password" name="password" id="password" placeholder="Password..."   value="<?php if(isset($inputted)) echo($inputted["password"])?>">
             <span id="password-err" class="warning err"></span>
         </label><br>
         <div id="login-form-action">
@@ -34,7 +34,7 @@
         <span id="register">
             <hr>
             Not a member yet? Register with us and get speacial Deals! <br>
-            <button onclick="location.href=`/acount/register`" action="/acount/register" href="/acount/register">Register</button>
+            <button onclick="location.href=`/dashboard/register`" >Register</button>
         </span>
     </div>
 </div>

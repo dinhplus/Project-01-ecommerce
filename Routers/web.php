@@ -1,10 +1,16 @@
 <?php
+Router::GET("/dashboard/register", function(){
+    echo("<h1 style='color: red; align: center; v-align: center'> This site just a joke!!! LOL🤗🤗🤗🤗🤗🤗🤗🤗</h1>");
+});
+
+Router::GET("/dashboard", "AdminController@index");
 Router::GET( "/dashboard/admin-manager/create-admin", "AdminController@createAdmin");
 Router::POST( "/dashboard/admin-manager/store-admin","AdminController@storeAdmin");
 Router::GET("/dashboard/login", "AdminController@getLogin");
 Router::POST("/dashboard/login", "AdminController@postLogin");
 Router::GET("/dashboard/logout", "AdminController@logout");
-
+Router::GET("/dashboard/admin-manager/change-password","AdminController@editPassword");
+Router::POST("/dashboard/admin-manager/update-password", "AdminController@updatePassword");
 
 
 

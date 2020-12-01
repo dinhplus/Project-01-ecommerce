@@ -81,4 +81,37 @@ form div #submit:hover {
 .err{
     display: none;
 }
+.popup{
+    width: 600px;
+    min-height: 200px;
+    background: #e2e7e7;
+    border: 1px solid rgb(117, 169, 238);
+    border-radius: 10px ;
+    box-shadow: 0px 0px 5px 5px #807e7e
+}
+.popup h1{
+    text-align: center;
+}
+.popup hr {
+    width:  70%;
+}
+.popup .popup-message{
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    color: rgb(9, 68, 17);
+    font-size: 20px;
+}
+.popup form #popup-submit-btn{
+    width: 50%;
+    height: 50px;
+    background: #4871e2;
+    color: #fff;
+    border-radius: 15px;
+    border: 1px solid #fff;
+    margin: 10px;
+    font-size: 20px;
+    padding: 10px;
+    margin: 10px 25%;
+}
 /* #sub */

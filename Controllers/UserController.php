@@ -4,7 +4,7 @@ require_once(ROOT."Models/User.php");
 class UserController extends Controller{
 
     public function __construct(){
-        $this->layout = "acountLayout";
+        $this->layout = "blankLayout";
         $this->userModel = new User();
     }
     public function getLogin(){
