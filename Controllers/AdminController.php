@@ -9,13 +9,13 @@ class AdminController extends Controller{
     }
 
     public function index(){
-        $acount = $this->checkLogin();
-        if(!$acount){
+        $account = $this->checkLogin();
+        if(!$account){
             header("Location:"."http://".HOST."/dashboard/login");
         }
         else{
             $this->layout = "dashboardLayout";
-            $this->render("index");
+            $this->render("getDashboard");
         }
     }
 
@@ -27,9 +27,9 @@ class AdminController extends Controller{
             && isset($_SESSION["username"])
             && isset( $_SESSION["token"])
         ){
-            $acount = $this->adminModel->checkLogin($_SESSION["username"], $_SESSION["token"]);
-            if($acount !== false && count($acount) > 0 ){
-                $checkLogin = $acount;
+            $account = $this->adminModel->checkLogin($_SESSION["username"], $_SESSION["token"]);
+            if($account !== false && count($account) > 0 ){
+                $checkLogin = $account;
             }
             else{
                 $checkLogin = false;
@@ -43,8 +43,8 @@ class AdminController extends Controller{
 
     public function getLogin(){
 
-        $acount = $this->checkLogin();
-        if(!$acount){
+        $account = $this->checkLogin();
+        if(!$account){
             $this->layout = 'blankLayout';
             $this->render("getLogin");
         }
@@ -58,8 +58,8 @@ class AdminController extends Controller{
     {
         $username = $_POST["username"];
         $password = $_POST["password"];
-        $acount = $this->adminModel->fetchAcount($username,$password);
-        if(!$acount || $acount === []){
+        $account = $this->adminModel->fetchAccount($username,$password);
+        if(!$account || $account === []){
             $data["message"] = "Username or password are invalid!";
             $data["inputted"] = ["username" => $username, "password" => $password];
             $_SERVER["REQUEST_METHOD"] = "GET";
@@ -68,10 +68,10 @@ class AdminController extends Controller{
         }
         else{
             $_SESSION["loginned"] = true;
-            $_SESSION["username"] = $acount["username"];
-            $_SESSION["token"] = $acount["password"];
-            $_SESSION["role"] = $acount["role_id"];
-            setcookie("x-access-token",'u='.$acount["username"].'&token='.$acount["password"], time() + (86400 * 30), "/");
+            $_SESSION["username"] = $account["username"];
+            $_SESSION["token"] = $account["password"];
+            $_SESSION["role"] = $account["role_id"];
+            setcookie("x-access-token",'u='.$account["username"].'&token='.$account["password"], time() + (86400 * 30), "/");
             $this->layout = "dasboardLayout";
             header("Location:"."http://".HOST."/dashboard");
         }
@@ -87,8 +87,9 @@ class AdminController extends Controller{
     }
 
     public function createAdmin(){
-        $acount = $this->checkLogin();
-        if($acount["role_id" > 4] ){
+        $account = $this->checkLogin();
+        // var_dump($account); die();
+        if($account["role_id"] > 4 ){
             $roles = $this->adminModel->getRoles();
             $data["roles"] = $roles;
             $this->set($data);
@@ -102,8 +103,12 @@ class AdminController extends Controller{
 
     public function storeAdmin(){
         $master = $this->checkLogin();
-        if($master["role_id"] <= 5){
-            echo("<h2>ERROR!!!</h1> <br><h1>This acount do not have permision for this action!!!👃🏿👃🏿👃🏿👃🏿 </h2>");
+        // var_dump($master);
+        if(!isset($master["username"])){
+            header("Location:"."http://".HOST."/dashboard");
+        }
+        if($master && $master["role_id"] <= 5){
+            echo("<h2>ERROR!!!</h1> <br><h1>This account do not have permision for this action!!!👃🏿👃🏿👃🏿👃🏿 </h2>");
         }
         else{
 
@@ -111,27 +116,29 @@ class AdminController extends Controller{
             $password = $_POST["password"];
             $displayName = $_POST["displayname"];
             $role_id = $_POST["role"];
-            $acount = $this->adminModel->getAcount($username,$password);
-            $newAcount = [
+            $account = $this->adminModel->getAccount($username,$password);
+            $newAccount = [
                 "username" => $username,
                 "password" => $password,
                 "name" =>  $displayName,
                 "role_id" => $role_id
             ];
-            if(!isset($acount) || !$acount || $acount === []){
+            if(!isset($account) || !$account || $account === []){
 
-                $newAcount = [
+                $newAccount = [
                     "username" => $username,
                     "password" => $password,
                     "name" =>  $displayName,
                     "role_id" => $role_id
                 ];
 
-                $storedAcount = $this->adminModel->storeStaff($newAcount);
-                if($storedAcount){
+                $storedAccount = $this->adminModel->storeStaff($newAccount);
+                if($storedAccount){
 
-                    alert("The account is stored");
-                    header("Location:"."http://".HOST."/dashboard");
+                    $this->popup("/dashboard","<h1>New staff has been stored !!</h1>");
+                }
+                else{
+                    $this->popup("/dashboard","<h1>  Unexpected exception. Update Store staff failed  !!</h1>");
                 }
             }
             else{
@@ -152,8 +159,8 @@ class AdminController extends Controller{
 
     public function editPassword()
     {
-        $acountLoginned = $this->checkLogin();
-        if($acountLoginned && $acountLoginned["id"]){
+        $accountLoginned = $this->checkLogin();
+        if($accountLoginned && $accountLoginned["id"]){
             $this->layout = "blankLayout";
             $this-> render("getEditPassword");
         }
@@ -165,33 +172,93 @@ class AdminController extends Controller{
     public function updatePassword()
     {
         $currentPassword = $_POST["current-password"];
-        $password = $_POST["password"];
+        $password = password_hash($_POST["password"],PASSWORD_DEFAULT);
         $username = $_SESSION["username"];
 
-        $acount = $this->adminModel->fetchAcount($username, $currentPassword);
-        // var_dump($acount);
-        if(!$acount){
+        $account = $this->adminModel->fetchAccount($username, $currentPassword);
+        // var_dump($account);
+        if(!$account){
             $data["message"] = "Current password inputted is invalid 🦖🦖🦖!!!";
             $_SERVER["METHOD"] = "GET";
             $this->set($data);
             $this->editPassword();
         } else{
-            $acount["password"] = $password;
-            $onUpdate = $this->adminModel->updateAcount($acount);
+            $account["password"] = $password;
+            $onUpdate = $this->adminModel->updateAccount($account);
             if($onUpdate){
-
                 $this->popup("/dashboard","Your Password has been changed!");
                 // header("Location:"."http://".HOST."/dashboard");
             }
         }
-
-
-
-
     }
 
+    public function showAdmin()
+    {
+        $accountLoginned = $this->checkLogin();
+        $accountRecords = $this->adminModel->getAccountRecord();
+        if(!$accountLoginned){
+            header("Location:"."http://".HOST."/dashboard/login");
+        }else{
+            $this->layout = "dashboardLayout";
+            $accountRecords = $this->adminModel->getAccountRecord();
+            // var_dump($accountRecords);
+            $data["accountLoginned"] = $accountLoginned;
+            $data["records"] = $accountRecords;
+            $this->set($data);
+            $this->render("index");
+        }
+    }
 
+    public function editStaff()
+    {
+        $accountLoginned = $this->checkLogin();
+        if(!$accountLoginned){
+            header("Location:"."http://".HOST."/dashboard/login");
+        }
+        $uid = $_GET["uid"];
+        if($uid && ($_GET["uid"] === $accountLoginned["id"] || $accountLoginned["role_id"] > 4)){
+            $currentAccount = $this->adminModel->getAccountById($uid);
+            if(!$accountLoginned){
+                $this->popup("/dashboard/admin-manager","This account do not existed : <br> uid = ".$accountLoginned["username"]);
+            }
+            else{
+                $_SESSION["uid-editting"] = $currentAccount["id"];
+                $roles = $this->adminModel->getRoles();
+                $data["currentAccount"] = $currentAccount;
+                $data["accountLoginned"] = $accountLoginned;
+                $data["roles"] = $roles;
+                $this->set($data);
+                $this->render("getEditAdmin");
+            }
+        }
+        else {
+            $this->popup("/dashboard/admin-manager","You do not have permission to edit this account : <br> Username:".$accountLoginned["username"]);
+        }
+    }
+    public function updateStaff()
+    {
+        $accountLoginned = $this->checkLogin();
+        if(!$accountLoginned){
+            $this->popup("/dashboard/login","Sorry <br> Please login to continute this action");
+        }
+        else{
+            $uid = $_SESSION["uid-editting"];
+            unset($_SESSION["uid-editting"]);
+            $temp = $this->adminModel->getAccountById($uid);
+            $temp["role_id"] = $_POST["role"];
+            $temp["name"] = $_POST["name"];
 
+            $onUpdate = $this->adminModel->updateAccount($temp);
+            if($onUpdate){
+                $this->popup("/dashboard/admin-manager","<h1>Update Staff Success</h1>");
+            }
+            else{
+
+                $this->popup("/dashboard/admin-manager","<h1>Update Staff Failed</h1>");
+            }
+
+        }
+    }
 }
 
 

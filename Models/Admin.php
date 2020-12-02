@@ -13,8 +13,8 @@ class Admin extends Model
         return $req->fetchAll();
     }
 
-    public function getAcount($username){
-        // $querry = "SELECT * FROM users WHERE username = :acount AND password = :password";
+    public function getAccount($username){
+        // $querry = "SELECT * FROM users WHERE username = :account AND password = :password";
         $querry = "SELECT * FROM staffs WHERE username = :username";
         $req = DB::getConnection()->prepare($querry);
         $req->setFetchMode(PDO::FETCH_ASSOC);
@@ -26,7 +26,7 @@ class Admin extends Model
         return $req->fetch();
     }
     public function checkLogin($username,$password){
-        // $querry = "SELECT * FROM users WHERE username = :acount AND password = :password";
+        // $querry = "SELECT * FROM users WHERE username = :account AND password = :password";
         $querry = "SELECT * FROM staffs WHERE username = :username AND password = :password";
         $req = DB::getConnection()->prepare($querry);
         $req->setFetchMode(PDO::FETCH_ASSOC);
@@ -34,52 +34,72 @@ class Admin extends Model
             'username' => $username,
             'password' => $password
         ]);
-        $acount  = $req->fetch();
+        $account  = $req->fetch();
 
-        return $acount;
+        return $account;
     }
 
-    public function fetchAcount($username,$password){
-        // $querry = "SELECT * FROM users WHERE username = :acount AND password = :password";
+    public function fetchAccount($username,$password){
+        // $querry = "SELECT * FROM users WHERE username = :account AND password = :password";
         $querry = "SELECT * FROM staffs WHERE username = :username";
         $req = DB::getConnection()->prepare($querry);
         $req->setFetchMode(PDO::FETCH_ASSOC);
         $req->execute([
             'username' => $username
         ]);
-        $acount  = $req->fetch();
+        $account  = $req->fetch();
 
-        if(password_verify($password,$acount["password"])){
-            return $acount;
+        if(password_verify($password,$account["password"])){
+            return $account;
         }
         else return false;
     }
 
-    public function storeStaff($acount){
+    public function storeStaff($account){
         $querry = "INSERT INTO staffs(username, password, name, role_id) VALUES(:username, :password, :name, :role_id)";
         $req = DB::getConnection()->prepare($querry);
         // $req->setFetchMode(PDO::FETCH_ASSOC);
         return  $req->execute([
-            "username" => $acount["username"],
-            "password" => password_hash($acount["password"],PASSWORD_DEFAULT),
-            "name" => $acount["name"],
-            "role_id" => $acount["role_id"]
+            "username" => $account["username"],
+            "password" => password_hash($account["password"],PASSWORD_DEFAULT),
+            "name" => $account["name"],
+            "role_id" => $account["role_id"]
         ]);
 
     }
 
-    public function updateAcount($acount){
+    public function updateAccount($account){
         $querry = "UPDATE staffs SET role_id = :role_id, name = :name, password = :password WHERE username = :username";
-        // var_dump($acount);
+        // var_dump($account);
         $req = DB::getConnection()->prepare($querry);
         return $req->execute([
-            "role_id" => $acount["role_id"],
-            "password" => password_hash($acount["password"],PASSWORD_DEFAULT),
-            "name" => $acount["name"],
-            "username" => $acount["username"]
+            "role_id" => $account["role_id"],
+            "password" => $account["password"],
+            "name" => $account["name"],
+            "username" => $account["username"]
         ]);
     }
 
+    public function getAccountRecord(){
+        $querry = "SELECT s.id, s.name, s.username, s.role_id, r.label from staffs s join staff_role r on s.role_id = r.level";
+        $req = DB::getConnection()->prepare($querry);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute();
+        $staffs = $req->fetchAll();
+        return $staffs;
+    }
+
+    public function getAccountById($uid){
+        $querry = "SELECT s.id, s.name, s.username,s.password, s.role_id, r.label from staffs s join staff_role r on s.role_id = r.level WHERE s.id = :uid";
+        $req = DB::getConnection() -> prepare($querry);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute([
+            "uid" => $uid
+        ]);
+        $account = $req->fetch();
+
+        return $account;
+    }
 
 
 }

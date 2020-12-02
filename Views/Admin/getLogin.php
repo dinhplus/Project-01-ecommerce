@@ -18,7 +18,7 @@
         </label><br>
         <div id="login-form-action">
         &emsp;
-            <a href="/acount/forgot-password">
+            <a href="/account/forgot-password">
                 <span id="forgot-password">
                 Forgot password?
                 <span>

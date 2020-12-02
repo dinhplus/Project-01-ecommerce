@@ -57,7 +57,7 @@
 7. store ADMIN
     ```
     method: POST
-    router: "/dashboard/admin-manager/store-admin"
+    router: "/dashboard/admin-manager/create-admin"
     action: "AdminController@storeAdmin"
     permistion: "master_admin"
     description: " To be define later"
@@ -86,6 +86,15 @@
     method: POST
     router: "/dashboard/admin-manager/update-password?id=:id"
     action: "AdminController@updatePassword"
+    permistion: "self"
+    description: " To be define later"
+    ```
+11. DELETE ACOUNT
+
+    ```
+    method: POST
+    router: "/dashboard/admin-manager/delete-staff"
+    action: "AdminController@deleteAdmin"
     permistion: "self"
     description: " To be define later"
     ```

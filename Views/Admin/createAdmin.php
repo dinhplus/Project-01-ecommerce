@@ -1,5 +1,5 @@
 <div class="login-form">
-    <form action="/dashboard/admin-manager/store-admin" method="post">
+    <form action="/dashboard/admin-manager/create-admin" method="post">
         <h1 align="center">
             Create New Staff User
         </h1>
@@ -79,7 +79,7 @@
         <div id="action">
             &emsp;
             <input type="reset" id="reset" name="reset" value="Reset Input value">
-            <input type="submit" id="submit" name="submit" value="Create Acount">
+            <input type="submit" id="submit" name="submit" value="Create Account">
             <br><br>
         </div>
 

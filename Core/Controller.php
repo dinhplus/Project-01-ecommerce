@@ -42,6 +42,7 @@ class BaseController
         $this->set($data);
         $this->render(ROOT."Views\\Layouts\\Common\\popup.php",true);
     }
+
     private function secure_input($data)
     {
         $data = trim($data);

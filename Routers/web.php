@@ -4,13 +4,33 @@ Router::GET("/dashboard/register", function(){
 });
 
 Router::GET("/dashboard", "AdminController@index");
+
 Router::GET( "/dashboard/admin-manager/create-admin", "AdminController@createAdmin");
-Router::POST( "/dashboard/admin-manager/store-admin","AdminController@storeAdmin");
+Router::POST( "/dashboard/admin-manager/create-admin","AdminController@storeAdmin");
+
 Router::GET("/dashboard/login", "AdminController@getLogin");
 Router::POST("/dashboard/login", "AdminController@postLogin");
+
 Router::GET("/dashboard/logout", "AdminController@logout");
+
 Router::GET("/dashboard/admin-manager/change-password","AdminController@editPassword");
 Router::POST("/dashboard/admin-manager/update-password", "AdminController@updatePassword");
+
+Router::GET("/dashboard/admin-manager/index","AdminController@showAdmin");
+Router::GET("/dashboard/admin-manager","AdminController@showAdmin");
+
+Router::GET("/dashboard/admin-manager/edit-staff","AdminController@editStaff");
+Router::POST("/dashboard/admin-manager/edit-staff","AdminController@updateStaff");
+
+
+
+
+
+
+
+
+
+
 
 
 
