@@ -14,7 +14,6 @@ class DB
                     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
                   ));
                 self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                // self::$conn->setFetchMode(PDO::FETCH_ASSOC);
             }
             return self::$conn;
     } catch (PDOException $e) {

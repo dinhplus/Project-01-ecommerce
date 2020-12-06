@@ -1,6 +1,6 @@
 <?php
 
-use Model\CoreModel as Model;
+// use Model\CoreModel as Model;
 
 class Product extends Model
 {
@@ -11,7 +11,7 @@ class Product extends Model
     public function getProducts($condition)
     {
         $querry = "SELECT * FROM  products WHERE :condition";
-        $req = DB::getConnection()->prepare($querry);
+        $req = self::getConnection()->prepare($querry);
         $req->setFetchMode(PDO::FETCH_ASSOC);
         return $req;
         // return $req->execute([
@@ -21,7 +21,7 @@ class Product extends Model
     public function storeProduct($product){
         $querry = "INSERT INTO products(name, description, price, quantity, img_ref)
                     VALUES(:name, :description, :price, :quantity, :img_ref)";
-        $req = DB::getConnection()->prepare($querry);
+        $req = self::getConnection()->prepare($querry);
 
         // $req->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -38,7 +38,7 @@ class Product extends Model
     {
         $sql = "INSERT INTO posts (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
 
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
 
         return $req->execute([
             'title' => $title,
@@ -52,40 +52,25 @@ class Product extends Model
     public function showPost($id)
     {
         $sql = "SELECT * FROM posts WHERE id =  $id";
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
         $req->execute();
 
         return $req->fetch();
     }
 
-    public function showAllPosts()
+    public function getAllProduct($page = 1, $recordPerPage = 20, $productName = '')
     {
-        $sql = "SELECT * FROM posts";
-        $req = DB::getConnection()->prepare($sql);
-        $req->execute();
-        return $req->fetch();
-    }
-
-    public function edit($id, $title, $description)
-    {
-        $sql = "UPDATE posts SET title = :title, description = :description , updated_at = :updated_at WHERE id = :id";
-
-        $req = DB::getConnection()->prepare($sql);
-
-        return $req->execute([
-            'id' => $id,
-            'title' => $title,
-            'description' => $description,
-            'updated_at' => date('Y-m-d H:i:s')
+        $sql = "SELECT p.*, c.label category , b.name brand, FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id WHERE p.name like '%:name%' LIMIT :quantity OFFSET :offset";
+        $req = self::getConnection()->prepare($sql);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute([
+            "quantity" => $recordPerPage,
+            "offset" => $recordPerPage * $page,
+            "name" => $productName,
 
         ]);
+        return $req->fetch();
     }
 
-    public function delete($id)
-    {
-        echo $id;
-        $sql = "DELETE FROM posts WHERE id = $id";
-        $req = DB::getConnection()->prepare($sql);
-        return $req->execute();
-    }
+
 }

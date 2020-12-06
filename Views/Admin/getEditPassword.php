@@ -1,5 +1,5 @@
 
-<div class="login-form">
+<div class="edit-password-form">
     <form action="/dashboard/admin-manager/update-password" method="post">
         <h1 align="center">
             Change Password

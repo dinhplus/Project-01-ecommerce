@@ -22,9 +22,10 @@ Router::GET("/dashboard/admin-manager","AdminController@showAdmin");
 Router::GET("/dashboard/admin-manager/edit-staff","AdminController@editStaff");
 Router::POST("/dashboard/admin-manager/edit-staff","AdminController@updateStaff");
 
+Router::POST("/dashboard/admin-manager/delete-staff", "AdminController@deleteStaff");
 
-
-
+Router::GET("/dashboard/product-manager/index",  "ProductController@index");
+Router::GET("/dashboard/product-manager",  "ProductController@index");
 
 
 

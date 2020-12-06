@@ -1,6 +1,5 @@
 <?php
 
-use Model\CoreModel as Model;
 
 class User extends Model
 {
@@ -8,7 +7,7 @@ class User extends Model
     // public function fetchUser($username,$password){
     //     // $querry = "SELECT * FROM (SELECT * FROM users WHERE email = :acount OR username = :acount) WHERE password = :password";
     //     $querry = "SELECT * FROM user WHERE email = :acount OR username = :acount";
-    //     $req = DB::getConnection()->prepare($querry);
+    //     $req = self::getConnection()->prepare($querry);
     //     return $req->execute([
     //         'acount'=>$username,
     //         'password'=>$password
@@ -19,7 +18,7 @@ class User extends Model
     public function fetchUser($username,$password){
         // $querry = "SELECT * FROM users WHERE username = :acount AND password = :password";
         $querry = "SELECT * FROM (SELECT * FROM users WHERE email = :acount OR username = :acount) acount WHERE password = :password";
-        $req = DB::getConnection()->prepare($querry);
+        $req = self::getConnection()->prepare($querry);
         $req->setFetchMode(PDO::FETCH_ASSOC);
 
         $req->execute([
@@ -32,7 +31,7 @@ class User extends Model
 
     public function storeUser($acount){
         $querry = "INSERT INTO users(username, password, email, birth_date, address, phone , avatar_ref, user_level) VALUES(:username, :password, :email, :birthdate, :address, :phone , :avatar_ref, :user_level)";
-        $req = DB::getConnection()->prepare($querry);
+        $req = self::getConnection()->prepare($querry);
 
         // $req->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -54,7 +53,7 @@ class User extends Model
     {
         $sql = "INSERT INTO posts (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
 
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
 
         return $req->execute([
             'title' => $title,
@@ -68,7 +67,7 @@ class User extends Model
     public function showPost($id)
     {
         $sql = "SELECT * FROM posts WHERE id =  $id";
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
         $req->execute();
 
         return $req->fetch();
@@ -77,7 +76,7 @@ class User extends Model
     public function showAllPosts()
     {
         $sql = "SELECT * FROM posts";
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
         $req->execute();
         return $req->fetch();
     }
@@ -86,7 +85,7 @@ class User extends Model
     {
         $sql = "UPDATE posts SET title = :title, description = :description , updated_at = :updated_at WHERE id = :id";
 
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
 
         return $req->execute([
             'id' => $id,
@@ -101,7 +100,7 @@ class User extends Model
     {
         echo $id;
         $sql = "DELETE FROM posts WHERE id = $id";
-        $req = DB::getConnection()->prepare($sql);
+        $req = self::getConnection()->prepare($sql);
         return $req->execute();
     }
 }

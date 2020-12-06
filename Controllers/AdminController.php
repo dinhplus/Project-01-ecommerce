@@ -66,8 +66,12 @@ class AdminController extends Controller{
             $this->set($data);
             $this->getLogin();
         }
+        else if( $account["role_id"] == 0){
+            $this->popup("/home","This acount is deactived. Please contact Admin/technical!!");
+        }
         else{
             $_SESSION["loginned"] = true;
+            $_SESSION["uid"] = $account["id"];
             $_SESSION["username"] = $account["username"];
             $_SESSION["token"] = $account["password"];
             $_SESSION["role"] = $account["role_id"];
@@ -161,7 +165,7 @@ class AdminController extends Controller{
     {
         $accountLoginned = $this->checkLogin();
         if($accountLoginned && $accountLoginned["id"]){
-            $this->layout = "blankLayout";
+            $this->layout = "dashboardLayout";
             $this-> render("getEditPassword");
         }
         else{
@@ -187,7 +191,6 @@ class AdminController extends Controller{
             $onUpdate = $this->adminModel->updateAccount($account);
             if($onUpdate){
                 $this->popup("/dashboard","Your Password has been changed!");
-                // header("Location:"."http://".HOST."/dashboard");
             }
         }
     }
@@ -198,7 +201,9 @@ class AdminController extends Controller{
         $accountRecords = $this->adminModel->getAccountRecord();
         if(!$accountLoginned){
             header("Location:"."http://".HOST."/dashboard/login");
-        }else{
+        }
+        else
+        {
             $this->layout = "dashboardLayout";
             $accountRecords = $this->adminModel->getAccountRecord();
             // var_dump($accountRecords);
@@ -247,24 +252,29 @@ class AdminController extends Controller{
             $temp = $this->adminModel->getAccountById($uid);
             $temp["role_id"] = $_POST["role"];
             $temp["name"] = $_POST["name"];
-
             $onUpdate = $this->adminModel->updateAccount($temp);
             if($onUpdate){
                 $this->popup("/dashboard/admin-manager","<h1>Update Staff Success</h1>");
             }
             else{
-
                 $this->popup("/dashboard/admin-manager","<h1>Update Staff Failed</h1>");
             }
-
+        }
+    }
+    public function deleteStaff(){
+        $accountLoginned = $this->checkLogin();
+        if(!$accountLoginned){
+            $this->popup("/dashboard/login","Sorry <br> Please login to continute this action");
+        }
+        else if($accountLoginned["role_id"] < 5){
+            $this->popup("/dashboard/admin-manager","Sorry <br> You do not have permission to implement this action");
+        }
+        else{
+            $uid = $_POST["staff-id"];
+            $onDelete = $this->adminModel->deleteStaff($uid);
+            if($onDelete){
+                header("Location:"."http://".HOST."/dashboard/admin-manager");
+            }
         }
     }
 }
-
-
-
-
-
-
-
-?>

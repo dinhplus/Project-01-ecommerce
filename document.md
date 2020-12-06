@@ -94,7 +94,7 @@
     ```
     method: POST
     router: "/dashboard/admin-manager/delete-staff"
-    action: "AdminController@deleteAdmin"
+    action: "AdminController@deleteStaff"
     permistion: "self"
     description: " To be define later"
     ```

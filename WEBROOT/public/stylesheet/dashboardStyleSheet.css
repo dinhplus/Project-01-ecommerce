@@ -1,0 +1,302 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,300);
+@import url(./dashboard-site/staff-manager.css);
+@import url(./dashboard-site/create-admin.css);
+@import url(./dashboard-site/edit-admin.css);
+@import url(./dashboard-site/edit-password.css);
+*{
+	margin: 0;
+	padding: 0;
+}
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+input[type="checkbox"] {
+	display: none;
+}
+ul > a {
+	text-decoration:  solid;
+	color: #eff4fa;
+
+}
+label {
+	cursor: pointer;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+.swanky {
+	margin: auto;
+	top: 0;
+	bottom: 0;
+	/* left: 0; */
+	right: 0;
+
+
+}
+
+body {
+	/* height: 100vh; */
+	font-weight: 500;
+	font-family: "Roboto", sans-serif;
+	/* background: linear-gradient(120deg, #1432ddcc 0%, #9bca9fc2 100%); */
+	-webkit-font-smoothing: antialiased;
+	font-size: 14px;
+}
+
+body .swanky_wrapper {
+	width: 15vw;
+	min-height: 96vh;
+	overflow: hidden;
+	border-radius: 0px;
+	background: #2a394f;
+}
+body .swanky_wrapper label {
+	padding: 25px;
+	float: left;
+	/* min-height: 72px; */
+	border-bottom: 1px solid #293649;
+	/* position: relative; */
+	width: 100%;
+	color: #eff4fa;
+	-webkit-transition: text-indent 0.15s, height 0.3s;
+	transition: text-indent 0.15s, height 0.3s;
+	box-sizing: border-box;
+}
+body .swanky_wrapper label img {
+	padding-left: 5px;
+	margin-right: 10px;
+	width: 16px;
+}
+body .swanky_wrapper label span {
+	/* position: relative;
+	top: -3px; */
+	padding: 10px;
+}
+.swanky_wrapper label:hover {
+	background: #212e41;
+	border-bottom: 1px solid #2a394f;
+	text-indent: 4px;
+}
+.swanky_wrapper label:hover .bar {
+	background: #0c93e4;
+	width: 100%;
+
+}
+.swanky_wrapper label .bar {
+	width: 0px;
+	-webkit-transition: width 0.15s;
+	transition: width 0.15s;
+	height: 2px;
+	/* position: absolute; */
+	display: block;
+	background: #071730;
+	/* bottom: 0; */
+	/* left: 0; */
+}
+.swanky_wrapper label .lil_arrow {
+	width: 5px;
+	height: 5px;
+	-webkit-transition: transform 0.8s;
+	-webkit-transition: -webkit-transform 0.8s;
+	transition: -webkit-transform 0.8s;
+	transition: transform 0.8s;
+	transition: transform 0.8s, -webkit-transform 0.8s;
+
+	border-top: 2px solid white;
+	border-right: 2px solid white;
+	float: right;
+	position: relative;
+	top: 6px;
+	right: 2px;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+body .swanky_wrapper__content {
+	/* position: absolute; */
+	display: none;
+	overflow: hidden;
+	left: 0;
+	width: 100%;
+}
+.layout-sider .swanky .swanky_wrapper__content li {
+	width: 100%;
+	opacity: 0;
+	left: -100%;
+
+	padding: 25px 0px;
+	text-indent: 25px;
+	box-shadow: 0px 0px #126ca1 inset;
+	-webkit-transition: box-shadow 0.3s, text-indent 0.3s;
+	transition: box-shadow 0.3s, text-indent 0.3s;
+
+}
+.swanky_wrapper__content ul li:hover{
+	background: #0c93e4;
+	box-shadow: 3px 0px #126ca1 inset;
+	-webkit-transition: box-shadow 0.3s linear, text-indent 0.3s linear;
+	transition: box-shadow 0.3s linear, text-indent 0.3s linear;
+	text-indent: 31px;
+}
+body .swanky_wrapper__content .clear {
+	clear: both;
+}
+
+input[type="checkbox"]:checked + label .swanky_wrapper__content {
+	display: block;
+	/* top: 68px; */
+	border-bottom: 1px solid #212e41;
+}
+
+input[type="checkbox"]:checked + label  .lil_arrow {
+	padding-right: 20px;
+	-webkit-transition: -webkit-transform 0.8s;
+	transition: -webkit-transform 0.8s;
+	transition: transform 0.8s;
+	transition: transform 0.8s, -webkit-transform 0.8s;
+
+	transform: rotate(135deg);
+	border-top: 2px solid #14a3f9;
+	border-right: 2px solid #14a3f9;
+}
+
+input[type="checkbox"]:checked + label {
+	padding: 25px 0px 0px 0px;
+	/* display: block; */
+	background: #212e41;
+	text-indent: 4px;
+	-webkit-transition-property: height;
+	transition-property: height;
+	-webkit-transition-duration: 0.6s;
+	transition-duration: 0.6s;
+
+}
+
+input[type="checkbox"]:checked + label .bar {
+	margin-top: 15px;
+	width: 100%;
+}
+
+
+input[type="checkbox"]:checked + label li:nth-of-type(1) {
+	-webkit-animation: in 0.15s 0.575s forwards;
+	animation: in 0.15s 0.575s forwards;
+
+	-moz-animation: in 0.15s 0.575s forwards;
+
+}
+input[type="checkbox"]:checked + label li:nth-of-type(2) {
+	-webkit-animation: in 0.15s 0.7s forwards;
+	animation: in 0.15s 0.7s forwards;
+
+	-moz-animation: in 0.15s 0.7s forwards;
+
+}
+input[type="checkbox"]:checked + label li:nth-of-type(3) {
+	-webkit-animation: in 0.15s 0.825s forwards;
+	animation: in 0.15s 0.825s forwards;
+	-moz-animation: in 0.15s 0.825s forwards;
+}
+input[type="checkbox"]:checked + label li:nth-of-type(4) {
+	-webkit-animation: in 0.15s 0.95s forwards;
+	animation: in 0.15s 0.95s forwards;
+	-moz-animation: in 0.15s 0.95s forwards;
+}
+
+@-webkit-keyframes in {
+	from {
+		left: -100%;
+		opacity: 0;
+	}
+	to {
+		left: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes in {
+	from {
+		left: -100%;
+		opacity: 0;
+	}
+	to {
+		left: 0;
+		opacity: 1;
+	}
+}
+
+#root{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	/* height: 100vh; */
+
+	position: relative;
+}
+.site-header{
+	/* z-index: 999; */
+	width: 100vw;
+	height: 60px;
+	font-size:20px;
+	padding: 20px 0px;
+	background-color: #2a394f;
+	color: oldlace;
+	display: flex;
+	justify-content: space-between;
+
+}
+.site-header h1{
+	padding: 0px 50px;
+}
+.site-header #query{
+	width: 30vw;
+	height: 6vh;
+	border-radius: 3vh;
+	padding: 0px 30px;
+	font-size: 18px;
+}
+.site-header #query-submit-btn{
+	width: 120px;
+	height: 6vh;
+	border-radius: 20px;
+	background: rgb(27, 88, 145);
+	border: 0px;
+	font-size: 18px;
+	margin-right: 30px;
+	color: rgb(255, 255, 255);
+}
+.site-header #query-submit-btn:hover{
+	background: rgb(58, 103, 201);
+}
+
+.container{
+	width: 85vw;
+	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+	padding-top: 50px;
+
+}
+#main-site .starter-template{
+	width: 92%;
+}
+.paginate button{
+    background-color: rgb(55, 55, 226);
+    border: 0;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    margin: 2px;
+    width: 100px;
+    height: 40px;
+}
+.warning{
+	color: red;
+	font-weight: bold;
+}

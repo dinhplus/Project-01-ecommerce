@@ -3,14 +3,18 @@
         $_GET["page"] = 1;
     }
 ?>
-<div class="list-staffs">
+<div class="list-products">
     <div class="action">
         <div class="filter-staff">
 
         </div>
-        <?php if ($accountLoginned["role_id"] > 4) { ?>
-            <div class="generate-account">
-                <form action="/dashboard/admin-manager/create-admin">
+        <?php
+        if (
+            $_SESSION["role"] > 0
+            && $_SESSION["role"] !== 3
+        ) { ?>
+            <div class="generate-product">
+                <form action="/dashboard/product-manager/create-product">
                     <input type="submit" name="submit" id="create-account-btn" value="+ New">
                 </form>
             </div>

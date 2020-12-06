@@ -5,51 +5,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplication</title>
-    <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="/public/assets/icofont/icofont.min.css">
+    <link rel="stylesheet" href="/public/stylesheet/dashboardStyleSheet.css">
+
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Admin Aplication</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <div class="site-header">
+        <div class="title">
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/posts">Post</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/acount">Acount</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Management</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <h1>
+                Manager Site
+            </h1>
+        </div>
+        <div class="query-field">
+            <form action="#" method="GET">
+                <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if(isset($_GET["q"])) echo($_GET["q"]) ?>">
+                <button type="submit" id="query-submit-btn"><i class="icofont-search-2"></i> Search</button>
+                <!-- <input type="submit" name="submit" id="query-submit-btn" value="Search" class="icofont-search-2"> </input> -->
+                <!-- <i class="icofont-search-2"></i> -->
             </form>
         </div>
-    </nav>
-    <main role="main" class="container">
-        <div class = "menu-side">
+    </div>
+    <div id="root" >
+        <div class="layout-sider">
+            <div class="swanky">
+                <div class="swanky_wrapper">
+                    <input id="Dashboard" name="checkbox" type="checkbox"></input>
+                    <label for="Dashboard">
+                        <i class="icofont-dashboard icofont-2x"></i>
+                        <span>Dashboard</span>
+                        <div class="lil_arrow"></div>
+                        <div class="bar"></div>
+                        <div class="swanky_wrapper__content">
+                            <ul>
+                                <a href="<?php echo ("http://".HOST."/dashboard")?>">
+                                    <li>Dashboard</li>
+                                </a>
+
+                                <li>Reports</li>
+                                <li>Analytics</li>
+                                <li>Code Blocks</li>
+                                <a href="<?php echo ("http://".HOST."/dashboard/logout")?>">
+                                    <li>Logout</li>
+                                </a>
+                            </ul>
+                        </div>
+                    </label>
+                    <input id="Sales" name="checkbox" type="checkbox"></input>
+                    <label for="Sales">
+                        <i class="icofont-sale-discount icofont-2x"></i>
+                        <span>Sales Manager</span>
+                        <div class="lil_arrow"></div>
+                        <div class="bar"></div>
+                        <div class="swanky_wrapper__content">
+                            <ul>
+                                <li>New Sales</li>
+                                <li>Expired Sales</li>
+                                <li>Sales Reports</li>
+                                <li>Deliveries</li>
+                            </ul>
+                        </div>
+                    </label>
+                    <input id="Messages" name="checkbox" type="checkbox"></input>
+                    <label for="Messages">
+                        <i class="icofont-listine-dots icofont-2x"></i>
+                        <span>Product Manager</span>
+                        <div class="lil_arrow"></div>
+                        <div class="bar"></div>
+                        <div class="swanky_wrapper__content">
+                            <ul>
+                                <li>New Product</li>
+                                <a href="<?php echo ("http://".HOST."/dashboard/product-manager/index")?>">
+                                    <li>Show all Product</li>
+                                </a>
+                                <li>Import data</li>
+                                <li>Product remainder</li>
+                            </ul>
+                        </div>
+                    </label>
+                    <input id="Users" name="checkbox" type="checkbox"></input>
+                    <label for="Users">
+                        <i class="icofont-users-alt-3 icofont-2x"></i>
+                        <span>Staff Manager</span>
+                        <div class="lil_arrow"></div>
+                        <div class="bar"></div>
+                        <div class="swanky_wrapper__content">
+                            <ul>
+                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/create-admin")?>">
+                                <li>New Staff</li>
+                                </a>
+                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/index")?>">
+                                    <li>All Staff</li>
+                                </a>
+                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/change-password")?>">
+                                <li>Change Passwords</li>
+                                </a>
+                                <li>Show Sefl Acount detail</li>
+                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/edit-staff?uid=".$_SESSION["uid"])?>">
+
+                                <li>Edit Self Profile</li>
+                                </a>
+                            </ul>
+                        </div>
+                    </label>
+                    <input id="Settings" checkbox="checkbox" type="checkbox"></input>
+                    <label for="Settings">
+                        <i class="icofont-cart-alt icofont-2x"></i>
+                        <span>Order Manager</span>
+                        <div class="lil_arrow"></div>
+                        <div class="bar"></div>
+                        <div class="swanky_wrapper__content">
+                            <ul>
+
+                                <li>Design</li>
+                                <li>Change User</li>
+                                <li>Log Out</li>
+                            </ul>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
 
         </div>
-        <div class="starter-template">
+        <div role="main" class="container" id="main-site">
+            <div class="starter-template">
 
-            <?php
-            echo $content_for_layout;
-            ?>
+                <?php
+                echo $content_for_layout;
+                ?>
+
+            </div>
 
         </div>
 
-    </main>
-    <script src="/public/assets/bootstrap/Jquery/jquery-3.2.1.slim.min.js" ></script>
+    </div>
+
+    <script src="/public/assets/bootstrap/Jquery/jquery-3.2.1.slim.min.js"></script>
     <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

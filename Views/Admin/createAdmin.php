@@ -1,4 +1,4 @@
-<div class="login-form">
+<div class="generate-staff-form">
     <form action="/dashboard/admin-manager/create-admin" method="post">
         <h1 align="center">
             Create New Staff User
@@ -61,7 +61,7 @@
                     </label>
                 </td>
                 <td>
-                    <select id="role" name="role" placeholder="Choose role for staff" value="<?php if(isset($inputted)) echo($inputted["role"])?>">
+                    <select id="role" name="role" placeholder="Choose role for staff" value="<?php if(isset($inputted)) echo($inputted["role"])?>" <?php if (isset($roles) && count($roles) > 0){ echo('default="'.$roles['1']['level'].'"');} ?>>
                         <?php if (isset($roles) && count($roles) > 0) {
                             foreach ($roles as $key => $role) {
                         ?>
