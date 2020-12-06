@@ -5,25 +5,13 @@
 class Product extends Model
 {
     public function getProductQuantity(){
-        $querry = "SELECT count(id) as quantity from products";
+        $query = "SELECT count(id) as quantity from products";
 
-    }
-    public function getProducts($condition)
-    {
-        $querry = "SELECT * FROM  products WHERE :condition";
-        $req = self::getConnection()->prepare($querry);
-        $req->setFetchMode(PDO::FETCH_ASSOC);
-        return $req;
-        // return $req->execute([
-        //     "condition" => $condition
-        // ]);
     }
     public function storeProduct($product){
-        $querry = "INSERT INTO products(name, description, price, quantity, img_ref)
+        $query = "INSERT INTO products(name, description, price, quantity, img_ref)
                     VALUES(:name, :description, :price, :quantity, :img_ref)";
-        $req = self::getConnection()->prepare($querry);
-
-        // $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req = self::getConnection()->prepare($query);
 
         return  $req->execute([
             "name" => $product["name"],
@@ -34,43 +22,41 @@ class Product extends Model
         ]);
     }
 
-    public function create($title, $description)
+    public function getAllProduct($page = 1, $recordPerPage = 20, $productName , $category, $brand )
     {
-        $sql = "INSERT INTO posts (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
-
-        $req = self::getConnection()->prepare($sql);
-
-        return $req->execute([
-            'title' => $title,
-            'description' => $description,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
-    }
-
-    public function showPost($id)
-    {
-        $sql = "SELECT * FROM posts WHERE id =  $id";
-        $req = self::getConnection()->prepare($sql);
+        //FIXME: Can not binding params with template
+        $query = "SELECT p.*, c.label category , b.name brand FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id WHERE 1 ";
+        if($productName){
+            $query.="AND p.name LIKE '%".$productName."%'";
+        }
+        if($category){
+            $query.=" AND p.category_id in ".$category;
+        }
+        if($brand){
+            $query.= " AND p.brand_id in ".$brand;
+        }
+        $query.= " LIMIT ".$recordPerPage." OFFSET ". $recordPerPage * ($page -1);
+        $req = self::getConnection()->prepare($query);
         $req->execute();
-
-        return $req->fetch();
-    }
-
-    public function getAllProduct($page = 1, $recordPerPage = 20, $productName = '')
-    {
-        $sql = "SELECT p.*, c.label category , b.name brand, FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id WHERE p.name like '%:name%' LIMIT :quantity OFFSET :offset";
-        $req = self::getConnection()->prepare($sql);
         $req->setFetchMode(PDO::FETCH_ASSOC);
-        $req->execute([
-            "quantity" => $recordPerPage,
-            "offset" => $recordPerPage * $page,
-            "name" => $productName,
-
-        ]);
-        return $req->fetch();
+        return $req->fetchAll();
     }
-
+    public function getCategories(){
+        $query = 'SELECT * FROM product_categories';
+        $req = self::getConnection()->prepare($query);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute();
+        return $req->fetchAll();
+    }
+    public function getBrands()
+    {
+        $query = 'SELECT * FROM product_brand';
+        $req = self::getConnection()->prepare($query);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute();
+        // $res = $req->fetchAll();
+        // var_dump($res);die();
+        return $req->fetchAll();
+    }
 
 }

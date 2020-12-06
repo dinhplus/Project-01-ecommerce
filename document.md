@@ -121,7 +121,7 @@
 3. Store Product
     ```
     method: POST
-    router: "/dashboard/product-manager/store-product"
+    router: "/dashboard/product-manager/create-product"
     action: "ProductController@storeProduct"
     permistion: "master"
     description: " Store new product into database"

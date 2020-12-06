@@ -21,14 +21,14 @@
         </div>
         <div class="query-field">
             <form action="#" method="GET">
-                <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if(isset($_GET["q"])) echo($_GET["q"]) ?>">
+                <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if (isset($_GET["q"])) echo ($_GET["q"]) ?>">
                 <button type="submit" id="query-submit-btn"><i class="icofont-search-2"></i> Search</button>
                 <!-- <input type="submit" name="submit" id="query-submit-btn" value="Search" class="icofont-search-2"> </input> -->
                 <!-- <i class="icofont-search-2"></i> -->
             </form>
         </div>
     </div>
-    <div id="root" >
+    <div id="root">
         <div class="layout-sider">
             <div class="swanky">
                 <div class="swanky_wrapper">
@@ -40,14 +40,14 @@
                         <div class="bar"></div>
                         <div class="swanky_wrapper__content">
                             <ul>
-                                <a href="<?php echo ("http://".HOST."/dashboard")?>">
+                                <a href="<?php echo ("http://" . HOST . "/dashboard") ?>">
                                     <li>Dashboard</li>
                                 </a>
 
                                 <li>Reports</li>
                                 <li>Analytics</li>
                                 <li>Code Blocks</li>
-                                <a href="<?php echo ("http://".HOST."/dashboard/logout")?>">
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/logout") ?>">
                                     <li>Logout</li>
                                 </a>
                             </ul>
@@ -77,7 +77,7 @@
                         <div class="swanky_wrapper__content">
                             <ul>
                                 <li>New Product</li>
-                                <a href="<?php echo ("http://".HOST."/dashboard/product-manager/index")?>">
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/index") ?>">
                                     <li>Show all Product</li>
                                 </a>
                                 <li>Import data</li>
@@ -93,19 +93,19 @@
                         <div class="bar"></div>
                         <div class="swanky_wrapper__content">
                             <ul>
-                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/create-admin")?>">
-                                <li>New Staff</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/create-admin") ?>">
+                                    <li>New Staff</li>
                                 </a>
-                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/index")?>">
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/index") ?>">
                                     <li>All Staff</li>
                                 </a>
-                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/change-password")?>">
-                                <li>Change Passwords</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/change-password") ?>">
+                                    <li>Change Passwords</li>
                                 </a>
                                 <li>Show Sefl Acount detail</li>
-                                <a href="<?php echo ("http://".HOST."/dashboard/admin-manager/edit-staff?uid=".$_SESSION["uid"])?>">
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/edit-staff?uid=" . $_SESSION["uid"]) ?>">
 
-                                <li>Edit Self Profile</li>
+                                    <li>Edit Self Profile</li>
                                 </a>
                             </ul>
                         </div>

@@ -16,12 +16,35 @@ class ProductController extends Controller{
         if(!$acount){
             $this->popup("/dashboard/login","please login to access dashboard!!");
         }
-        $allProduct = $this->Product->getAllProduct();
-        $data = [];
+        // var_dump($_GET["category"]);;
+
+        $pageNumber = $_GET["page"] ?? 1;
+        $recordPerPage = 20;
+        $productName = $_GET["q"] ?? null;
+        $category = isset($_GET["category"])? "(".$_GET["category"].")" : null;
+        $brand = isset($_GET["brand"])? "(".$_GET["brand"].")" : null;
+        $allProduct = $this->productModel->getAllProduct($pageNumber, $recordPerPage,$productName, $category, $brand );
+        $data["products"] = $allProduct;
+        $data["pageQtt"] = $allProduct? count($allProduct) : 1;
         $this->set($data);
         $this->render("index");
     }
+    public function createProduct()
+    {
+        $acount = $this->AdminController->checkLogin();
+        if(!$acount){
+            $this->popup("/dashboard/login","please login to access dashboard!!");
+        }
+        $categories = $this->productModel->getCategories();
+        $brands = $this->productModel->getBrands();
+        // var_dump($brands); die();
+        $data["categories"] = $categories;
+        $data["brands"] = $brands;
+        $this->set($data);
+        $this->layout = "dashboardLayout";
+        $this->render("getCreateProduct");
 
+    }
 
 
 }

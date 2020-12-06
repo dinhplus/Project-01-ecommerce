@@ -27,6 +27,9 @@ Router::POST("/dashboard/admin-manager/delete-staff", "AdminController@deleteSta
 Router::GET("/dashboard/product-manager/index",  "ProductController@index");
 Router::GET("/dashboard/product-manager",  "ProductController@index");
 
+Router::GET("/dashboard/product-manager/create-product", "ProductController@createProduct");
+Router::POST("/dashboard/product-manager/create-product", "ProductController@storeProduct");
+
 
 
 

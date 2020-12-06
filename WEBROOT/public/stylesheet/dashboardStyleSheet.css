@@ -3,6 +3,7 @@
 @import url(./dashboard-site/create-admin.css);
 @import url(./dashboard-site/edit-admin.css);
 @import url(./dashboard-site/edit-password.css);
+@import url(./dashboard-site/create-product.css);
 *{
 	margin: 0;
 	padding: 0;
@@ -27,18 +28,16 @@ ul > a {
 label {
 	cursor: pointer;
 }
-
+::-webkit-scrollbar-button{
+	display: inline;
+}
 ::-webkit-scrollbar {
 	display: none;
 }
 
 .swanky {
 	margin: auto;
-	top: 0;
-	bottom: 0;
-	/* left: 0; */
-	right: 0;
-
+	width: 15vw;
 
 }
 
@@ -46,24 +45,30 @@ body {
 	/* height: 100vh; */
 	font-weight: 500;
 	font-family: "Roboto", sans-serif;
-	/* background: linear-gradient(120deg, #1432ddcc 0%, #9bca9fc2 100%); */
+	background: linear-gradient(120deg, #d8dbeccc 0%, #ecf7b1c2 100%);
 	-webkit-font-smoothing: antialiased;
 	font-size: 14px;
+	/* height: fit-content; */
 }
 
 body .swanky_wrapper {
 	width: 15vw;
-	min-height: 96vh;
-	overflow: hidden;
+	min-height: 92vh;
+	/* height: inherit; */
+	height: 100%;
+	overflow: scroll;
 	border-radius: 0px;
 	background: #2a394f;
+}
+.swanky_wrapper:hover{
+	overflow: scroll;
 }
 body .swanky_wrapper label {
 	padding: 25px;
 	float: left;
-	/* min-height: 72px; */
+	min-height: 72px;
 	border-bottom: 1px solid #293649;
-	/* position: relative; */
+
 	width: 100%;
 	color: #eff4fa;
 	-webkit-transition: text-indent 0.15s, height 0.3s;
@@ -76,8 +81,6 @@ body .swanky_wrapper label img {
 	width: 16px;
 }
 body .swanky_wrapper label span {
-	/* position: relative;
-	top: -3px; */
 	padding: 10px;
 }
 .swanky_wrapper label:hover {
@@ -95,11 +98,9 @@ body .swanky_wrapper label span {
 	-webkit-transition: width 0.15s;
 	transition: width 0.15s;
 	height: 2px;
-	/* position: absolute; */
 	display: block;
 	background: #071730;
-	/* bottom: 0; */
-	/* left: 0; */
+
 }
 .swanky_wrapper label .lil_arrow {
 	width: 5px;
@@ -109,7 +110,6 @@ body .swanky_wrapper label span {
 	transition: -webkit-transform 0.8s;
 	transition: transform 0.8s;
 	transition: transform 0.8s, -webkit-transform 0.8s;
-
 	border-top: 2px solid white;
 	border-right: 2px solid white;
 	float: right;
@@ -120,11 +120,19 @@ body .swanky_wrapper label span {
 	transform: rotate(45deg);
 }
 body .swanky_wrapper__content {
-	/* position: absolute; */
 	display: none;
 	overflow: hidden;
 	left: 0;
 	width: 100%;
+}
+.layout-sider{
+	position: fixed;
+	top: 8vh;
+	left: 0px;
+	/* overflow-y: scroll; */
+}
+.layout-sider:hover{
+	overflow: scroll;
 }
 .layout-sider .swanky .swanky_wrapper__content li {
 	width: 100%;
@@ -145,9 +153,9 @@ body .swanky_wrapper__content {
 	transition: box-shadow 0.3s linear, text-indent 0.3s linear;
 	text-indent: 31px;
 }
-body .swanky_wrapper__content .clear {
+/* body .swanky_wrapper__content .clear {
 	clear: both;
-}
+} */
 
 input[type="checkbox"]:checked + label .swanky_wrapper__content {
 	display: block;
@@ -233,6 +241,7 @@ input[type="checkbox"]:checked + label li:nth-of-type(4) {
 }
 
 #root{
+	margin-top: 6vh;
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -241,9 +250,11 @@ input[type="checkbox"]:checked + label li:nth-of-type(4) {
 	position: relative;
 }
 .site-header{
-	/* z-index: 999; */
+	z-index: 999;
+	position: fixed;
+	top: 0;
 	width: 100vw;
-	height: 60px;
+	height: 6vh;
 	font-size:20px;
 	padding: 20px 0px;
 	background-color: #2a394f;
@@ -286,6 +297,18 @@ input[type="checkbox"]:checked + label li:nth-of-type(4) {
 }
 #main-site .starter-template{
 	width: 92%;
+	/* margin-left: 15vw; */
+}
+#main-site{
+	width: 85vw;
+	margin: 0;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	overflow: hidden;
+}
+#main-site:hover{
+	overflow: scroll;
 }
 .paginate button{
     background-color: rgb(55, 55, 226);

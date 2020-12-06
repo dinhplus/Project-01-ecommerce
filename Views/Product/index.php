@@ -1,7 +1,7 @@
-<?php $recordsPerPage = 10;
-    if(empty($_GET["page"])){
-        $_GET["page"] = 1;
-    }
+<?php
+if (empty($_GET["page"])) {
+    $_GET["page"] = 1;
+}
 ?>
 <div class="list-products">
     <div class="action">
@@ -14,8 +14,9 @@
             && $_SESSION["role"] !== 3
         ) { ?>
             <div class="generate-product">
-                <form action="/dashboard/product-manager/create-product">
-                    <input type="submit" name="submit" id="create-account-btn" value="+ New">
+                <form action="/dashboard/product-manager/create-product" method="GET">
+                    <!-- <input type="text"> -->
+                    <button type="submit" id="create-product-btn"> New Product</button>
                 </form>
             </div>
         <?php } ?>
@@ -27,63 +28,87 @@
                     id
                 </th>
                 <th>
-                    Display Name
+                    Information
                 </th>
                 <th>
-                    Username
+                    Description
                 </th>
                 <th>
-                    Role
+                    Cover Image
                 </th>
-                <th>
-                    Action
-                </th>
-            </tr>
-
-
-        <?php
-        if (isset($records) && count($records) > 0) {
-            $paginate = '';
-            $pageQtt = count($records) % $recordsPerPage == 0
-                ? (int) count($records) / $recordsPerPage
-                : (int) (count($records) / $recordsPerPage) +1;
-            for ($page = 1; $page <= $pageQtt ; $page++) {
-                $paginate .= '<a href=http://'.HOST.'/dashboard/admin-manager/index?page='.$page.' class = "paginate"> <button>page '. $page .'</button></a>';
-                if ($_GET["page"] == $page) {
-                    $lastIndex =  $page == $pageQtt ? count($records) : $page * $recordsPerPage;
-                    for ($index = ($page - 1) * $recordsPerPage; $index < $lastIndex; $index++) {
-        ?>
-            <tr>
-                <td><?=$records[$index]["id"]?></td>
-                <td><?=$records[$index]["name"]?></td>
-                <td><?=$records[$index]["username"]?></td>
-                <td><?=$records[$index]["label"]?></td>
-                <td> <div class="data-action">
-
-
-                    <?php if($accountLoginned["role_id"] > 4){?>
-                        <form action="/dashboard/admin-manager/delete-staff" method="post">
-                        <input type="hidden" value="<?=$records[$index]["id"]?>" name="staff-id">
-                        <input type="submit" value="Delete Staff" onclick="return (window.confirm('Are you sure? Deletion cannot be recovered!'))" class="record-action-btn">
-                    </form>
-                    <?php }?>
-                    <?php ?>
-                    <a href='<?php echo("/dashboard/admin-manager/edit-staff?uid=".$records[$index]["id"])?>'>
-                        <button class="record-action-btn">
-                            Edit staff
-                        </button>
-                    </a>
-                </div>
-                </td>
             </tr>
             <?php
+            if (!empty($products) && isset($pageQtt)) {
+                $paginate = '';
+                for ($page = 1; $page <= $pageQtt; $page++) {
+                    $paginate .= '<a href=http://' . HOST . '/dashboard/product-manager/index?page=' . $page;
+                    if (isset($_GET["q"]) && !(preg_match("/^[\s]*$/g", $_GET["q"]) || $_GET["q"] == '')) {
+                        $paginate .= '&q=' . $_GET["q"];
                     }
+                    if (isset($_GET["category"]) && !(preg_match("/^[\s]*$/g", $_GET["category"]) || $_GET["category"] == '')) {
+                        $paginate .= '&category=' . $_GET["category"];
+                    }
+                    if (isset($_GET["brand"]) && !(preg_match("/^[\s]*$/g", $_GET["brand"]) || $_GET["brand"] == '')) {
+                        $paginate .= '&brand=' . $_GET["brand"];
+                    }
+                    $paginate .= ' class = "paginate"> <button>page ' . $page . '</button></a>';
+                }
+                foreach ($products as $key => $product) {
+            ?>
+                    <tr>
+                        <td>
+                            <?= $product["id"] ?>
+                        </td>
+                        <td>
+                            <div class="td-row">
+                                <b>Name: </b>
+                                <?= $product["name"] ?>
+                            </div>
+                            <div class="td-row">
+                                <b>Brand: &nbsp;</b>
+                                <?= $product["brand"] ?>
+                            </div>
+                            <div class="td-row">
+                                <b>Category: &nbsp;</b>
+                                <?= $product["category"] ?>
+                            </div>
+                            <div class="td-row">
+                                <b>Quantity: &nbsp;</b>
+                                <?= $product["quantity"] ?>
+                            </div>
+                            <div class="td-row">
+                                <b>Price: &nbsp;</b>
+                                <?= $product["price"] ?>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product-description">
+                                <?php
+                                $position = strpos($product["description"], " ", 200);
+                                echo (substr($product["description"], -$position));
+                                ?>
+
+                            </div>
+                        </td>
+                        <td>
+                            <div class="product-cover-img">
+                                <img src="<?php if (preg_match("/^http?/g", $product["img_ref"])) {
+                                                echo ($product["img_ref"]);
+                                            } else {
+                                                echo ("http://" . HOST . $product["img_ref"]);
+                                            }
+                                            ?>" alt="">
+                            </div>
+                        </td>
+
+                    </tr>
+
+            <?php
                 }
             }
-        }
-        ?>
+            ?>
         </table>
-        <?php if($pageQtt > 1)  echo ($paginate); ?>
+        <?php if ($pageQtt > 1)  echo ($paginate); ?>
     </div>
 
 

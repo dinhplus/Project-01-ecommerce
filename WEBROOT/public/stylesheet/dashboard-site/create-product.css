@@ -1,0 +1,71 @@
+.create-product-form{
+    width: 95%;
+    font-size: 20px;
+    margin-bottom: 100px;
+
+}
+.create-product-form form{
+    width: 90%;
+    border: rgb(105, 119, 245);
+    border-radius: 10px;
+    border: solid 0.5px #4f4f44;
+    box-shadow: 0px 0px 5px 5px #807e7e;
+    /* margin: calc(10% - 10px); */
+    padding: 5%;
+}
+.create-product-form form input{
+    width: calc(100% - 90px);
+    padding: 5px 20px;
+    height: 40px;
+    font-size: 20px;
+    border: 0.5px solid #a6a2df;
+    border-radius: 10px;
+}
+.create-product-form form select{
+    width: calc(100% - 50px);
+    padding: 10px 20px;
+    height: 50px;
+    font-size: 20px;
+    border: 0.5px solid #a6a2df;
+    border-radius: 10px;
+}
+.create-product-form form textarea{
+    width: calc(100% - 100px);
+    padding: 10px 20px;
+    height: 200px;
+    font-size: 20px;
+    border: 0.5px solid #a6a2df;
+    border-radius: 10px;
+}
+.create-product-form form select option{
+    height: 30px;
+    padding: 10px;
+}
+.create-product-form form * {
+    margin: 10px;
+}
+.create-product-form hr {
+    width: 92%;
+    margin: 0 0 0 3%;
+}
+.create-product-form form #reset-btn , .create-product-form form #submit-btn{
+    /* margin: 2px; */
+    margin: 20px 20px;
+    width: 95%;
+    height: 50px;
+    border: 0;
+    border-radius: 10px;
+    background: rgb(68, 57, 226);
+    color: white;
+}
+.create-product-form form #reset-btn:hover{
+    background: tomato;
+}
+.create-product-form form #submit-btn:hover{
+    background: rgb(43, 151, 10);
+}
+input[type="file"]{
+
+    visibility:hidden;
+    background: darkgrey;
+}
