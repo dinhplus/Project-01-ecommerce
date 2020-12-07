@@ -76,7 +76,10 @@
                         <div class="bar"></div>
                         <div class="swanky_wrapper__content">
                             <ul>
-                                <li>New Product</li>
+                                <a href='<?php echo ("http://" . HOST . "/dashboard/product-manager/create-product") ?>'>
+                                    <li>New Product</li>
+                                </a>
+
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/index") ?>">
                                     <li>Show all Product</li>
                                 </a>

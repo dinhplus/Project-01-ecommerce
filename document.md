@@ -145,7 +145,7 @@
     description: " Get product infor from database then show all to `editProduct site`"
     ```
 
-6. Store Product
+6. update Product
     ```
     method: POST
     router: "/dashboard/product-manager/update-product"

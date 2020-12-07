@@ -4,13 +4,14 @@
 
 class Product extends Model
 {
-    public function getProductQuantity(){
+    public function getProductQuantity()
+    {
         $query = "SELECT count(id) as quantity from products";
-
     }
-    public function storeProduct($product){
-        $query = "INSERT INTO products(name, description, price, quantity, img_ref)
-                    VALUES(:name, :description, :price, :quantity, :img_ref)";
+    public function storeProduct($product)
+    {
+        $query = "INSERT INTO products(name, description, price, quantity, img_ref, category_id, brand_id, warranty_cycle)
+                    VALUES(:name, :description, :price, :quantity, :img_ref, :category_id, :brand_id, :warranty_cycle)";
         $req = self::getConnection()->prepare($query);
 
         return  $req->execute([
@@ -18,30 +19,34 @@ class Product extends Model
             "description" => $product["description"],
             "price" => $product["price"],
             "quantity" => $product["quantity"],
-            "img_ref" => $product["img_ref"]
+            "img_ref" => $product["img_ref"],
+            "category_id" => $product["category_id"],
+            "brand_id" => $product["brand_id"],
+            "warranty_cycle" => $product["warranty_cycle"]
         ]);
     }
 
-    public function getAllProduct($page = 1, $recordPerPage = 20, $productName , $category, $brand )
+    public function getAllProduct($page = 1, $recordPerPage = 20, $productName, $category, $brand)
     {
         //FIXME: Can not binding params with template
         $query = "SELECT p.*, c.label category , b.name brand FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id WHERE 1 ";
-        if($productName){
-            $query.="AND p.name LIKE '%".$productName."%'";
+        if ($productName) {
+            $query .= "AND p.name LIKE '%" . $productName . "%'";
         }
-        if($category){
-            $query.=" AND p.category_id in ".$category;
+        if ($category) {
+            $query .= " AND p.category_id in " . $category;
         }
-        if($brand){
-            $query.= " AND p.brand_id in ".$brand;
+        if ($brand) {
+            $query .= " AND p.brand_id in " . $brand;
         }
-        $query.= " LIMIT ".$recordPerPage." OFFSET ". $recordPerPage * ($page -1);
+        $query .= " LIMIT " . $recordPerPage . " OFFSET " . $recordPerPage * ($page - 1);
         $req = self::getConnection()->prepare($query);
         $req->execute();
         $req->setFetchMode(PDO::FETCH_ASSOC);
         return $req->fetchAll();
     }
-    public function getCategories(){
+    public function getCategories()
+    {
         $query = 'SELECT * FROM product_categories';
         $req = self::getConnection()->prepare($query);
         $req->setFetchMode(PDO::FETCH_ASSOC);
@@ -59,4 +64,12 @@ class Product extends Model
         return $req->fetchAll();
     }
 
+    public function removeProduct($pid)
+    {
+        $query = "DELETE FROM products where id = :id";
+        $req = self::getConnection()->prepare($query);
+        return  $req->execute([
+            "id" => $pid
+        ]);
+    }
 }
