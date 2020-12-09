@@ -70,3 +70,18 @@ input[type="file"]{
 
     background: darkgrey;
 }
+#image-selecting input[type="radio"]{
+    width: 30px;
+    height: 20px;
+}
+
+#image-selecting #custom-url, #image-selecting #upload-image{
+    display: none;
+}
+
+#image-selecting input[type="radio"][id="custom-url-img"]:checked ~ #custom-url {
+    display: block;
+}
+#image-selecting input[type="radio"][id="upload-img"]:checked ~ #upload-image {
+    display: block;
+}

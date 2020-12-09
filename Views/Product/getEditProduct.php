@@ -1,23 +1,22 @@
-<div class="create-product-form">
-
-    <form action="/dashboard/product-manager/create-product" method="POST" enctype="multipart/form-data">
+<div class="edit-product-form create-product-form">
+    <form action="/dashboard/product-manager/edit-product" method="POST" enctype="multipart/form-data">
 
         <h1 align="center">
-            Insert new product into product list
+            Edit Product
         </h1>
         <hr><br><br>
         <div class="form-component">
             <label for="name">
                 Product Name <br>
-                <input type="text" name="name" class="name" id="name" placeholder="Product's Name...">
+                <input type="text" name="name" class="name" id="name" placeholder="Product's Name..." value="<?php if (isset($product)) echo ($product["name"]) ?>">
                 <span id="name-err" class="warning err"></span>
             </label>
         </div>
         <div class="form-component">
             <label for="brand">
                 Brand <br>
-                <select id="brand" name="brand" value="<?php if (isset($inputted)) echo ($inputted["brand"]) ?>" <?php if (isset($brands) && count($brands) > 0) {
-                                                                                                                        echo ('default="' . $brands['1']['name'] . '"');
+                <select id="brand" name="brand" value="<?php if (isset($product)) echo ($product["brand_id"]) ?>" <?php if (isset($product)) {
+                                                                                                                        echo ('default="' . $product["brand"] . '"');
                                                                                                                     } ?>>
                     <?php if (isset($brands) && count($brands) > 0) {
                         foreach ($brands as $key => $brand) {
@@ -34,8 +33,8 @@
         <div class="form-component">
             <label for="category">
                 Category <br>
-                <select id="category" name="category" value="<?php if (isset($inputted)) echo ($inputted["category"]) ?>" <?php if (isset($categories) && count($categories) > 0) {
-                                                                                                                                echo ('default="' . $categories['1']['label'] . '"');
+                <select id="category" name="category" value="<?php if (isset($product)) echo ($product["category_id"]) ?>" <?php if (isset($product)) {
+                                                                                                                                echo ('default="' . $product["category"] . '"');
                                                                                                                             } ?>>
                     <?php if (isset($categories) && count($categories) > 0) {
                         foreach ($categories as $key => $category) {
@@ -52,7 +51,7 @@
         <div class="form-component">
             <label for="warranty-cycle">
                 Warranty cycle <br>
-                <input type="text" name="warranty-cycle" class="warranty-cycle" id="warranty-cycle" placeholder="Warranty cycle...">
+                <input type="text" name="warranty-cycle" class="warranty-cycle" id="warranty-cycle" placeholder="Warranty cycle..." value="<?php if (isset($product)) echo ($product["warranty_cycle"]) ?>">
                 <span id="warranty-cycle-err" class="warning err"></span>
             </label>
         </div>
@@ -61,7 +60,7 @@
             <label for="description">
                 <!-- TODO expect_feature: input description & image with flex-form, auto show all by formatted document. use ck-editer -->
                 Description <br>
-                <textarea type="text" name="description" class="description" id="description" placeholder="Product's description..."> </textarea>
+                <textarea type="text" name="description" class="description" id="description" placeholder="Product's description...">  <?php if (isset($product)) echo ($product["description"]) ?>"</textarea>
                 <span id="description-err" class="warning err"></span>
             </label>
         </div>
@@ -69,12 +68,12 @@
 
             <label for="price">
                 Price <br>
-                <input type="number" name="price" class="price" id="price" placeholder="Product's price...">
+                <input type="number" name="price" class="price" id="price" placeholder="Product's price..." value="<?php if (isset($product)) echo ($product["price"]) ?>">
                 <span id="price-err" class="warning err"></span>
             </label>
         </div>
         <div class="form-component" id="image-selecting">
-        Image <br>
+            Image <br>
             <div id="old-product-image">
                 <span>
                     Do nothing to keep old image.
@@ -104,19 +103,12 @@
                                                             print_r($message["image"]);
                                                         } ?></span>
             </label>
-            <!-- <label for="img_ref">
-                Upload image <br>
-                <input type="file" name="img_ref" class="img_ref" id="img_ref" placeholder="Choose image">
-                <span id="name-err" class="warning err"><?php if (isset($message) && isset($message["image"])) {
-                                                            print_r($message["image"]);
-                                                        } ?></span>
-            </label> -->
         </div>
         <div class="form-component">
 
             <label for="quantity">
                 Quantity <br>
-                <input type="text" name="quantity" class="quantity" id="quantity" placeholder="Quantity...">
+                <input type="text" name="quantity" class="quantity" id="quantity" placeholder="Quantity..." value="<?php if (isset($product)) echo ($product["quantity"]) ?>">
                 <span id="quantity-err" class="warning err"></span>
             </label>
         </div>
@@ -124,21 +116,15 @@
             <div class="form-component">
                 <label for="status">
                     Status <br>
-                    <select id="status"
-                        name="status"
-                        value="<?php
-                        if (isset($inputted))
-                            echo ($inputted["status"])
-                        ?>"
-                        <?php if (isset($status) && count($status) > 0) {
-                            echo ('default="' . $status['1']['label'] . '"');
-                        } ?>>
+                    <select id="status" name="status" value="<?php if (isset($product)) echo ($product["status"]) ?>" <?php if (isset($product)) {
+                                                                                                                            echo ('default="' . $product["status"] . '"');
+                                                                                                                        } ?>>
                         <?php if (isset($status) && count($status) > 0) {
                             foreach ($status as $key => $stt) {
                         ?>
-                            <option value="<?= $stt["id"] ?>">
-                                <?= $stt["label"] ?>
-                            </option>
+                                <option value="<?= $stt["id"] ?>">
+                                    <?= $stt["label"] ?>
+                                </option>
                         <?php }
                         } ?>
                     </select>
@@ -160,9 +146,9 @@
 
     </form>
 
+
+
+
+
+
 </div>
-<script>
-    <?php if (isset($onSuccess)) { ?>
-        window.alert("<?= $onSuccess["storeProduct"] ?>");
-    <?php } ?>
-</script>

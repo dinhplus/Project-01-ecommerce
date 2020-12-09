@@ -148,7 +148,7 @@
 6. update Product
     ```
     method: POST
-    router: "/dashboard/product-manager/update-product"
+    router: "/dashboard/product-manager/edit-product"
     action: "ProductController@updateProduct"
     permistion: "master"
     description: " update product base on product_id"

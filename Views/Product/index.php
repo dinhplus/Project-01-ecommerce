@@ -84,6 +84,10 @@ if (empty($_GET["page"])) {
                                     <b>Price: &nbsp;</b>
                                     <?= $product["price"] ?>
                                 </div>
+                                <div class="td-row">
+                                    <b>Status: &nbsp;</b>
+                                    <?= $product["status"] ?>
+                                </div>
                             </div>
                         </td>
                         <td>
@@ -114,8 +118,13 @@ if (empty($_GET["page"])) {
                                     <input type="hidden" name="pid" value="<?= $product["id"] ?>">
                                     <button type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Delete</button>
                                 </form>
-                                <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id'] ?>" method="GET">
+                                <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id']?>" method="GET">
+                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
                                     <button type="submit" id="edit-product-btn">Edit Product</button>
+                                </form>
+                                <form action="/dashboard/product-manager/product-detail?pid=<?=$product['id']?>" method="GET">
+                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
+                                    <button type="submit" id="show-product-btn"> Show Detail</button>
                                 </form>
                             </div>
                         </td>

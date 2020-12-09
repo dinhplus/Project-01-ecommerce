@@ -35,8 +35,8 @@ Router::POST( "/dashboard/product-manager/delete-product",  "ProductController@d
 Router::GET("/dashboard/product-manager/remainder", "ProductController@productRemainder");
 
 Router::GET("/dashboard/product-manager/product-detail", "ProductController@showProductDetail" );
-
-
+Router::GET("/dashboard/product-manager/edit-product", "ProductController@editProduct");
+Router::POST("/dashboard/product-manager/edit-product", "ProductController@updateProduct");
 
 
 
