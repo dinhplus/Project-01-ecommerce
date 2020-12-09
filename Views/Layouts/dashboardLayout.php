@@ -79,12 +79,13 @@
                                 <a href='<?php echo ("http://" . HOST . "/dashboard/product-manager/create-product") ?>'>
                                     <li>New Product</li>
                                 </a>
-
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/index") ?>">
                                     <li>Show all Product</li>
                                 </a>
                                 <li>Import data</li>
-                                <li>Product remainder</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/remainder") ?>">
+                                    <li>Product remainder</li>
+                                </a>
                             </ul>
                         </div>
                     </label>

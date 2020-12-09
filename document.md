@@ -171,6 +171,17 @@
     permistion: "master"
     description: " upate product status base on product_id"
     ```
+
+9. Product Remainder
+
+    ```
+    method: GET
+    router: ("/dashboard/product-manager/remainder").("?page=:page&desc=:desc")
+    action: "ProductController@productRemainder"
+    permistion: "all"
+    description: " Show all sort by remainder"
+    ```
+
 ## Pre-Product Controller (High level feature, will complete if have enough time)
 
 1. Show all pre-product
@@ -246,6 +257,7 @@
     permistion: "all"
     description: " confirm again with admin then insert/update this pre-product into 'products' table base on product_id && pre_product_id"
     ```
+
 ## Order Controller
 
 1. The Order Queue (Index)

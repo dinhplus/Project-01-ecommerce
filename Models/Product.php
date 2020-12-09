@@ -4,14 +4,22 @@
 
 class Product extends Model
 {
+
+    public function getStatus(){
+        $query = "SELECT * FROM product_status order by id asc";
+        $req = self::getConnection()->prepare($query);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute();
+        return $req->fetchAll();
+    }
     public function getProductQuantity()
     {
         $query = "SELECT count(id) as quantity from products";
     }
     public function storeProduct($product)
     {
-        $query = "INSERT INTO products(name, description, price, quantity, img_ref, category_id, brand_id, warranty_cycle)
-                    VALUES(:name, :description, :price, :quantity, :img_ref, :category_id, :brand_id, :warranty_cycle)";
+        $query = "INSERT INTO products(name, description, price, quantity, img_ref, category_id, brand_id, warranty_cycle, status_id)
+                    VALUES(:name, :description, :price, :quantity, :img_ref, :category_id, :brand_id, :warranty_cycle , :status_id)";
         $req = self::getConnection()->prepare($query);
 
         return  $req->execute([
@@ -22,11 +30,12 @@ class Product extends Model
             "img_ref" => $product["img_ref"],
             "category_id" => $product["category_id"],
             "brand_id" => $product["brand_id"],
-            "warranty_cycle" => $product["warranty_cycle"]
+            "warranty_cycle" => $product["warranty_cycle"],
+            "status_id" => $product["status_id"]
         ]);
     }
 
-    public function getAllProduct($page = 1, $recordPerPage = 20, $productName, $category, $brand)
+    public function getAllProduct($page = 1, $recordPerPage = 20, $productName, $category, $brand, $isSort = false)
     {
         //FIXME: Can not binding params with template
         $query = "SELECT p.*, c.label category , b.name brand FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id WHERE 1 ";
@@ -38,6 +47,12 @@ class Product extends Model
         }
         if ($brand) {
             $query .= " AND p.brand_id in " . $brand;
+        }
+        if( $isSort == 1){
+            $query .= " ORDER BY p.quantity ASC";
+        }
+        if($isSort == -1){
+            $query .= " ORDER BY p.quantity DESC";
         }
         $query .= " LIMIT " . $recordPerPage . " OFFSET " . $recordPerPage * ($page - 1);
         $req = self::getConnection()->prepare($query);
@@ -71,5 +86,15 @@ class Product extends Model
         return  $req->execute([
             "id" => $pid
         ]);
+    }
+    public function getProductById($pid)
+    {
+        $query = "SELECT p.*, c.label category , b.name brand FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id WHERE p.id = :id";
+        $req = self::getConnection()->prepare($query);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+        $req->execute([
+            "id" => $pid
+        ]);
+        return $req->fetch();
     }
 }

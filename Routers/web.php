@@ -32,8 +32,9 @@ Router::POST("/dashboard/product-manager/create-product", "ProductController@sto
 
 Router::POST( "/dashboard/product-manager/delete-product",  "ProductController@deleteProduct");
 
+Router::GET("/dashboard/product-manager/remainder", "ProductController@productRemainder");
 
-
+Router::GET("/dashboard/product-manager/product-detail", "ProductController@showProductDetail" );
 
 
 
@@ -62,3 +63,9 @@ Router::GET("/test","TestController@index");
 // Router::GET("/posts/detail/$id","PostController@show");
 Router::GET("/posts/create","PostController@create");
 Router::POST("/posts/create","PostController@postCreate");
+Router::GET("/ahihihihi", function(){
+    for($x = 1; $x < 100; $x++){
+        print_r("ahihi $x"."<br>");
+    }
+
+});
