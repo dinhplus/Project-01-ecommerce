@@ -1,10 +1,9 @@
 <?php
-define('WEBROOT', str_replace("server.php", "", $_SERVER["SCRIPT_NAME"]));
-define('ROOT', str_replace("WEBROOT".WEBROOT, "", $_SERVER["SCRIPT_FILENAME"]));
-
-
-require_once(ROOT."/request.php");
-require_once(ROOT."Config/Core.php");
-
+session_start();
+define('WEBROOT', str_replace("index.php", "", $_SERVER["SCRIPT_NAME"]));
+define('ROOT', str_replace("WEBROOT"."\\index.php","", $_SERVER["SCRIPT_FILENAME"]));
+define("HOST",$_SERVER['HTTP_HOST']);
+require_once(ROOT."request.php");
+require_once(ROOT."Config\\Core.php");
 
 ?>

@@ -10,6 +10,6 @@ class HomeController extends Controller
     }
     public function index()
     {
-        echo "This is Home";
+        $this->render("index");
     }
 }

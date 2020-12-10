@@ -12,26 +12,52 @@ class BaseController
 
     var $vars = [];
     var $layout = "defaultAplication";
-
+    var $messageLayout = [];
     function set($data)
     {
         $this->vars = array_merge($this->vars, $data);
     }
 
-    function render($filename)
+    function render($filename, $isFileDir = false)
     {
 
         extract($this->vars);
         ob_start();
-        include_once(ROOT . "Views/" . ucfirst(str_replace('Controller', '', get_class($this))) . '/' . $filename . '.php');
+        if (!$isFileDir) {
+            require_once(ROOT . "Views\\" . ucfirst(str_replace('Controller', '', get_class($this))) . '\\' . $filename . '.php');
+        } else require_once($filename);
         $content_for_layout = ob_get_clean();
         if ($this->layout == false) {
+            // die("true");
             $content_for_layout;
         } else {
-            require_once(ROOT . "Views/Layouts/" . $this->layout . '.php');
+            // die($this->layout);
+            require_once(ROOT . "Views\\Layouts\\" . $this->layout . '.php');
         }
+        return;
     }
 
+    public function popup($urlRedirect, $popupMessage, $popupImage = false)
+    {
+        $this->layout = "blankLayout";
+        $data["popupMessage"] = $popupMessage;
+        $data["popupImage"] = $popupImage;
+        $data["urlRedirect"] = $urlRedirect;
+        $this->set($data);
+        $this->render(ROOT . "Views\\Layouts\\Common\\popup.php", true);
+    }
+    public function dropUploadedFile($filePath)
+    {
+        $isCustomURL = preg_match("/^http?/", $filePath);
+        $isUploadedFileDir =  preg_match('/^\/public\/upload\/?/', $filePath);
+        if (!$isCustomURL && $isUploadedFileDir) {
+            $fullPath = ROOT . "WEBROOT" . str_replace("/", "\\", $filePath);
+
+            if (is_file($fullPath)) {
+                unlink($fullPath);
+            }
+        }
+    }
     private function secure_input($data)
     {
         $data = trim($data);

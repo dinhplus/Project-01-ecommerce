@@ -1,0 +1,51 @@
+.edit-staff-form{
+    width: 90%;
+    font-size: 20px;
+}
+.edit-staff-form form{
+    width: 100%;
+    border: rgb(105, 119, 245);
+    border-radius: 10px;
+    border: solid 0.5px #4f4f44;
+    box-shadow: 0px 0px 5px 5px #807e7e
+}
+.edit-staff-form form input{
+    width: calc(100% - 90px);
+    padding: 5px 20px;
+    height: 40px;
+    font-size: 20px;
+    border: 0.5px solid #c4ccc4;
+    border-radius: 10px;
+}
+.edit-staff-form form select{
+    width: calc(100% - 50px);
+    padding: 10px 20px;
+    height: 50px;
+    font-size: 20px;
+    border: 0.5px solid #c4ccc4;
+    border-radius: 10px;
+}
+.edit-staff-form form select option{
+    height: 30px;
+    padding: 5px;
+}
+.edit-staff-form form * {
+    margin: 10px;
+}
+
+.edit-staff-form form #reset-btn , .edit-staff-form form #submit-btn{
+    /* margin: 2px; */
+    margin: 20px 20px;
+    width: 90%;
+    height: 50px;
+    border: 0;
+    border-radius: 10px;
+    background: rgb(68, 57, 226);
+    color: white;
+}
+.edit-staff-form form #reset-btn:hover{
+    background: tomato;
+}
+.edit-staff-form form #submit-btn:hover{
+    background: rgb(43, 151, 10);
+}
