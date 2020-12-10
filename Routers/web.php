@@ -63,9 +63,7 @@ Router::GET("/test","TestController@index");
 // Router::GET("/posts/detail/$id","PostController@show");
 Router::GET("/posts/create","PostController@create");
 Router::POST("/posts/create","PostController@postCreate");
-Router::GET("/ahihihihi", function(){
-    for($x = 1; $x < 100; $x++){
-        print_r("ahihi $x"."<br>");
-    }
+Router::GET("/quick-checker", function(){
+    var_dump(is_file('G:\PHP\Project-01-ecommerce\WEBROOT\public\upload\images\28276733_633286190396286_3797537076859079899_n1607489813.1693.jpg'));
 
 });

@@ -20,6 +20,7 @@ class ProductController extends Controller
         // var_dump($acount);
         if (!$acount) {
             $this->popup("/dashboard/login", "please login to access dashboard!!");
+            return;
         }
         // var_dump($_GET["category"]);;
 
@@ -40,7 +41,9 @@ class ProductController extends Controller
     {
         $acount = $this->AdminController->checkLogin();
         if (!$acount) {
+            $this->layout = "blankLayout";
             $this->popup("/dashboard/login", "please login to access dashboard!!");
+            return;
         }
         $categories = $this->productModel->getCategories();
         $brands = $this->productModel->getBrands();
@@ -61,6 +64,7 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
+                return;
             }
 
             $name = $_POST["name"];
@@ -136,6 +140,7 @@ class ProductController extends Controller
                     $data["onSuccess"]["storeProduct"] = "Successed to store product";
                     $this->set($data);
                     $this->popup("/dashboard/product-manager", "Stored Product Success");
+                    return;
                     // header("Location:"."http://".HOST."/manager/create-product");
                 } else {
                     $data["onSuccess"]["storeProduct"] = "Failed to store product";
@@ -153,15 +158,19 @@ class ProductController extends Controller
         $acount = $this->AdminController->checkLogin();
         if (!$acount) {
             $this->popup("/dashboard/login", "please login to access dashboard!!");
+            return;
         } else if ($acount["role_id"] < 4) {
             $this->popup("/dashboard/product-manager", "You do not have permission!!");
+            return;
         } else {
             $pid = $_POST["pid"];
             $onDelete = $this->productModel->removeProduct($pid);
             if ($onDelete) {
                 $this->popup("/dashboard/product-manager", "The product had been deleted! 👌👌👌👌👌");
+                return;
             } else {
                 $this->popup("/dashboard/product-manager", "The product is not existed!! 👌👌👌👌👌");
+                return;
             }
         }
     }
@@ -170,6 +179,7 @@ class ProductController extends Controller
         $acount = $this->AdminController->checkLogin();
         if (!$acount) {
             $this->popup("/dashboard/login", "please login to access dashboard!!");
+            return;
         }
         $pageNumber = $_GET["page"] ?? 1;
         $recordPerPage = 20;
@@ -181,7 +191,7 @@ class ProductController extends Controller
         $data["products"] = $allProduct;
         $data["pageQtt"] = $allProduct ? count($allProduct) / $recordPerPage : 1;
         $this->set($data);
-        $this->render("remainder");
+        $this->render("index");
     }
     public function showProductDetail()
     {
@@ -189,6 +199,7 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
+                return;
             }
 
             $pid = $_GET["pid"];
@@ -200,6 +211,7 @@ class ProductController extends Controller
                 $this->render("showProductDetail");
             } else {
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
+                return;
             }
         } catch (Exception $e) {
             die($e);
@@ -212,10 +224,12 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
+                return;
             }
             $pid = $_GET["pid"];
             $product = $this->productModel->getProductById($pid);
             if ($product && count($product) > 0) {
+                $_SESSION["in-progress-pid"] = $pid;
                 $categories = $this->productModel->getCategories();
                 $brands = $this->productModel->getBrands();
                 $status = $this->productModel->getStatus();
@@ -227,6 +241,7 @@ class ProductController extends Controller
                 $this->render("getEditProduct");
             } else {
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
+                return;
             }
         } catch (Exception $e) {
             die($e);
@@ -240,8 +255,9 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
+                return;
             }
-
+            $oldProduct = $this->productModel->getProductById($_SESSION["in-progress-pid"]);
             $name = $_POST["name"];
             $description = $_POST["description"];
             $price = $_POST["price"];
@@ -253,6 +269,9 @@ class ProductController extends Controller
             $img_selector = $_POST["image-selector"] ?? 1;
             if ($img_selector == 2) {
                 $img_base_name = basename($_FILES["img_ref"]["name"]) ?? null;
+
+
+
                 if ($img_base_name) {
                     $img_store_target = ROOT . 'WEBROOT\\public\\upload\\images\\';
                     $img_ref_target = WEBROOT . 'public/upload/images/';
@@ -286,20 +305,30 @@ class ProductController extends Controller
                     } else {
                         if (move_uploaded_file($_FILES["img_ref"]["tmp_name"], $img_store_path)) {
                             $data["onSuccess"]["image"] =  "The file " . htmlspecialchars(basename($_FILES["img_ref"]["name"])) . " has been uploaded.";
+                            $this->dropUploadedFile($oldProduct["img_ref"]);
                         } else {
                             $data["message"]["image"] = $data["message"]["image"] . "<br> Sorry, there was an error uploading your file.";
                             $uploadOK = false;
                         }
                     }
+                } else if (!$img_base_name) {
+                    $img_ref = $oldProduct["img_ref"];
                 }
             } else if ($img_selector == 1) {
-                $img_ref = $_POST["img_ref"] ?? null;
+                if (isset($_POST["img_ref"]) && strlen($_POST["img_ref"]) > 0 && trim($_POST["img_ref"]) != ' ') {
+                    $img_ref = $_POST["img_ref"];
+                    $this->dropUploadedFile($oldProduct["img_ref"]);
+                } else {
+                    $img_ref = $oldProduct["img_ref"];
+                }
             }
+
             if ($img_selector == 2 && $img_base_name && !$uploadOK) {
                 $this->set($data);
                 $this->createProduct();
             } else if ($img_selector == 1 || ($img_selector == 2 && !$img_base_name) || ($img_base_name && $uploadOK)) {
                 $product = [
+                    "id" => $oldProduct["id"],
                     "name" => $name,
                     "description" => $description,
                     "price" => $price,
@@ -310,11 +339,12 @@ class ProductController extends Controller
                     "warranty_cycle" => $warranty_cycle,
                     "status_id" => $status
                 ];
-                $onStoreProduct = $this->productModel->storeProduct($product);
-                if ($onStoreProduct) {
+                $onUpdateProduct = $this->productModel->updateProduct($product);
+                if ($onUpdateProduct) {
                     $data["onSuccess"]["storeProduct"] = "Successed to store product";
                     $this->set($data);
                     $this->popup("/dashboard/product-manager", "Stored Product Success");
+                    return;
                     // header("Location:"."http://".HOST."/manager/create-product");
                 } else {
                     $data["onSuccess"]["storeProduct"] = "Failed to store product";

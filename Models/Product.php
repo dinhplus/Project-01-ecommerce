@@ -5,7 +5,8 @@
 class Product extends Model
 {
 
-    public function getStatus(){
+    public function getStatus()
+    {
         $query = "SELECT * FROM product_status order by id asc";
         $req = self::getConnection()->prepare($query);
         $req->setFetchMode(PDO::FETCH_ASSOC);
@@ -48,10 +49,10 @@ class Product extends Model
         if ($brand) {
             $query .= " AND p.brand_id in " . $brand;
         }
-        if( $isSort == 1){
+        if ($isSort == 1) {
             $query .= " ORDER BY p.quantity ASC";
         }
-        if($isSort == -1){
+        if ($isSort == -1) {
             $query .= " ORDER BY p.quantity DESC";
         }
         $query .= " LIMIT " . $recordPerPage . " OFFSET " . $recordPerPage * ($page - 1);
@@ -74,8 +75,6 @@ class Product extends Model
         $req = self::getConnection()->prepare($query);
         $req->setFetchMode(PDO::FETCH_ASSOC);
         $req->execute();
-        // $res = $req->fetchAll();
-        // var_dump($res);die();
         return $req->fetchAll();
     }
 
@@ -96,5 +95,23 @@ class Product extends Model
             "id" => $pid
         ]);
         return $req->fetch();
+    }
+    public function updateProduct($product)
+    {
+        $query = "UPDATE  products SET name = :name, description = :description, price = :price, quantity = :quantity, img_ref = :img_ref, category_id = :category_id, brand_id = :brand_id, warranty_cycle = :warranty_cycle, status_id = :status_id WHERE id = :id";
+        $req = self::getConnection()->prepare($query);
+
+        return  $req->execute([
+            "id" => $product["id"],
+            "name" => $product["name"],
+            "description" => $product["description"],
+            "price" => $product["price"],
+            "quantity" => $product["quantity"],
+            "img_ref" => $product["img_ref"],
+            "category_id" => $product["category_id"],
+            "brand_id" => $product["brand_id"],
+            "warranty_cycle" => $product["warranty_cycle"],
+            "status_id" => $product["status_id"]
+        ]);
     }
 }
