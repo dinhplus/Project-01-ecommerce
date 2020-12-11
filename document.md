@@ -182,6 +182,111 @@
     description: " Show all sort by remainder"
     ```
 
+9. add Product Category
+
+    ```
+    method: GET
+    router: "/dashboard/product-manager/add-category"
+    action: "ProductController@createCategory"
+    permistion: "all"
+    description: " Add new Category for product"
+    ```
+
+10. store Product Category
+
+    ```
+    method: POST
+    router: "/dashboard/product-manager/add-category"
+    action: "ProductController@storeCategory"
+    permistion: "all"
+    description: " Store new Category in database"
+    ```
+11. add Product Brand
+
+    ```
+    method: GET
+    router: "/dashboard/product-manager/add-brand"
+    action: "ProductController@createBrand"
+    permistion: "all"
+    description: " Add new Category for product"
+    ```
+12. store Product Brand
+
+    ```
+    method: POST
+    router: "/dashboard/product-manager/add-brand"
+    action: "ProductController@storeBrand"
+    permistion: "all"
+    description: " Store new Brand in database"
+    ```
+13. lst Category
+
+    ```
+    method: GET
+    router: "/dashboard/product-manager/lst-category"
+    action: "ProductController@lstAllCategory"
+    permistion: "all"
+    description: " Show all categories"
+    ```
+14. Edit Category
+    ```
+    method: GET
+    router: "/dashboard/product-manager/edit-category"
+    action: "ProductController@editCategory"
+    permistion: "all"
+    description: " Edit Special category label"
+    ```
+15. Update Category
+    ```
+    method: POST
+    router: "/dashboard/product-manager/edit-category"
+    action: "ProductController@storeCategory"
+    permistion: "all"
+    description: " Update Special category label in database"
+    ```
+
+16. Delete Category
+    ```
+    method: POST
+    router: "/dashboard/product-manager/delete-category"
+    action: "ProductController@deleteCategory"
+    permistion: "all"
+    description: " Delete special category"
+    ```
+
+17. lst Brand
+    ```
+    method: GET
+    router: "/dashboard/product-manager/lst-brands"
+    action: "ProductController@lstAllCategory"
+    permistion: "all"
+    description: " Show all Brands"
+    ```
+18. Edit Brand
+    ```
+    method: GET
+    router: "/dashboard/product-manager/edit-brands"
+    action: "ProductController@editCategory"
+    permistion: "all"
+    description: " Edit Special Brand label"
+    ```
+19. Update Brand
+    ```
+    method: POST
+    router: "/dashboard/product-manager/edit-brands"
+    action: "ProductController@storeCategory"
+    permistion: "all"
+    description: " Update Special Brand label in database"
+    ```
+20. Delete Brand
+    ```
+    method: POST
+    router: "/dashboard/product-manager/delete-brands"
+    action: "ProductController@deleteCategory"
+    permistion: "all"
+    description: " Delete special Brand"
+    ```
+
 ## Pre-Product Controller (High level feature, will complete if have enough time)
 
 1. Show all pre-product
