@@ -28,10 +28,10 @@ class BaseController
         } else require_once($filename);
         $content_for_layout = ob_get_clean();
         if ($this->layout == false) {
-            // die("true");
+
             $content_for_layout;
         } else {
-            // die($this->layout);
+
             require_once(ROOT . "Views\\Layouts\\" . $this->layout . '.php');
         }
         return;
@@ -45,6 +45,7 @@ class BaseController
         $data["urlRedirect"] = $urlRedirect;
         $this->set($data);
         $this->render(ROOT . "Views\\Layouts\\Common\\popup.php", true);
+        die();
     }
     public function dropUploadedFile($filePath)
     {

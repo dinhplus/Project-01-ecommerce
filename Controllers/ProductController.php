@@ -17,10 +17,8 @@ class ProductController extends Controller
     public function index()
     {
         $acount = $this->AdminController->checkLogin();
-        // var_dump($acount);
         if (!$acount) {
             $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
         }
         // var_dump($_GET["category"]);;
 
@@ -43,7 +41,7 @@ class ProductController extends Controller
         if (!$acount) {
             $this->layout = "blankLayout";
             $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
+
         }
         $categories = $this->productModel->getCategories();
         $brands = $this->productModel->getBrands();
@@ -64,7 +62,7 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
+
             }
 
             $name = $_POST["name"];
@@ -140,7 +138,7 @@ class ProductController extends Controller
                     $data["onSuccess"]["storeProduct"] = "Successed to store product";
                     $this->set($data);
                     $this->popup("/dashboard/product-manager", "Stored Product Success");
-                    return;
+
                     // header("Location:"."http://".HOST."/manager/create-product");
                 } else {
                     $data["onSuccess"]["storeProduct"] = "Failed to store product";
@@ -158,19 +156,19 @@ class ProductController extends Controller
         $acount = $this->AdminController->checkLogin();
         if (!$acount) {
             $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
+
         } else if ($acount["role_id"] < 4) {
             $this->popup("/dashboard/product-manager", "You do not have permission!!");
-            return;
+
         } else {
             $pid = $_POST["pid"];
             $onDelete = $this->productModel->removeProduct($pid);
             if ($onDelete) {
                 $this->popup("/dashboard/product-manager", "The product had been deleted! 👌👌👌👌👌");
-                return;
+
             } else {
                 $this->popup("/dashboard/product-manager", "The product is not existed!! 👌👌👌👌👌");
-                return;
+
             }
         }
     }
@@ -179,7 +177,7 @@ class ProductController extends Controller
         $acount = $this->AdminController->checkLogin();
         if (!$acount) {
             $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
+
         }
         $pageNumber = $_GET["page"] ?? 1;
         $recordPerPage = 20;
@@ -199,7 +197,7 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
+
             }
 
             $pid = $_GET["pid"];
@@ -211,7 +209,7 @@ class ProductController extends Controller
                 $this->render("showProductDetail");
             } else {
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
-                return;
+
             }
         } catch (Exception $e) {
             die($e);
@@ -224,7 +222,7 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
+
             }
             $pid = $_GET["pid"];
             $product = $this->productModel->getProductById($pid);
@@ -241,7 +239,7 @@ class ProductController extends Controller
                 $this->render("getEditProduct");
             } else {
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
-                return;
+
             }
         } catch (Exception $e) {
             die($e);
@@ -255,7 +253,7 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
+
             }
             $oldProduct = $this->productModel->getProductById($_SESSION["in-progress-pid"]);
             $name = $_POST["name"];
@@ -344,7 +342,7 @@ class ProductController extends Controller
                     $data["onSuccess"]["storeProduct"] = "Successed to store product";
                     $this->set($data);
                     $this->popup("/dashboard/product-manager", "Stored Product Success");
-                    return;
+
                     // header("Location:"."http://".HOST."/manager/create-product");
                 } else {
                     $data["onSuccess"]["storeProduct"] = "Failed to store product";
@@ -352,6 +350,22 @@ class ProductController extends Controller
                     $this->createProduct();
                 }
             }
+        } catch (Exception $e) {
+            die($e);
+        }
+    }
+
+    public function createCategory()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+
+
+
+
         } catch (Exception $e) {
             die($e);
         }

@@ -122,10 +122,11 @@
                         <div class="bar"></div>
                         <div class="swanky_wrapper__content">
                             <ul>
-
-                                <li>Design</li>
-                                <li>Change User</li>
-                                <li>Log Out</li>
+                                <li>List Orrder</li>
+                                <li>Pending Order</li>
+                                <li>Cancelled Order</li>
+                                <li>Completed Order</li>
+                                <li>Create New Order</li>
                             </ul>
                         </div>
                     </label>

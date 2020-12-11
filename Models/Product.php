@@ -13,10 +13,7 @@ class Product extends Model
         $req->execute();
         return $req->fetchAll();
     }
-    public function getProductQuantity()
-    {
-        $query = "SELECT count(id) as quantity from products";
-    }
+
     public function storeProduct($product)
     {
         $query = "INSERT INTO products(name, description, price, quantity, img_ref, category_id, brand_id, warranty_cycle, status_id)

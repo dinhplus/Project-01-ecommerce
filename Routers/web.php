@@ -35,8 +35,36 @@ Router::POST( "/dashboard/product-manager/delete-product",  "ProductController@d
 Router::GET("/dashboard/product-manager/remainder", "ProductController@productRemainder");
 
 Router::GET("/dashboard/product-manager/product-detail", "ProductController@showProductDetail" );
+
+
 Router::GET("/dashboard/product-manager/edit-product", "ProductController@editProduct");
 Router::POST("/dashboard/product-manager/edit-product", "ProductController@updateProduct");
+
+//TODO : Do implement feature later
+// Router::GET("/dashboard/product-manager/add-category", "ProductController@createCategory");
+// Router::POST("/dashboard/product-manager/add-category", "ProductController@storeCategory");
+
+// Router::GET("/dashboard/product-manager/add-brand", "ProductController@createBrand");
+// Router::POST("/dashboard/product-manager/add-brand", "ProductController@storeBrand");
+
+
+
+
+
+Router::GET("/dashboard/orders/index", "OrderController@index");
+Router::GET("/dashboard/orders", "OrderController@index");
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
