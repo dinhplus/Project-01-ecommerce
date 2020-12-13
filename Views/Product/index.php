@@ -5,9 +5,7 @@ if (empty($_GET["page"])) {
 ?>
 <div class="list-products">
     <div class="action">
-        <div class="filter-staff">
 
-        </div>
         <?php
         if (
             $_SESSION["role"] > 0

@@ -33,7 +33,7 @@ class Product extends Model
         ]);
     }
 
-    public function getAllProduct($page = 1, $recordPerPage = 20, $productName, $category, $brand, $isSort = false)
+    public function getAllProduct($productName, $category, $brand, $isSort = false)
     {
         //FIXME: Can not binding params with template
         $query = "SELECT p.*, c.label category , b.name brand, stt.label status FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id JOIN product_status stt ON stt.id = p.status_id WHERE 1 ";
@@ -52,7 +52,7 @@ class Product extends Model
         if ($isSort == -1) {
             $query .= " ORDER BY p.quantity DESC";
         }
-        $query .= " LIMIT " . $recordPerPage . " OFFSET " . $recordPerPage * ($page - 1);
+        // $query .= " LIMIT " . $recordPerPage . " OFFSET " . $recordPerPage * ($page - 1);
         $req = self::getConnection()->prepare($query);
         $req->execute();
         $req->setFetchMode(PDO::FETCH_ASSOC);

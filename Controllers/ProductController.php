@@ -23,14 +23,14 @@ class ProductController extends Controller
         // var_dump($_GET["category"]);;
 
         $pageNumber = $_GET["page"] ?? 1;
-        $recordPerPage = 20;
+        $recordPerPage = PAGINATE;
         $productName = $_GET["q"] ?? null;
         // var_dump($productName);
         $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
         $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
-        $allProduct = $this->productModel->getAllProduct($pageNumber, $recordPerPage, $productName, $category, $brand);
-        $data["products"] = $allProduct;
-        $data["pageQtt"] = $allProduct ? count($allProduct) / $recordPerPage : 1;
+        $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
+        $data["products"] = array_slice( $allProduct, ($pageNumber-1)*$recordPerPage, $recordPerPage) ?? [];
+        $data["pageQtt"] = $allProduct ? ceil( count($allProduct) / $recordPerPage) : 1;
         $this->set($data);
         $this->render("index");
     }
@@ -180,14 +180,14 @@ class ProductController extends Controller
 
         }
         $pageNumber = $_GET["page"] ?? 1;
-        $recordPerPage = 20;
+        $recordPerPage = PAGINATE;
         $productName = $_GET["q"] ?? null;
         $isSort = $_GET["sort"] ?? 1; //sort = 1 ?? -1
         $category = null;
         $brand = null;
         $allProduct = $this->productModel->getAllProduct($pageNumber, $recordPerPage, $productName, $category, $brand, $isSort);
-        $data["products"] = $allProduct;
-        $data["pageQtt"] = $allProduct ? count($allProduct) / $recordPerPage : 1;
+        $data["products"] = array_slice( $allProduct, ($pageNumber-1)*$recordPerPage, $recordPerPage) ?? [];
+        $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
         $this->set($data);
         $this->render("index");
     }

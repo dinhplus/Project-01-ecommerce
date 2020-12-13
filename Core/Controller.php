@@ -59,6 +59,16 @@ class BaseController
             }
         }
     }
+    public function dateTimeTransfom(string $dateTimeString, $currentTimeZone = CURRENT_TIME_ZONE, $targetTimeZone = null){
+        $container = explode(" ", $dateTimeString);
+        $dateContainer  = explode("-", $container[0]);
+        $timeContainer = explode(":", $container[1]);
+        if($targetTimeZone){
+            $timeContainer[0] = ((int)$timeContainer) - $currentTimeZone + $targetTimeZone;
+        }
+        $dateTimeResult = mktime($timeContainer[0], $timeContainer[1], $timeContainer[2], $dateContainer[1], $dateContainer[2], $dateContainer[0] );
+        return date(DATE_TIME_FORMAT, $dateTimeResult);
+    }
     private function secure_input($data)
     {
         $data = trim($data);

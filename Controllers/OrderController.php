@@ -25,12 +25,22 @@ class OrderController extends Controller
             $this->popup("/dashboard/login", "please login to access dashboard!!");
         }
         $pageNumber = $_GET["page"] ?? 1;
-        $recordPerPage = 20;
+        $recordPerPage = PAGINATE;
         $oid = $_GET["oid"] ?? null;
         $cid = $_GET["cid"] ?? null;
         $descTotalPrice = $_GET["descTotalPrice"] ?? null;
         $getLastOrder = $_GET["getLastOrder"] ?? null;
 
         $allOrders = $this->orderModel->getAllOrder($pageNumber, $recordPerPage, $descTotalPrice, $getLastOrder, $cid, $oid);
+        $data = [];
+        $data["orders"] = array_slice( $allOrders, ($pageNumber-1)*$recordPerPage, $recordPerPage) ?? [];
+        foreach ($data["orders"] as &$order) {
+            $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+        }
+        unset($order);
+
+        $data["pageQtt"] = $allOrders ? ceil( count($allOrders) / $recordPerPage) : 1;
+        $this->set($data);
+        $this->render("index");
     }
 }

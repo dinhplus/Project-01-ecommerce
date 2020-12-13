@@ -51,8 +51,8 @@ Router::POST("/dashboard/product-manager/edit-product", "ProductController@updat
 
 
 
-Router::GET("/dashboard/orders/index", "OrderController@index");
-Router::GET("/dashboard/orders", "OrderController@index");
+Router::GET("/dashboard/order-manager/index", "OrderController@index");
+Router::GET("/dashboard/order-manager", "OrderController@index");
 
 
 
@@ -92,6 +92,6 @@ Router::GET("/test","TestController@index");
 Router::GET("/posts/create","PostController@create");
 Router::POST("/posts/create","PostController@postCreate");
 Router::GET("/quick-checker", function(){
-    var_dump(is_file('G:\PHP\Project-01-ecommerce\WEBROOT\public\upload\images\28276733_633286190396286_3797537076859079899_n1607489813.1693.jpg'));
+    dd($_GET["check"]);
 
 });

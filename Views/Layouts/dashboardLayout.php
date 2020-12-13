@@ -122,11 +122,21 @@
                         <div class="bar"></div>
                         <div class="swanky_wrapper__content">
                             <ul>
-                                <li>List Orrder</li>
-                                <li>Pending Order</li>
-                                <li>Cancelled Order</li>
-                                <li>Completed Order</li>
-                                <li>Create New Order</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/index") ?>">
+                                    <li>List Orrder</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/pending") ?>">
+                                    <li>Pending Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/cancelled") ?>">
+                                    <li>Cancelled Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/completed") ?>">
+                                    <li>Completed Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/create-order") ?>">
+                                    <li>Create New Order</li>
+                                </a>
                             </ul>
                         </div>
                     </label>
