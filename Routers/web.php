@@ -48,14 +48,16 @@ Router::POST("/dashboard/product-manager/edit-product", "ProductController@updat
 // Router::POST("/dashboard/product-manager/add-brand", "ProductController@storeBrand");
 
 
-
-
-
 Router::GET("/dashboard/order-manager/index", "OrderController@index");
 Router::GET("/dashboard/order-manager", "OrderController@index");
-
-
-
+Router::GET("/dashboard/order-manager/order-detail", "OrderController@showOrderDetail");
+Router::POST("/dashboard/order-manager/change-status", "OrderController@changeOrderStatus");
+Router::GET("/dashboard/order-manager/pending", "OrderController@getPendingOrder");
+Router::GET("/dashboard/order-manager/processing", "OrderController@getProcessingOrder");
+Router::GET("/dashboard/order-manager/cancelled", "OrderController@getCancelledOrder");
+Router::GET("/dashboard/order-manager/completed", "OrderController@getCompletedOrder");
+Router::GET( "/dashboard/order-manager/create-order", "OrderController@getCreateOrder");
+Router::POST( "/dashboard/order-manager/create-order", "OrderController@generateOrder");
 
 
 

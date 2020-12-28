@@ -98,6 +98,10 @@ if (empty($_GET["page"])) {
                                         <b>Updated by (staff id): &nbsp;</b>
                                         <?= $order["staff_ref"] ?>
                                     </div>
+                                    <div class="td-row">
+                                        <b>Note: &nbsp;</b>
+                                        <?= $order["note"] ?>
+                                    </div>
                                 <?php } ?>
                             </div>
                         </td>
@@ -105,29 +109,29 @@ if (empty($_GET["page"])) {
                             <div class="order-detail">
                                 <?php foreach ($order["products"] as $product) { ?>
                                     <div class="td-row" style="border: 1px solid blue; border-collapse:collapse">
-                                        <b>Name: &nbsp;</b>
+                                        <b><?=$product["product_id"]?>. &nbsp;</b>
                                         <?= $product["name"] ?>
-                                        <br>
+                                        <!-- <br>
                                         <b>Unit Price: &nbsp;</b>
                                         <?= $product["unit_price"] ?>
                                         <br> <b>Quantity: &nbsp;</b>
-                                        <?= $product["quantity"] ?>
+                                        <?= $product["quantity"] ?> -->
                                     </div>
                                 <?php } ?>
                             </div>
                         </td>
                         <td>
                             <div class="order-action">
-                                <form action="/dashboard/order-manager/delete-order" method="POST">
+                                <!-- <form action="/dashboard/order-manager/delete-order" method="POST">
                                     <input type="hidden" name="pid" value="<?= $order["id"] ?>">
                                     <button type="submit" id="delete-order-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Delete</button>
                                 </form>
                                 <form action="/dashboard/order-manager/edit-order?pid=<?= $order['id'] ?>" method="GET">
                                     <input type="hidden" name="pid" id="pid" value="<?= $order['id'] ?>">
                                     <button type="submit" id="edit-order-btn">Edit Order</button>
-                                </form>
-                                <form action="/dashboard/order-manager/order-detail?oid=<?= $order['id'] ?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?= $order['id'] ?>">
+                                </form> -->
+                                <form action="/dashboard/order-manager/order-detail" method="GET">
+                                    <input type="hidden" name="oid" id="oid" value="<?= $order['id'] ?>">
                                     <button type="submit" id="show-order-btn"> Show Detail</button>
                                 </form>
                             </div>

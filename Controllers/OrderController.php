@@ -20,27 +20,261 @@ class OrderController extends Controller
     }
     public function index()
     {
-        $acount = $this->AdminController->checkLogin();
-        if (!$acount) {
-            $this->popup("/dashboard/login", "please login to access dashboard!!");
-        }
-        $pageNumber = $_GET["page"] ?? 1;
-        $recordPerPage = PAGINATE;
-        $oid = $_GET["oid"] ?? null;
-        $cid = $_GET["cid"] ?? null;
-        $descTotalPrice = $_GET["descTotalPrice"] ?? null;
-        $getLastOrder = $_GET["getLastOrder"] ?? null;
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = $_GET["status_id"] ?? null;
+            $oid = $_GET["oid"] ?? null;
+            $cid = $_GET["cid"] ?? null;
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $getLastOrder = $_GET["getLastOrder"] ?? null;
 
-        $allOrders = $this->orderModel->getAllOrder($pageNumber, $recordPerPage, $descTotalPrice, $getLastOrder, $cid, $oid);
-        $data = [];
-        $data["orders"] = array_slice( $allOrders, ($pageNumber-1)*$recordPerPage, $recordPerPage) ?? [];
-        foreach ($data["orders"] as &$order) {
-            $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
-        }
-        unset($order);
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $getLastOrder,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
 
-        $data["pageQtt"] = $allOrders ? ceil( count($allOrders) / $recordPerPage) : 1;
-        $this->set($data);
-        $this->render("index");
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function showOrderDetail()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $oid = $_GET["oid"] ?? 1;
+            $order = $this->orderModel->getOrderById($oid) ?? null;
+            if ($order) {
+                $order["products"] = $this->orderModel->getOrderDetail($oid);
+                $data["order"] = $order;
+                $data["enableSearch"] = false;
+                $this->set($data);
+                $this->render("orderDetail");
+            }
+            else{
+                $this->popup("/dashboard/order-manager", "This order do not exist");
+            }
+            // pd($data);
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function changeOrderStatus()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $next_status = $_POST["status_id"];
+            $oid = $_POST["oid"];
+            $note = $_POST["change_status_note"] ?? null;
+            $order = $this->orderModel->getOrderById($oid);
+            if ($next_status > $order["status_id"] && $order["status_id"] <= 3) {
+                $onUpdate = $this->orderModel->updateOrderStatus($oid, $next_status, $acount["id"], $note);
+                if($onUpdate){
+                    $this->popup("/dashboard/order-manager", "The order status has been updated! <br> Click ok then redirect Dashboard");
+                }
+
+            } else if ($order["status_id"] > 3) {
+                $data["message"] = "This order status is the lastest status. You cannot modify!";
+                $data["order"] = $order;
+                dd($data);
+            } else {
+                $data["message"] = "Can not change this order status";
+                $data["order"] = $order;
+                dd($data);
+            }
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function getPendingOrder()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = 1;
+            $oid = $_GET["oid"] ?? null;
+            $cid = $_GET["cid"] ?? null;
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $getLastOrder = $_GET["getLastOrder"] ?? null;
+
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $getLastOrder,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
+
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+
+    public function getCancelledOrder()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = '6,5';
+            $oid = $_GET["oid"] ?? null;
+            $cid = $_GET["cid"] ?? null;
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $getLastOrder = $_GET["getLastOrder"] ?? null;
+
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $getLastOrder,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
+
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function getCompletedOrder()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = '4';
+            $oid = $_GET["oid"] ?? null;
+            $cid = $_GET["cid"] ?? null;
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $getLastOrder = $_GET["getLastOrder"] ?? null;
+
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $getLastOrder,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
+
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function getProcessingOrder()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = '2,3';
+            $oid = $_GET["oid"] ?? null;
+            $cid = $_GET["cid"] ?? null;
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $getLastOrder = $_GET["getLastOrder"] ?? null;
+
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $getLastOrder,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
+
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            dd($e);
+        }
+    }
+    public function getCreateOrder(){
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+
+
+
+
+        } catch (Exception $e) {
+            die($e);
+        }
     }
 }

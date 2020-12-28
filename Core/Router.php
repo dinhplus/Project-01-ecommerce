@@ -57,7 +57,11 @@ class Router
             } else if (is_callable($callback["callback"])) {
                 return call_user_func($callback["callback"]);
             }
-        } else echo ("<h1> method request is invalid! <h1>");
+        } else {
+
+            $data["message"] = " Request method is not invalid";
+            dd($data);
+        };
     }
     public static function loadPublicFile($file)
     {

@@ -20,12 +20,13 @@
             </h1>
         </div>
         <div class="query-field">
-            <form action="#" method="GET">
+        <?php if(isset($enableSearch) && $enableSearch) { ?>
+            <form action="#" method="GET" >
                 <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if (isset($_GET["q"])) echo ($_GET["q"]) ?>">
                 <button type="submit" id="query-submit-btn"><i class="icofont-search-2"></i> Search</button>
-                <!-- <input type="submit" name="submit" id="query-submit-btn" value="Search" class="icofont-search-2"> </input> -->
-                <!-- <i class="icofont-search-2"></i> -->
+
             </form>
+            <?php }?>
         </div>
     </div>
     <div id="root">
@@ -127,6 +128,9 @@
                                 </a>
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/pending") ?>">
                                     <li>Pending Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/processing") ?>">
+                                    <li>In Progress Order</li>
                                 </a>
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/cancelled") ?>">
                                     <li>Cancelled Order</li>

@@ -368,7 +368,7 @@
 1. The Order Queue (Index)
     ```
     method: GET
-    router: ("/dashboard/orders/index" || "/dashboard/orders").("?oid=:oid&cid:cid")
+    router: ("/dashboard/order-manager/index" || "/dashboard/order-manager").("?oid=:oid&cid:cid")
     action: "OrderController@index"
     permistion: "all"
     description: " Show all Order and paginate by rule && show permistion"
@@ -377,7 +377,7 @@
 2. Show Order Detail
     ```
     method: GET
-    router: "/dashboard/orders/oder-detail?oid=:oid"
+    router: "/dashboard/order-manager/order-detail"
     action: "OrderController@showOrderDetail"
     permistion: "all"
     description: " Show All information from this order, include product{name, category, unit_price, order_quantity}, total price, order_time"
@@ -386,26 +386,18 @@
 3. Confirm Order
     ```
     method: POST
-    router: "/dashboard/orders/confirm-order?oid=:oid"
-    action: "OrderController@confirmOrder"
+    router: "/dashboard/order-manager/change-status"
+    action: "OrderController@changeOrderStatus"
     permistion: "all"
     description: " By confirm this order, the bill will generate, the Shop will prepare for package then send the package  "
     ```
 
-4. Cancel Order
-    ```
-    method: POST
-    router: "/dashboard/orders/cancel-order?oid=:oid"
-    action: "OrderController@cancelOrder"
-    permistion: "master/manager"
-    description: " The master_admin/(manager) can cancel the Oder while the shop can not complete the Order  "
-    ```
 
-5. Generate new Order
+4. Generate new Order
 
     ```
     method: GET && POST
-    router: "/dashboard/orders/genarate-order"
+    router: "/dashboard/order-manager/create-order"
     action: "OrderController@generateOrder"
     permistion: "All"
     description: " All employee can create new Order base on information what collected from other channel"
