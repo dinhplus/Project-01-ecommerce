@@ -1,6 +1,6 @@
 
 <div class="login-form">
-    <form action="/acount/login" method="post">
+    <form action="<?= 'http://' . HOST . '/user/login' ?>" method="post">
         <h1 align="center">
             Login
         </h1>
@@ -8,23 +8,23 @@
 
         <label for="username">
             User Name <br>
-            <input type="text" name="username" id="username" placeholder="Username or email...">
+            <input type="text" class="form-control" id="username1" placeholder="Your username ..." name="username" value="<?php if (isset($_SESSION["username"] )&& $_SESSION["username"]) echo ($_SESSION["username"]) ?>">
             <span id="username-err" class="warning err"></span>
         </label><br>
         <label for="password">
             Password <br>
-            <input type="password" name="password" id="password" placeholder="Password...">
+            <input type="password" class="form-control" id="password1" placeholder="Your password..." name="password" value="<?php if (isset($_SESSION["password"] )&& $_SESSION["password"]) echo ($_SESSION["password"]) ?>">
             <span id="password-err" class="warning err"></span>
         </label><br>
         <div id="login-form-action">
         &emsp;
-            <a href="/acount/forgot-password">
+            <a href="/account/forgot-password">
                 <span id="forgot-password">
                 Forgot password?
                 <span>
 
             </a>
-            <input type="submit" id="submit" name="submit" value="Submit">
+            <button id="submit" type="submit" class="btn btn-info btn-block btn-round" onclick="return loginHandling()">Login</button>
             <br><br>
 
         </div>
@@ -34,7 +34,8 @@
         <span id="register">
             <hr>
             Not a member yet? Register with us and get speacial Deals! <br>
-            <button onclick="location.href=`/user/register`">Register</button>
+            <button onclick="location.href='<?='http:\/\/'.HOST.'/user/register'?>'" >Register</button>
         </span>
+        <a href="<?='http://'.HOST.'/'?>">Back to Home</a>
     </div>
 </div>

@@ -1,10 +1,15 @@
 
 <div class="login-form">
-    <form action="/acount/register" method="post">
+    <form action="/user/register" method="post">
         <h1 align="center">
             Register
         </h1>
         <hr><span id="message" class = "warning" ><?php if(isset($message)){echo($message);} ?></span><br><br>
+
+
+
+
+
 
         <label for="">
             User Name <br>
@@ -29,12 +34,7 @@
 
         <div id="login-form-action">
         &emsp;
-            <!-- <a href="/acount/forgot-password">
-                <span id="forgot-password">
-                Forgot password?
-                <span>
 
-            </a> -->
             <input type="submit" id="submit" name="submit" value="Register Now">
             <br><br>
 

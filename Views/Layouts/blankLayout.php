@@ -11,5 +11,7 @@
     <?= $content_for_layout;
     ?>
     </main>
+    <script src="/public/js/clients/loginBehavior.js"></script>
+    <script src="/public/js/clients/registerBehavior.js"></script>
 </body>
 </html>

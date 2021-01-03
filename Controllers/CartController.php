@@ -4,7 +4,7 @@ require_once(ROOT."Models/Product.php");
 class ManagerController extends Controller {
 
     public function __construct() {
-        $this->layout = "adminAplication";
+        $this->layout = "defaultLayout";
         if(!(isset($_COOKIE["username"]) && isset($_COOKIE["user_level"]) && $_COOKIE["user_level"]>1)){
             header("Location:"."http://".HOST."/acount/login");
         }

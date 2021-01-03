@@ -4,21 +4,6 @@ if (empty($_GET["page"])) {
 }
 ?>
 <div class="list-products">
-    <div class="action">
-
-        <?php
-        if (
-            $_SESSION["role"] > 0
-            && $_SESSION["role"] !== 3
-        ) { ?>
-            <div class="generate-product">
-                <form action="/dashboard/product-manager/create-product" method="GET">
-                    <!-- <input type="text"> -->
-                    <button type="submit" id="create-product-btn"> New Product</button>
-                </form>
-            </div>
-        <?php } ?>
-    </div>
     <div class="data">
         <table>
             <tr>
@@ -92,7 +77,8 @@ if (empty($_GET["page"])) {
                             <div class="product-description">
                                 <?php
                                 if (strlen(($product["description"])) > 200) {
-                                    echo (substr($product["description"],0, 200));
+                                    $position = strpos($product["description"], " ", 200);
+                                    echo (substr($product["description"], -$position));
                                 } else echo ($product["description"]);
 
                                 ?>
@@ -111,18 +97,9 @@ if (empty($_GET["page"])) {
                         </td>
                         <td>
                             <div class="product-action">
-                                <form action="/dashboard/product-manager/delete-product" method="POST">
-                                    <input type="hidden" name="pid" value="<?= $product["id"] ?>">
-                                    <button type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Delete</button>
-                                </form>
-                                <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id']?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
-                                    <button type="submit" id="edit-product-btn">Edit Product</button>
-                                </form>
-                                <form action="/dashboard/product-manager/product-detail?pid=<?=$product['id']?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
-                                    <button type="submit" id="show-product-btn"> Show Detail</button>
-                                </form>
+                                <!-- TODO Define Action for javaScript function addToCart(pid) -->
+                                <button type="submit" id="delete-product-btn" onclick="addToCart(<?= $product['id'] ?>)">Add this product to order</button>
+
                             </div>
                         </td>
 

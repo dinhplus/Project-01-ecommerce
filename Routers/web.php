@@ -35,35 +35,53 @@ Router::POST( "/dashboard/product-manager/delete-product",  "ProductController@d
 Router::GET("/dashboard/product-manager/remainder", "ProductController@productRemainder");
 
 Router::GET("/dashboard/product-manager/product-detail", "ProductController@showProductDetail" );
+
+
 Router::GET("/dashboard/product-manager/edit-product", "ProductController@editProduct");
 Router::POST("/dashboard/product-manager/edit-product", "ProductController@updateProduct");
 
+//TODO : Do implement feature later
+// Router::GET("/dashboard/product-manager/add-category", "ProductController@createCategory");
+// Router::POST("/dashboard/product-manager/add-category", "ProductController@storeCategory");
+
+// Router::GET("/dashboard/product-manager/add-brand", "ProductController@createBrand");
+// Router::POST("/dashboard/product-manager/add-brand", "ProductController@storeBrand");
+
+
+Router::GET("/dashboard/order-manager/index", "OrderController@index");
+Router::GET("/dashboard/order-manager", "OrderController@index");
+Router::GET("/dashboard/order-manager/order-detail", "OrderController@showOrderDetail");
+Router::POST("/dashboard/order-manager/change-status", "OrderController@changeOrderStatus");
+Router::GET("/dashboard/order-manager/pending", "OrderController@getPendingOrder");
+Router::GET("/dashboard/order-manager/processing", "OrderController@getProcessingOrder");
+Router::GET("/dashboard/order-manager/cancelled", "OrderController@getCancelledOrder");
+Router::GET("/dashboard/order-manager/completed", "OrderController@getCompletedOrder");
+Router::GET( "/dashboard/order-manager/create-order", "OrderController@getCreateOrder");
+Router::POST( "/dashboard/order-manager/create-order", "OrderController@generateOrder");
+
+
+Router::GET("/product/index", "ClientController@listProduct");
+Router::GET("/product", "ClientController@listProduct");
+Router::GET("/home", "ClientController@listProduct");
+Router::GET("/", "ClientController@listProduct");
+Router::GET("/product/detail","ClientController@productDetail");
+Router::POST("/user/register",   "ClientController@storeUser");
+Router::GET("/user/register",   "ClientController@getRegister");
+Router::POST("/user/login", "ClientController@postLogin");
+Router::GET("/user/login", "ClientController@getLogin");
+Router::GET("/user/logout", "ClientController@getLogout");
+Router::GET("/user/show-profile", "ClientController@showProfile");
+Router::GET( "/user/edit-profile", "ClientController@editUserProfile");
+Router::POST("/user/update-profile",  "ClientController@updateUserProfile");
 
 
 
 
 
-Router::GET("/acount/login","UserController@getLogin");
-Router::POST("/acount/login","UserController@postLogin");
 
-Router::GET("/acount/register","UserController@getRegister");
-Router::POST("/acount/register","UserController@storeUser");
 
-Router::GET("/home","HomeController@index");
-Router::GET("/","HomeController@index");
 
-Router::GET("/manager","ManagerController@index");
-Router::GET("/manager/product","ManagerController@index");
-Router::GET("/manager/create-product", "ManagerController@createProduct");
-Router::POST("/manager/store-product", "ManagerController@storeProduct");
-
-Router::GET("/posts","PostController@index");
-Router::GET("/test","TestController@index");
-
-// Router::GET("/posts/detail/$id","PostController@show");
-Router::GET("/posts/create","PostController@create");
-Router::POST("/posts/create","PostController@postCreate");
 Router::GET("/quick-checker", function(){
-    var_dump(is_file('G:\PHP\Project-01-ecommerce\WEBROOT\public\upload\images\28276733_633286190396286_3797537076859079899_n1607489813.1693.jpg'));
+    dd($_GET["check"]);
 
 });

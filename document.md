@@ -182,88 +182,116 @@
     description: " Show all sort by remainder"
     ```
 
-## Pre-Product Controller (High level feature, will complete if have enough time)
+9. add Product Category
 
-1. Show all pre-product
     ```
     method: GET
-    router: ("/dashboard/pre-product/index" || "/dashboard/pre-product").("?name=:name&category=:category&page=:page")
-    action: "PreProductController@preProductIndex"
+    router: "/dashboard/product-manager/add-category"
+    action: "ProductController@createCategory"
     permistion: "all"
-    description: " Show all Pre-Products and paginate by rule && show permistion"
+    description: " Add new Category for product"
     ```
 
-2. Add Pre-product
+10. store Product Category
+
+    ```
+    method: POST
+    router: "/dashboard/product-manager/add-category"
+    action: "ProductController@storeCategory"
+    permistion: "all"
+    description: " Store new Category in database"
+    ```
+11. add Product Brand
+
     ```
     method: GET
-    router: "/dashboard/pre-product/create-product"
-    action: "PreProductController@createPreProduct"
+    router: "/dashboard/product-manager/add-brand"
+    action: "ProductController@createBrand"
     permistion: "all"
-    description: " Add new Pre product"
-    notice: "Employee (not master) from `Product-Manager/index` when click create-product button will redirect to this page,<br> the product will store into 'pre_products' table, by master_admin confirm product,<br> the product will  insert this product into 'products' table then release"
+    description: " Add new Category for product"
     ```
+12. store Product Brand
 
-3. Store Product
     ```
     method: POST
-    router: "/dashboard/pre-product/store-product"
-    action: "PreProductController@storePreProduct"
+    router: "/dashboard/product-manager/add-brand"
+    action: "ProductController@storeBrand"
     permistion: "all"
-    description: " Store new pre product into database"
+    description: " Store new Brand in database"
     ```
+13. lst Category
 
-4. Show Pre-Product detail
     ```
     method: GET
-    router: "/dashboard/pre-product/product-detail?id=:id"
-    action: "PreProductController@showPreProductDetail"
+    router: "/dashboard/product-manager/lst-category"
+    action: "ProductController@lstAllCategory"
     permistion: "all"
-    description: " Show product detail infor"
+    description: " Show all categories"
     ```
-
-5. Edit Pre-Product
+14. Edit Category
     ```
     method: GET
-    router: "/dashboard/pre-product/edit-product"
-    action: "PreProductController@editPreProduct"
+    router: "/dashboard/product-manager/edit-category"
+    action: "ProductController@editCategory"
     permistion: "all"
-    description: " Get product infor from database then show all to `editProduct site`"
-    notice: "Employee (not master) from `Product-Manager/index` when click edit-product button will redirect to this page, the product will store into 'pre_products' table, by master_admin confirm product, the product will  update 'products' table then release"
+    description: " Edit Special category label"
     ```
-
-6. Store Pre-Product
+15. Update Category
     ```
     method: POST
-    router: "/dashboard/pre-product/update-product"
-    action: "PreProductController@storePreProduct"
+    router: "/dashboard/product-manager/edit-category"
+    action: "ProductController@storeCategory"
     permistion: "all"
-    description: " update pre-product base on pre_product_id"
+    description: " Update Special category label in database"
     ```
 
-7. Delete Pre-product from database
+16. Delete Category
     ```
     method: POST
-    router: "/dashboard/pre-product/delete-product"
-    action: "PreProductController@deletePreProduct"
+    router: "/dashboard/product-manager/delete-category"
+    action: "ProductController@deleteCategory"
     permistion: "all"
-    description: " confirm again with admin then delete this pre-product base on pre_product_id"
+    description: " Delete special category"
     ```
 
-8. Confirm pre-product
+17. lst Brand
+    ```
+    method: GET
+    router: "/dashboard/product-manager/lst-brands"
+    action: "ProductController@lstAllCategory"
+    permistion: "all"
+    description: " Show all Brands"
+    ```
+18. Edit Brand
+    ```
+    method: GET
+    router: "/dashboard/product-manager/edit-brands"
+    action: "ProductController@editCategory"
+    permistion: "all"
+    description: " Edit Special Brand label"
+    ```
+19. Update Brand
     ```
     method: POST
-    router: "/dashboard/pre-product/confirm-product"
-    action: "PreProductController@confirmPreProduct"
+    router: "/dashboard/product-manager/edit-brands"
+    action: "ProductController@storeCategory"
     permistion: "all"
-    description: " confirm again with admin then insert/update this pre-product into 'products' table base on product_id && pre_product_id"
+    description: " Update Special Brand label in database"
     ```
-
+20. Delete Brand
+    ```
+    method: POST
+    router: "/dashboard/product-manager/delete-brands"
+    action: "ProductController@deleteCategory"
+    permistion: "all"
+    description: " Delete special Brand"
+    ```
 ## Order Controller
 
 1. The Order Queue (Index)
     ```
     method: GET
-    router: ("/dashboard/orders/index" || "/dashboard/orders").("?oid=:oid&cid:cid")
+    router: ("/dashboard/order-manager/index" || "/dashboard/order-manager").("?oid=:oid&cid:cid")
     action: "OrderController@index"
     permistion: "all"
     description: " Show all Order and paginate by rule && show permistion"
@@ -272,7 +300,7 @@
 2. Show Order Detail
     ```
     method: GET
-    router: "/dashboard/orders/oder-detail?oid=:oid"
+    router: "/dashboard/order-manager/order-detail"
     action: "OrderController@showOrderDetail"
     permistion: "all"
     description: " Show All information from this order, include product{name, category, unit_price, order_quantity}, total price, order_time"
@@ -281,26 +309,18 @@
 3. Confirm Order
     ```
     method: POST
-    router: "/dashboard/orders/confirm-order?oid=:oid"
-    action: "OrderController@confirmOrder"
+    router: "/dashboard/order-manager/change-status"
+    action: "OrderController@changeOrderStatus"
     permistion: "all"
     description: " By confirm this order, the bill will generate, the Shop will prepare for package then send the package  "
     ```
 
-4. Cancel Order
-    ```
-    method: POST
-    router: "/dashboard/orders/cancel-order?oid=:oid"
-    action: "OrderController@cancelOrder"
-    permistion: "master/manager"
-    description: " The master_admin/(manager) can cancel the Oder while the shop can not complete the Order  "
-    ```
-
-5. Generate new Order
+//TODO commplete feature for dashboard "OrderController@generateOrder"
+4. Generate new Order
 
     ```
     method: GET && POST
-    router: "/dashboard/orders/genarate-order"
+    router: "/dashboard/order-manager/create-order"
     action: "OrderController@generateOrder"
     permistion: "All"
     description: " All employee can create new Order base on information what collected from other channel"
@@ -316,7 +336,7 @@
 
 # * Client
 
-## Customer Controller
+## Client Controller
     ```
         Authenticate by user session
     ```
@@ -339,13 +359,13 @@
     permistion: "all"
     description: "Show all product information with out quantity extant"
     ```
-3. get Register
+3. Post Login
 
     ```
-    method: GET
-    router: "/user/register"
-    action: "ClientController@getRegister"
-    permistion: "undefined client"
+    method: POST
+    router: "/user/login"
+    action: "ClientController@postLogin"
+    permistion: "registered User"
     description: "redirect to login page"
     ```
 4. Post Register
@@ -360,7 +380,7 @@
 5. Show self profile
     ```
     method: GET
-    router: "/user/show-profile?uid:uid"
+    router: "/user/show?uid:uid"
     action: "ClientController@showProfile"
     permistion: "self user"
     description: "get customer profile then show on client"
@@ -399,6 +419,16 @@
     action: "ClientController@showOrderDetail"
     permistion: "self user"
     description: "show all information for this Order"
+
+    ```
+10. GET LOG OUT
+    ```
+    method: GET
+    router: "/user/logout"
+    action: "ClientController@getLogout"
+    permistion: "self user"
+    description: "Logout and reset Session";
+
     ```
 ## Cart Controller
 
@@ -415,7 +445,7 @@
 
     ```
     method: POST
-    router: "/cart/add-item?uid=:uid"
+    router: "/cart/add-item"
     action: "CartController@addItem"
     permistion: "self user"
     description: "Add product to cart"

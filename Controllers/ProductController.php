@@ -16,55 +16,56 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $acount = $this->AdminController->checkLogin();
-        // var_dump($acount);
-        if (!$acount) {
-            $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
-        }
-        // var_dump($_GET["category"]);;
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $productName = $_GET["q"] ?? null;
 
-        $pageNumber = $_GET["page"] ?? 1;
-        $recordPerPage = 20;
-        $productName = $_GET["q"] ?? null;
-        // var_dump($productName);
-        $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
-        $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
-        $allProduct = $this->productModel->getAllProduct($pageNumber, $recordPerPage, $productName, $category, $brand);
-        $data["products"] = $allProduct;
-        $data["pageQtt"] = $allProduct ? count($allProduct) / $recordPerPage : 1;
-        $this->set($data);
-        $this->render("index");
+            $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
+            $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
+            $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
+            $data["enableSearch"] = true;
+            $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            pd($e);
+        }
     }
 
     public function createProduct()
     {
-        $acount = $this->AdminController->checkLogin();
-        if (!$acount) {
-            $this->layout = "blankLayout";
-            $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->layout = "blankLayout";
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $categories = $this->productModel->getCategories();
+            $brands = $this->productModel->getBrands();
+            $status = $this->productModel->getStatus();
+            $data["categories"] = $categories;
+            $data["brands"] = $brands;
+            $data["status"] = $status;
+            $this->set($data);
+            $this->layout = "dashboardLayout";
+            $this->render("getCreateProduct");
+        } catch (Exception $e) {
+            pd($e);
         }
-        $categories = $this->productModel->getCategories();
-        $brands = $this->productModel->getBrands();
-        $status = $this->productModel->getStatus();
-        $data["categories"] = $categories;
-        $data["brands"] = $brands;
-        $data["status"] = $status;
-        $this->set($data);
-        $this->layout = "dashboardLayout";
-        $this->render("getCreateProduct");
     }
 
     public function storeProduct()
     {
         try {
-            //code...
-
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
             }
 
             $name = $_POST["name"];
@@ -140,7 +141,7 @@ class ProductController extends Controller
                     $data["onSuccess"]["storeProduct"] = "Successed to store product";
                     $this->set($data);
                     $this->popup("/dashboard/product-manager", "Stored Product Success");
-                    return;
+
                     // header("Location:"."http://".HOST."/manager/create-product");
                 } else {
                     $data["onSuccess"]["storeProduct"] = "Failed to store product";
@@ -149,49 +150,52 @@ class ProductController extends Controller
                 }
             }
         } catch (Exception $e) {
-            die($e);
+            pd($e);
         }
     }
 
     public function deleteProduct()
     {
-        $acount = $this->AdminController->checkLogin();
-        if (!$acount) {
-            $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
-        } else if ($acount["role_id"] < 4) {
-            $this->popup("/dashboard/product-manager", "You do not have permission!!");
-            return;
-        } else {
-            $pid = $_POST["pid"];
-            $onDelete = $this->productModel->removeProduct($pid);
-            if ($onDelete) {
-                $this->popup("/dashboard/product-manager", "The product had been deleted! 👌👌👌👌👌");
-                return;
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            } else if ($acount["role_id"] < 4) {
+                $this->popup("/dashboard/product-manager", "You do not have permission!!");
             } else {
-                $this->popup("/dashboard/product-manager", "The product is not existed!! 👌👌👌👌👌");
-                return;
+                $pid = $_POST["pid"];
+                $onDelete = $this->productModel->removeProduct($pid);
+                if ($onDelete) {
+                    $this->popup("/dashboard/product-manager", "The product had been deleted! 👌👌👌👌👌");
+                } else {
+                    $this->popup("/dashboard/product-manager", "The product is not existed!! 👌👌👌👌👌");
+                }
             }
+        } catch (Exception $e) {
+            pd($e);
         }
     }
     public function productRemainder()
     {
-        $acount = $this->AdminController->checkLogin();
-        if (!$acount) {
-            $this->popup("/dashboard/login", "please login to access dashboard!!");
-            return;
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $productName = $_GET["q"] ?? null;
+            $isSort = $_GET["sort"] ?? 1; //sort = 1 ?? -1
+            $category = null;
+            $brand = null;
+            $allProduct = $this->productModel->getAllProduct($productName, $category, $brand, $isSort);
+            $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("index");
+        } catch (Exception $e) {
+            pd($e);
         }
-        $pageNumber = $_GET["page"] ?? 1;
-        $recordPerPage = 20;
-        $productName = $_GET["q"] ?? null;
-        $isSort = $_GET["sort"] ?? 1; //sort = 1 ?? -1
-        $category = null;
-        $brand = null;
-        $allProduct = $this->productModel->getAllProduct($pageNumber, $recordPerPage, $productName, $category, $brand, $isSort);
-        $data["products"] = $allProduct;
-        $data["pageQtt"] = $allProduct ? count($allProduct) / $recordPerPage : 1;
-        $this->set($data);
-        $this->render("index");
     }
     public function showProductDetail()
     {
@@ -199,7 +203,6 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
             }
 
             $pid = $_GET["pid"];
@@ -211,10 +214,9 @@ class ProductController extends Controller
                 $this->render("showProductDetail");
             } else {
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
-                return;
             }
         } catch (Exception $e) {
-            die($e);
+            pd($e);
         }
     }
 
@@ -224,7 +226,6 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
             }
             $pid = $_GET["pid"];
             $product = $this->productModel->getProductById($pid);
@@ -241,10 +242,9 @@ class ProductController extends Controller
                 $this->render("getEditProduct");
             } else {
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
-                return;
             }
         } catch (Exception $e) {
-            die($e);
+            pd($e);
         }
     }
     public function updateProduct()
@@ -255,7 +255,6 @@ class ProductController extends Controller
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
-                return;
             }
             $oldProduct = $this->productModel->getProductById($_SESSION["in-progress-pid"]);
             $name = $_POST["name"];
@@ -344,7 +343,7 @@ class ProductController extends Controller
                     $data["onSuccess"]["storeProduct"] = "Successed to store product";
                     $this->set($data);
                     $this->popup("/dashboard/product-manager", "Stored Product Success");
-                    return;
+
                     // header("Location:"."http://".HOST."/manager/create-product");
                 } else {
                     $data["onSuccess"]["storeProduct"] = "Failed to store product";
@@ -353,7 +352,19 @@ class ProductController extends Controller
                 }
             }
         } catch (Exception $e) {
-            die($e);
+            pd($e);
+        }
+    }
+
+    public function createCategory()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+        } catch (Exception $e) {
+            pd($e);
         }
     }
 }

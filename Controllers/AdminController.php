@@ -207,6 +207,7 @@ class AdminController extends Controller{
             $this->layout = "dashboardLayout";
             $accountRecords = $this->adminModel->getAccountRecord();
             // var_dump($accountRecords);
+            $data["enableSearch"] = true;
             $data["accountLoginned"] = $accountLoginned;
             $data["records"] = $accountRecords;
             $this->set($data);

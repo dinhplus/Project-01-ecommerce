@@ -1,0 +1,35 @@
+.cart_info{
+    border-left: royalblue 1px double;
+}
+.item_list{
+    justify-content: space-around;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+.shop_item{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin: 10px;
+
+}
+.shop_item:hover{
+    border: rgb(114, 149, 224) 2px solid;
+}
+.site-body{
+    margin-top: 50px;
+}
+._product_detail_{
+    justify-content: center;
+}
+.current-page{
+    background: blue;
+    color: white;
+}
+.current-page a{
+    background: blue;
+    color: white;
+}
+.user_detail{
+    margin-top: 200px;
+
+}

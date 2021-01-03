@@ -28,10 +28,10 @@ class BaseController
         } else require_once($filename);
         $content_for_layout = ob_get_clean();
         if ($this->layout == false) {
-            // die("true");
+
             $content_for_layout;
         } else {
-            // die($this->layout);
+
             require_once(ROOT . "Views\\Layouts\\" . $this->layout . '.php');
         }
         return;
@@ -45,6 +45,7 @@ class BaseController
         $data["urlRedirect"] = $urlRedirect;
         $this->set($data);
         $this->render(ROOT . "Views\\Layouts\\Common\\popup.php", true);
+        die();
     }
     public function dropUploadedFile($filePath)
     {
@@ -57,6 +58,16 @@ class BaseController
                 unlink($fullPath);
             }
         }
+    }
+    public function dateTimeTransfom(string $dateTimeString, $currentTimeZone = CURRENT_TIME_ZONE, $targetTimeZone = null){
+        $container = explode(" ", $dateTimeString);
+        $dateContainer  = explode("-", $container[0]);
+        $timeContainer = explode(":", $container[1]);
+        if($targetTimeZone){
+            $timeContainer[0] = ((int)$timeContainer) - $currentTimeZone + $targetTimeZone;
+        }
+        $dateTimeResult = mktime($timeContainer[0], $timeContainer[1], $timeContainer[2], $dateContainer[1], $dateContainer[2], $dateContainer[0] );
+        return date(DATE_TIME_FORMAT, $dateTimeResult);
     }
     private function secure_input($data)
     {

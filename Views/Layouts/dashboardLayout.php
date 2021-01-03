@@ -20,12 +20,13 @@
             </h1>
         </div>
         <div class="query-field">
-            <form action="#" method="GET">
+        <?php if(isset($enableSearch) && $enableSearch) { ?>
+            <form action="#" method="GET" >
                 <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if (isset($_GET["q"])) echo ($_GET["q"]) ?>">
                 <button type="submit" id="query-submit-btn"><i class="icofont-search-2"></i> Search</button>
-                <!-- <input type="submit" name="submit" id="query-submit-btn" value="Search" class="icofont-search-2"> </input> -->
-                <!-- <i class="icofont-search-2"></i> -->
+
             </form>
+            <?php }?>
         </div>
     </div>
     <div id="root">
@@ -44,9 +45,17 @@
                                     <li>Dashboard</li>
                                 </a>
 
-                                <li>Reports</li>
+
                                 <li>Analytics</li>
-                                <li>Code Blocks</li>
+
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/change-password") ?>">
+                                    <li>Change Passwords</li>
+                                </a>
+                                <li>Show Sefl Acount detail</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/edit-staff?uid=" . $_SESSION["uid"]) ?>">
+
+                                    <li>Edit Self Profile</li>
+                                </a>
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/logout") ?>">
                                     <li>Logout</li>
                                 </a>
@@ -103,14 +112,6 @@
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/index") ?>">
                                     <li>All Staff</li>
                                 </a>
-                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/change-password") ?>">
-                                    <li>Change Passwords</li>
-                                </a>
-                                <li>Show Sefl Acount detail</li>
-                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/edit-staff?uid=" . $_SESSION["uid"]) ?>">
-
-                                    <li>Edit Self Profile</li>
-                                </a>
                             </ul>
                         </div>
                     </label>
@@ -122,10 +123,24 @@
                         <div class="bar"></div>
                         <div class="swanky_wrapper__content">
                             <ul>
-
-                                <li>Design</li>
-                                <li>Change User</li>
-                                <li>Log Out</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/index") ?>">
+                                    <li>List Orrder</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/pending") ?>">
+                                    <li>Pending Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/processing") ?>">
+                                    <li>In Progress Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/cancelled") ?>">
+                                    <li>Cancelled Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/completed") ?>">
+                                    <li>Completed Order</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/create-order") ?>">
+                                    <li>Create New Order</li>
+                                </a>
                             </ul>
                         </div>
                     </label>
@@ -148,7 +163,7 @@
     </div>
 
     <script src="/public/assets/bootstrap/Jquery/jquery-3.2.1.slim.min.js"></script>
-    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script> -->
 </body>
 
 </html>
