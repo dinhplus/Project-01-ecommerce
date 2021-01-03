@@ -1,3 +1,19 @@
+function removeAscent (str) {
+    if (str === null || str === undefined) return str;
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    str = str.replace(/đ/g, "d");
+    return str;
+}
+function isValidName (string) {
+    var re = /^[a-zA-Z!@#\$%\^\&*\)\(+=._- ]{2,}$/g // regex here
+    return re.test(removeAscent(string))
+  }
 function registerHandling() {
     var validateOk = true;
     var name = document.getElementById("name").value;
@@ -14,16 +30,16 @@ function registerHandling() {
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
     const phonePattern = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/gm;
     const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm;
-        console.log(password==cfPassword);
-    if(!namePattern.test(name) || name.length < 5){
+    console.log(password == cfPassword);
+    if (!isValidName(name)) {
         validateOk = false;
-        var nameErrMessage = "name is require and have least 5 character";
+        var nameErrMessage = "name is require and have least 2 character";
         document.getElementById("r-name-err").innerHTML = nameErrMessage;
     }
-    else{
+    else {
         document.getElementById("r-name-err").innerHTML = "";
     }
-    if ( (!usernamePattern.test(username)) || username.length < 6) {
+    if ((!usernamePattern.test(username)) || username.length < 6) {
         validateOk = false;
         var usernameErrMessage = "Username is required, have beetwen 8 and 32 words character, digit character and can be included dot, underscore";
         document.getElementById("r-username-err").innerHTML = usernameErrMessage;
@@ -55,7 +71,7 @@ function registerHandling() {
     else {
         document.getElementById("phone-err").innerHTML = '';
     }
-    if (email.length>0 && !emailPattern.test(email)) {
+    if (email.length > 0 && !emailPattern.test(email)) {
         validateOk = false;
         var emailErrMessage = "Email is optional which have format \"contact123@example.com \"";
         document.getElementById("email-err").innerHTML = emailErrMessage;
@@ -63,12 +79,12 @@ function registerHandling() {
     else {
         document.getElementById("email-err").innerHTML = '';
     }
-    if(address.length < 5){
+    if (!isValidName(address)) {
         validateOk = false;
         var addressErrMessage = "Address is required that have least 5 charactor";
         document.getElementById("address-err").innerHTML = addressErrMessage;
     }
-    else{
+    else {
         document.getElementById("address-err").innerHTML = '';
     }
     return validateOk;
@@ -84,22 +100,20 @@ function editUserProfileBehavior() {
     var email = document.getElementById("email").value;
     var address = document.getElementById("address").value;
     var birth_date = document.getElementById("birth_date").value;
-
-    const namePattern = /^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$/gm;
     const usernamePattern = /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
 
     const phonePattern = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/gm;
     const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm;
 
-    if(!namePattern.test(name) || name.length < 5){
+    if (!isValidName(name)) {
         validateOk = false;
-        var nameErrMessage = "name is require and have least 5 character";
+        var nameErrMessage = "name is require and have least 2 character";
         document.getElementById("r-name-err").innerHTML = nameErrMessage;
     }
-    else{
+    else {
         document.getElementById("r-name-err").innerHTML = "";
     }
-    if ( (!usernamePattern.test(username)) || username.length < 6) {
+    if ((!usernamePattern.test(username)) || username.length < 6) {
         validateOk = false;
         var usernameErrMessage = "Username is required, have beetwen 6 and 32 words character, digit character and can be included dot, underscore";
         document.getElementById("r-username-err").innerHTML = usernameErrMessage;
@@ -116,7 +130,7 @@ function editUserProfileBehavior() {
     else {
         document.getElementById("phone-err").innerHTML = '';
     }
-    if (email.length>0 && !emailPattern.test(email)) {
+    if (email.length > 0 && !emailPattern.test(email)) {
         validateOk = false;
         var emailErrMessage = "Email is optional which have format \"contact123@example.com \"";
         document.getElementById("email-err").innerHTML = emailErrMessage;
@@ -124,13 +138,73 @@ function editUserProfileBehavior() {
     else {
         document.getElementById("email-err").innerHTML = '';
     }
-    if(address.length < 5){
+    if (!isValidName(address)) {
         validateOk = false;
-        var addressErrMessage = "Address is required that have least 5 charactor";
+        var addressErrMessage = "Address is required that have least 2 charactor";
         document.getElementById("address-err").innerHTML = addressErrMessage;
     }
-    else{
+    else {
         document.getElementById("address-err").innerHTML = '';
+    }
+    return validateOk;
+}
+function updatePasswordBehavior() {
+    var validateOk = true;
+    var password = document.getElementById("password").value;
+    var newPassword = document.getElementById("new-password").value;
+    var cfNewPassword = document.getElementById("cf-new-password").value;
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
+    const newPasswordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
+    if ((!passwordPattern.test(password)) || password.length < 6) {
+        validateOk = false;
+        var passwordErrMessage = "Password is required, have beetwen 6 and 32 character, least one of word upper case, lowercase and digit ";
+        document.getElementById("password-err").innerHTML = passwordErrMessage;
+    }
+    else {
+        document.getElementById("password-err").innerHTML = '';
+    }
+    if ((!newPasswordPattern.test(newPassword)) || newPassword.length < 6) {
+        validateOk = false;
+        var newPasswordErrMessage = "New Password is required, have beetwen 6 and 32 character, least one of word upper case, lowercase and digit ";
+        document.getElementById("new-password-err").innerHTML = newPasswordErrMessage;
+    }
+    else {
+        document.getElementById("new-password-err").innerHTML = '';
+    }
+    if (newPassword != cfNewPassword || cfNewPassword.length < 6) {
+        validateOk = false;
+        var cfNewPasswordErrMessage = "Confirm new password must be equal new password";
+        document.getElementById("cf-new-password-err").innerHTML = cfNewPasswordErrMessage;
+    }
+    else {
+        document.getElementById("cf-new-password-err").innerHTML = '';
+    }
+    return validateOk
+
+}
+
+function loginHandling() {
+    var validateOk = true;
+    var username = document.getElementById("username1").value;
+    var password = document.getElementById("password1").value;
+    console.log(username);
+    const usrnamePattern = /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
+    if (!usrnamePattern.test(username)) {
+        validateOk = false;
+        var usernameErrMessage = "Username is required, have beetwen 8 and 32 words character, digit charactor and can be included dot, underscore";
+        document.getElementById("username-err").innerHTML = usernameErrMessage;
+    }
+    else {
+        document.getElementById("username-err").innerHTML = '';
+    }
+    if (!passwordPattern.test(password)) {
+        validateOk = false;
+        var passwordErrMessage = "Password is required, have beetwen 8 and 32 character, least one of word upper case, lowercase and digit ";
+        document.getElementById("password-err").innerHTML = passwordErrMessage;
+    }
+    else {
+        document.getElementById("password-err").innerHTML = '';
     }
     return validateOk;
 }

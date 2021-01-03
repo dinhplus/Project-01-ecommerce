@@ -1,6 +1,7 @@
 <?php
 
 use Controller\BaseController as Controller;
+
 require_once(ROOT . "Models/Product.php");
 require_once(ROOT . "Models/Order.php");
 require_once(ROOT . "Models/Customer.php");
@@ -29,7 +30,7 @@ class ClientController extends Controller
             $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
             $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
             $customerUsername = $_SESSION["customerUsername"] ?? null;
-            if($customerUsername){
+            if ($customerUsername) {
                 $customer = $this->customerModel->getCustomerByUsername($customerUsername);
                 $data["customer"] = $customer;
             }
@@ -40,7 +41,7 @@ class ClientController extends Controller
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
             // dd($data);
-            $this-> render("index");
+            $this->render("index");
         } catch (Exception $e) {
             pd($e);
         }
@@ -49,19 +50,18 @@ class ClientController extends Controller
     {
         try {
             $pid = $_GET["pid"] ?? null;
-            if($pid){
+            if ($pid) {
                 $product = $this->productModel->getProductById($pid);
             }
             if ($product && count($product) > 0) {
-                if($product["status_id"] > 1){
+                if ($product["status_id"] > 1) {
                     $data["categories"] = $this->productModel->getCategories();
                     $data["brands"] = $this->productModel->getBrands();
                     $data["product"] = $product;
                     $this->set($data);
                     $this->render("showProductDetail");
-                }
-                else{
-                    $this->popup("/", "Can not show detail for this product. <br> product_id: ". $product['id']);
+                } else {
+                    $this->popup("/", "Can not show detail for this product. <br> product_id: " . $product['id']);
                 }
             } else {
                 $this->popup("/", "This product is not exist! 👆👆👆👆👆👆");
@@ -70,43 +70,42 @@ class ClientController extends Controller
             pd($e);
         }
     }
-    public function checkLogin(){
+    public function checkLogin()
+    {
 
-        if(
+        if (
             isset($_SESSION["customerUsername"])
-            && isset( $_SESSION["customer-token"])
-        ){
+            && isset($_SESSION["customer-token"])
+        ) {
 
             $account = $this->customerModel->checkLogin($_SESSION["customerUsername"], $_SESSION["customer-token"]);
 
-            if($account !== false && count($account) > 0 ){
+            if ($account !== false && count($account) > 0) {
                 $checkLogin = $account;
-            }
-            else{
+            } else {
                 $checkLogin = false;
             }
-        }
-        else{
+        } else {
             $checkLogin = false;
         }
         return $checkLogin;
     }
-    public function getLogin(){
+    public function getLogin()
+    {
         $account = $this->checkLogin();
-        if(!$account){
+        if (!$account) {
             $this->layout = 'blankLayout';
             $this->render("getLogin");
-        }
-        else{
+        } else {
             $this->layout = "defaultLayout";
-                header("Location:"."http://".HOST."");
+            header("Location:" . "http://" . HOST . "");
         }
     }
     public function postLogin()
     {
         try {
             $customerId = $_SESSION["customerId"] ?? null;
-            if($customerId) {
+            if ($customerId) {
                 $this->popup("/", "Please logout before Login");
             }
             $username = $_POST["username"] ?? null;
@@ -114,24 +113,23 @@ class ClientController extends Controller
             $_SESSION["username"] = $_POST["username"] ?? null;
             $_SESSION["password"] = $_POST["password"] ?? null;
             $_SESSION["location"] = $_POST["location"] ?? null;
-            $account = $this->customerModel->fetchAccount($username,$password);
+            $account = $this->customerModel->fetchAccount($username, $password);
             // dd($account);
-            if(!$account || $account === []){
+            if (!$account || $account === []) {
 
                 $data["message"] = "Username or password are invalid!";
                 $data["loginFailed"] = true;
                 $this->set($data);
                 $this->listProduct();
-            }
-            else{
+            } else {
                 $_SESSION["customerId"] = $account["id"];
                 $_SESSION["customerUsername"] = $account["username"];
                 $_SESSION["customer-token"] = $account["password"];
-                unset( $_SESSION["username"]);
-                unset( $_SESSION["password"]);
-                setcookie("c-access-token",'u='.$account["username"].'&token='.$account["password"], time() + (86400 * 30), "/");
+                unset($_SESSION["username"]);
+                unset($_SESSION["password"]);
+                setcookie("c-access-token", 'u=' . $account["username"] . '&token=' . $account["password"], time() + (86400 * 30), "/");
                 $this->layout = "defaultLayout";
-                header("Location:"."http://".HOST.$_SESSION["location"]);
+                header("Location:" . "http://" . HOST . $_SESSION["location"]);
             }
         } catch (Exception $e) {
             pd($e);
@@ -141,11 +139,11 @@ class ClientController extends Controller
     {
         try {
             $customerId = $_SESSION["customerId"] ?? null;
-            if($customerId) {
+            if ($customerId) {
                 $this->popup("/", "Please logout before Login");
             }
             $existAcount = $this->customerModel->getCustomerByUsername($_POST["username"]);
-            if($existAcount && count($existAcount) > 0){
+            if ($existAcount && count($existAcount) > 0) {
                 $_SESSION["name"] = $_POST["name"];
                 $_SESSION["username"] = $_POST["username"];
                 $_SESSION["password"] = $_POST["password"];
@@ -158,7 +156,7 @@ class ClientController extends Controller
                 $data["loginFailed"] = true;
                 $this->set($data);
                 $this->listProduct();
-            }else{
+            } else {
                 $onRegister = $this->customerModel->storeUser(
                     $_POST["name"],
                     $_POST["username"],
@@ -169,19 +167,19 @@ class ClientController extends Controller
                     $_POST["birth_date"],
                     $_POST["location"]
                 );
-                if($onRegister){
-                    unset( $_SESSION["name"]);
-                    unset( $_SESSION["username"]);
-                    unset( $_SESSION["password"]);
-                    unset( $_SESSION["phone"]);
-                    unset( $_SESSION["email"]);
-                    unset( $_SESSION["address"]);
-                    unset( $_SESSION["birth_date"]);
+                if ($onRegister) {
+                    unset($_SESSION["name"]);
+                    unset($_SESSION["username"]);
+                    unset($_SESSION["password"]);
+                    unset($_SESSION["phone"]);
+                    unset($_SESSION["email"]);
+                    unset($_SESSION["address"]);
+                    unset($_SESSION["birth_date"]);
                     $retrieveAccount =  $this->customerModel->getCustomerByUsername($_POST["username"]);
                     $_SESSION["customerId"] = $retrieveAccount["id"];
                     $_SESSION["customerUsername"] = $retrieveAccount["username"];
                     $_SESSION["customer-token"] = $retrieveAccount["password"];
-                    header("Location:"."http://".HOST.$_SESSION["location"]);
+                    header("Location:" . "http://" . HOST . $_SESSION["location"]);
                 }
             }
         } catch (Exception $e) {
@@ -192,7 +190,7 @@ class ClientController extends Controller
     {
         try {
             $customerId = $_SESSION["customerId"] ?? null;
-            if($customerId) {
+            if ($customerId) {
                 $this->popup("/", "Please logout before Register");
             }
             $this->layout = "blankLayout";
@@ -201,54 +199,111 @@ class ClientController extends Controller
             pd($e);
         }
     }
-    public function getLogout(){
+    public function getLogout()
+    {
         unset($_SESSION["customerId"]);
         unset($_SESSION["customerUsername"]);
         unset($_SESSION["customer-token"]);
         unset($_SESSION["location"]);
         unset($_SESSION["cart"]);
-        header("Location:"."http://".HOST.'/home');
+        header("Location:" . "http://" . HOST . '/home');
     }
-    public function showProfile(){
+    public function showProfile()
+    {
         try {
             $user = $this->checkLogin();
-            if(!$user){
-                $this->popup("/user/login","Please login to execute this action! 👎👎👎👎");
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $data["user"] = $user;
-           $this->set($data);
-           $this-> render("showUser");
+            $this->set($data);
+            $this->render("showUser");
         } catch (Exception $e) {
             pd($e);
         }
-
-
     }
-    public function editUserProfile(){
+    public function editUserProfile()
+    {
         try {
             $user = $this->checkLogin();
-            if(!$user){
-                $this->popup("/user/login","Please login to execute this action! 👎👎👎👎");
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $data["user"] = $user;
-           $this->set($data);
-           $this-> render("editUser");
+            $this->set($data);
+            $this->render("editUser");
         } catch (Exception $e) {
             pd($e);
         }
-
-
     }
     public function updateUserProfile()
     {
         try {
-        $user = $this->checkLogin();
-        if(!$user){
-            $this->popup("/user/login","Please login to execute this action! 👎👎👎👎");
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $confirmUser = $this->customerModel->fetchAccount($user["username"], $_POST["password"]);
+            $uInfo["name"] = $_POST["name"];
+            $uInfo["phone"] = $_POST["phone"];
+            $uInfo["email"] = $_POST["email"];
+            $uInfo["address"] = $_POST["address"];
+            $uInfo["birth_date"] = $_POST["birth_date"];
+            if ($confirmUser) {
+                $uInfo["username"] = $confirmUser["username"];
+                $updateUser = $this->customerModel->updateUserProfile($uInfo);
+                if ($updateUser) {
+                    $this->popup("/", "Updated successfully!");
+                } else {
+                    $this->popup("/", "Updated failed!");
+                }
+            } else {
+                $data["message"] = "The password is invalid. Please try again";
+                $this->set($data);
+                $this->editUserProfile();
+            }
+        } catch (Exception $e) {
+            pd($e);
         }
-        dd($user);
-    } catch (Exception $e) {
-        pd($e);
     }
+    public function getChangePassword()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $this->render("changePassword");
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function updatePassword()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $confirmUser = $this->customerModel->fetchAccount($user["username"], $_POST["password"]);
+            if ($confirmUser) {
+                $uInfo["password"] = $_POST["new-password"];
+                $uInfo["username"] = $confirmUser["username"];
+                $updateUser = $this->customerModel->updateUserPassword($uInfo);
+                if ($updateUser) {
+                    $retrieveUser = $this->customerModel->getCustomerByUsername($user["username"]);
+                    $_SESSION["customer-token"] = $retrieveUser["password"];
+                    $this->popup("/", " <h2>Updated successfully! </h2> <hr> Please remember new password: ".$uInfo['password']);
+                } else {
+                    $this->popup("/", "Updated failed!");
+                }
+            } else {
+                $data["message"] = "The current password is invalid. Please try again";
+                $this->set($data);
+                $this->getChangePassword();
+            }
+        } catch (Exception $e) {
+            pd($e);
+        }
     }
 }

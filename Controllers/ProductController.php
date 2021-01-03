@@ -164,8 +164,10 @@ class ProductController extends Controller
                 $this->popup("/dashboard/product-manager", "You do not have permission!!");
             } else {
                 $pid = $_POST["pid"];
+                $product =  $this->productModel->getProductById($pid);
                 $onDelete = $this->productModel->removeProduct($pid);
                 if ($onDelete) {
+                    $this->dropUploadedFile($product["img_ref"]);
                     $this->popup("/dashboard/product-manager", "The product had been deleted! 👌👌👌👌👌");
                 } else {
                     $this->popup("/dashboard/product-manager", "The product is not existed!! 👌👌👌👌👌");

@@ -430,6 +430,22 @@
     description: "Logout and reset Session";
 
     ```
+11. Change password
+```
+method: GET
+router: "/user/change-password"
+action: "ClientController@getChangePassword"
+permistion: "self user"
+description: "redirect to changePassword page"
+```
+12. Update password
+```
+method: POST
+router:  "/user/update-password"
+action: "ClientController@updatePassword"
+permistion: "self user"
+description: "recieve password and new passsword, confirm then update when the old is valid"
+```
 ## Cart Controller
 
 1. Show cart
