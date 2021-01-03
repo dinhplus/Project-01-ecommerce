@@ -51,7 +51,7 @@ class BaseController
     {
         $isCustomURL = preg_match("/^http?/", $filePath);
         $isUploadedFileDir =  preg_match('/^\/public\/upload\/?/', $filePath);
-        if (!$isCustomURL && $isUploadedFileDir) {
+        if ((!$isCustomURL) && $isUploadedFileDir) {
             $fullPath = ROOT . "WEBROOT" . str_replace("/", "\\", $filePath);
 
             if (is_file($fullPath)) {
