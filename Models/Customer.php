@@ -51,7 +51,6 @@ class Customer extends Model{
     {
         $query = "INSERT INTO customers(name, username, password, phone, email, address, birth_date) VALUES(:name, :username, :password, :phone, :email, :address, :birth_date)";
         $req = self::getConnection()->prepare($query);
-        // $req->setFetchMode(PDO::FETCH_ASSOC);
         return  $req->execute([
             "name" => $name,
             "username" => $username,
@@ -60,6 +59,28 @@ class Customer extends Model{
             "email" => $email,
             "address" => $address,
             "birth_date" => $birth_date
+        ]);
+    }
+    public function updateUserProfile($user){
+        $query = "UPDATE customers SET name = :name, phone = :phone, email = :email, address = :address, birth_date = :birth_date WHERE username = :username";
+        // var_dump($account);
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            "name" => $user["name"],
+            "phone" => $user["phone"],
+            "email" => $user["email"],
+            "address" => $user["address"],
+            "birth_date" => $user["birth_date"],
+            "username" => $user["username"]
+        ]);
+    }
+
+    public function updateUserPassword($user){
+        $query = "UPDATE customers SET password = :password WHERE username = :username";
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            "password" => password_hash($user["password"],PASSWORD_DEFAULT),
+            "username" => $user["username"]
         ]);
     }
 }

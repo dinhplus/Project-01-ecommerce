@@ -73,6 +73,9 @@ Router::GET("/user/logout", "ClientController@getLogout");
 Router::GET("/user/show-profile", "ClientController@showProfile");
 Router::GET( "/user/edit-profile", "ClientController@editUserProfile");
 Router::POST("/user/update-profile",  "ClientController@updateUserProfile");
+Router::GET("/user/change-password", "ClientController@getChangePassword");
+Router::POST("/user/update-password", "ClientController@updatePassword");
+
 
 
 

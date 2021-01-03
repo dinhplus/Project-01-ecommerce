@@ -87,8 +87,10 @@
                             <?php
                             if (!empty($_SESSION["customerId"])) {
                             ?>
+                                <a class="dropdown-item" href="<?= "http://" . HOST . "/user/show-profile" ?>" ?> Show Profile</a>
+                                <a class="dropdown-item" href="<?= "http://" . HOST . "/user/edit-profile" ?>" ?> Edit Profile</a>
+                                <a class="dropdown-item" href="<?= "http://" . HOST . "/user/change-password" ?>" ?> Change Password</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/logout" ?>" ?> Log out</a>
-                                <a class="dropdown-item" href="#" ?> Edit Profile</a>
                             <?php
                             }
                             ?>
@@ -229,8 +231,7 @@
     <script src="/public/js/common/jquery.min.js"></script>
     <script src="/public/js/common/DOMBehavior.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
-    <script src="/public/js/clients/loginBehavior.js"></script>
-    <script src="/public/js/clients/registerBehavior.js"></script>
+    <script src="/public/js/clients/validateBehavior.js"></script>
     <?php if (isset($loginFailed) && $loginFailed) { ?>
         <script>
             $(document).ready(function() {
