@@ -47,6 +47,7 @@ class OrderController extends Controller
             foreach ($data["orders"] as &$order) {
                 $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
             }
+            pd($order);
             unset($order);
 
             $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
@@ -71,8 +72,7 @@ class OrderController extends Controller
                 $data["enableSearch"] = false;
                 $this->set($data);
                 $this->render("orderDetail");
-            }
-            else{
+            } else {
                 $this->popup("/dashboard/order-manager", "This order do not exist");
             }
             // pd($data);
@@ -93,10 +93,9 @@ class OrderController extends Controller
             $order = $this->orderModel->getOrderById($oid);
             if ($next_status > $order["status_id"] && $order["status_id"] <= 3) {
                 $onUpdate = $this->orderModel->updateOrderStatus($oid, $next_status, $acount["id"], $note);
-                if($onUpdate){
+                if ($onUpdate) {
                     $this->popup("/dashboard/order-manager", "The order status has been updated! <br> Click ok then redirect Dashboard");
                 }
-
             } else if ($order["status_id"] > 3) {
                 $data["message"] = "This order status is the lastest status. You cannot modify!";
                 $data["order"] = $order;
@@ -263,16 +262,50 @@ class OrderController extends Controller
             dd($e);
         }
     }
-    public function getCreateOrder(){
+    public function getCreateOrder()
+    {
         try {
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
             }
-
-
-
-
+            if ($acount["role_id"] < 2) {
+                $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
+            } else {
+                $pageNumber = $_GET["page"] ?? 1;
+                $recordPerPage = PAGINATE;
+                $productName = $_GET["q"] ?? null;
+                $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
+                $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
+                $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
+                $data["enableSearch"] = true;
+                $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+                $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
+                $this->set($data);
+                $this->render("getCreateOrder");
+            }
+        } catch (Exception $e) {
+            die($e);
+        }
+    }
+    //TODO: define action for generateOrder()
+    public function generateOrder()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if ($acount["role_id"] < 2) {
+                $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
+            } else {
+                $cart = $_POST["cart"] ?? null;
+                if($cart){
+                    //TODO: define function createOrder, generateOrderDetail
+                    $oid = $this->orderModel->createOrder($acount["id"], $cart);
+                    $this->ordeModel->generateOrderDetail($oid, $cart);
+                }
+            }
         } catch (Exception $e) {
             die($e);
         }

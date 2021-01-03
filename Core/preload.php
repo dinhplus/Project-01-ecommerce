@@ -1,4 +1,5 @@
 <?php
+
 function pd($data)
 {
     echo '<style>
@@ -25,6 +26,15 @@ function dd($data)
     echo '</pre>';
     die();
 }
+function imageRender($img_ref){
+    if (preg_match("/^http?/", $img_ref)) {
+        return ($img_ref);
+    } else {
+        return ("http://" . HOST .$img_ref);
+    }
+}
+
+
 function console_log($output, $with_script_tags = true)
 {
     $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .

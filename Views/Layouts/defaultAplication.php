@@ -30,7 +30,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">Contact</a>
                 </li>
-                
+
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search">
@@ -49,8 +49,8 @@
         </div>
 
     </main>
-    <script src="/public/assets/bootstrap/Jquery/jquery-3.2.1.slim.min.js" ></script>
-    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/public/js/common/jquery.min.js" ></script>
+    <script src="/public/js/common/DOMBehavior.js"></script>
 </body>
 
 </html>

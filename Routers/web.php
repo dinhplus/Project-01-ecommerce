@@ -60,6 +60,19 @@ Router::GET( "/dashboard/order-manager/create-order", "OrderController@getCreate
 Router::POST( "/dashboard/order-manager/create-order", "OrderController@generateOrder");
 
 
+Router::GET("/product/index", "ClientController@listProduct");
+Router::GET("/product", "ClientController@listProduct");
+Router::GET("/home", "ClientController@listProduct");
+Router::GET("/", "ClientController@listProduct");
+Router::GET("/product/detail","ClientController@productDetail");
+Router::POST("/user/register",   "ClientController@storeUser");
+Router::GET("/user/register",   "ClientController@getRegister");
+Router::POST("/user/login", "ClientController@postLogin");
+Router::GET("/user/login", "ClientController@getLogin");
+Router::GET("/user/logout", "ClientController@getLogout");
+Router::GET("/user/show-profile", "ClientController@showProfile");
+Router::GET( "/user/edit-profile", "ClientController@editUserProfile");
+Router::POST("/user/update-profile",  "ClientController@updateUserProfile");
 
 
 
@@ -68,31 +81,6 @@ Router::POST( "/dashboard/order-manager/create-order", "OrderController@generate
 
 
 
-
-
-
-
-
-Router::GET("/acount/login","UserController@getLogin");
-Router::POST("/acount/login","UserController@postLogin");
-
-Router::GET("/acount/register","UserController@getRegister");
-Router::POST("/acount/register","UserController@storeUser");
-
-Router::GET("/home","HomeController@index");
-Router::GET("/","HomeController@index");
-
-Router::GET("/manager","ManagerController@index");
-Router::GET("/manager/product","ManagerController@index");
-Router::GET("/manager/create-product", "ManagerController@createProduct");
-Router::POST("/manager/store-product", "ManagerController@storeProduct");
-
-Router::GET("/posts","PostController@index");
-Router::GET("/test","TestController@index");
-
-// Router::GET("/posts/detail/$id","PostController@show");
-Router::GET("/posts/create","PostController@create");
-Router::POST("/posts/create","PostController@postCreate");
 Router::GET("/quick-checker", function(){
     dd($_GET["check"]);
 

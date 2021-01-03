@@ -1,0 +1,14 @@
+.navbar_menu li:hover{
+    background: blue;
+    border: 1px solid red;
+}
+.menu_bar_mod{
+    position: fixed;
+    top: 0px;
+    z-index: 9;
+    width: 100%;
+}
+.navbar_menu .dropdown .dropdown-menu .dropdown-item:hover{
+    background-color: rgb(52, 52, 245);
+    color: white;
+}

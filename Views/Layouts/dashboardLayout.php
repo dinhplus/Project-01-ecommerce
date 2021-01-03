@@ -45,9 +45,17 @@
                                     <li>Dashboard</li>
                                 </a>
 
-                                <li>Reports</li>
+
                                 <li>Analytics</li>
-                                <li>Code Blocks</li>
+
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/change-password") ?>">
+                                    <li>Change Passwords</li>
+                                </a>
+                                <li>Show Sefl Acount detail</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/edit-staff?uid=" . $_SESSION["uid"]) ?>">
+
+                                    <li>Edit Self Profile</li>
+                                </a>
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/logout") ?>">
                                     <li>Logout</li>
                                 </a>
@@ -104,14 +112,6 @@
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/index") ?>">
                                     <li>All Staff</li>
                                 </a>
-                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/change-password") ?>">
-                                    <li>Change Passwords</li>
-                                </a>
-                                <li>Show Sefl Acount detail</li>
-                                <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/edit-staff?uid=" . $_SESSION["uid"]) ?>">
-
-                                    <li>Edit Self Profile</li>
-                                </a>
                             </ul>
                         </div>
                     </label>
@@ -163,7 +163,7 @@
     </div>
 
     <script src="/public/assets/bootstrap/Jquery/jquery-3.2.1.slim.min.js"></script>
-    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script> -->
 </body>
 
 </html>

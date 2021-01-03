@@ -21,12 +21,10 @@ class ProductController extends Controller
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
             }
-            // var_dump($_GET["category"]);;
-
             $pageNumber = $_GET["page"] ?? 1;
             $recordPerPage = PAGINATE;
             $productName = $_GET["q"] ?? null;
-            // var_dump($productName);
+
             $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
             $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
             $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
