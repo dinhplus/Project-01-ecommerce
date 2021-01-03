@@ -35,8 +35,8 @@ class ClientController extends Controller
                 $data["customer"] = $customer;
             }
             $allProduct = $this->productModel->getAllProduct($productName, $category, $brand, $productStatus);
-            $data["categories"] = $this->productModel->getCategories();
-            $data["brands"] = $this->productModel->getBrands();
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
@@ -55,8 +55,8 @@ class ClientController extends Controller
             }
             if ($product && count($product) > 0) {
                 if ($product["status_id"] > 1) {
-                    $data["categories"] = $this->productModel->getCategories();
-                    $data["brands"] = $this->productModel->getBrands();
+                    // $data["categories"] = $this->productModel->getCategories();
+                    // $data["brands"] = $this->productModel->getBrands();
                     $data["product"] = $product;
                     $this->set($data);
                     $this->render("showProductDetail");
@@ -216,6 +216,8 @@ class ClientController extends Controller
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $data["user"] = $user;
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $this->set($data);
             $this->render("showUser");
         } catch (Exception $e) {
@@ -229,6 +231,8 @@ class ClientController extends Controller
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $data["user"] = $user;
             $this->set($data);
             $this->render("editUser");
@@ -273,6 +277,9 @@ class ClientController extends Controller
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
+            // $this->set($data);
             $this->render("changePassword");
         } catch (Exception $e) {
             pd($e);
@@ -333,6 +340,8 @@ class ClientController extends Controller
                 $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
             }
             unset($order);
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
             $this->set($data);
             $this->render("showOrderList");
@@ -353,6 +362,8 @@ class ClientController extends Controller
                 $order["products"] = $this->orderModel->getOrderDetail($oid);
                 $data["order"] = $order;
                 $data["enableSearch"] = false;
+                // $data["categories"] = $this->productModel->getCategories();
+                // $data["brands"] = $this->productModel->getBrands();
                 $this->set($data);
                 // $this->render("orderDetail");
                 $this->render("showOrderDetail");
