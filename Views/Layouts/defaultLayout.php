@@ -87,6 +87,7 @@
                             <?php
                             if (!empty($_SESSION["customerId"])) {
                             ?>
+                                <a class="dropdown-item" href="<?= "http://" . HOST . "/user/order/list" ?>" ?> Show Shoppinh History</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/show-profile" ?>" ?> Show Profile</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/edit-profile" ?>" ?> Edit Profile</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/change-password" ?>" ?> Change Password</a>

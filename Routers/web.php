@@ -76,7 +76,8 @@ Router::POST("/user/update-profile",  "ClientController@updateUserProfile");
 Router::GET("/user/change-password", "ClientController@getChangePassword");
 Router::POST("/user/update-password", "ClientController@updatePassword");
 
-
+Router::GET("/user/order/list", "ClientController@showOrders");
+Router::GET("/user/order/show", "ClientController@showOrderDetail");
 
 
 

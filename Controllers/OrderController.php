@@ -47,7 +47,6 @@ class OrderController extends Controller
             foreach ($data["orders"] as &$order) {
                 $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
             }
-            pd($order);
             unset($order);
 
             $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;

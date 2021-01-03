@@ -406,16 +406,16 @@
 
     ```
     method: GET
-    router: "/user/order?uid=:uid"
+    router: "/user/order/list"
     action: "ClientController@showOrders"
     permistion: "self user"
     description: "show all order for this customer with status , linked to Order detail"
     ```
-9. Show Order list
+9. Show Order Detail
 
     ```
     method: GET
-    router: "/user/order?uid=:uid&oid=:oid"
+    router: "/user/order/show?oid=:oid"
     action: "ClientController@showOrderDetail"
     permistion: "self user"
     description: "show all information for this Order"

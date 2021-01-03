@@ -293,7 +293,7 @@ class ClientController extends Controller
                 if ($updateUser) {
                     $retrieveUser = $this->customerModel->getCustomerByUsername($user["username"]);
                     $_SESSION["customer-token"] = $retrieveUser["password"];
-                    $this->popup("/", " <h2>Updated successfully! </h2> <hr> Please remember new password: ".$uInfo['password']);
+                    $this->popup("/", " <h2>Updated successfully! </h2> <hr> Please remember new password: " . $uInfo['password']);
                 } else {
                     $this->popup("/", "Updated failed!");
                 }
@@ -301,6 +301,63 @@ class ClientController extends Controller
                 $data["message"] = "The current password is invalid. Please try again";
                 $this->set($data);
                 $this->getChangePassword();
+            }
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function showOrders()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = $_GET["status_id"] ?? null;
+            $oid = $_GET["oid"] ?? null;
+            $cid = $user["id"];
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = $allOrders; // array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("showOrderList");
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function showOrderDetail()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $oid = $_GET["oid"] ?? 1;
+            $order = $this->orderModel->getOrderById($oid) ?? null;
+            if ($order && $order["customer_id"] === $user["id"]) {
+                $order["products"] = $this->orderModel->getOrderDetail($oid);
+                $data["order"] = $order;
+                $data["enableSearch"] = false;
+                $this->set($data);
+                // $this->render("orderDetail");
+                $this->render("showOrderDetail");
+            } else {
+                $this->popup("/user/order/list", "This order do not exist");
             }
         } catch (Exception $e) {
             pd($e);

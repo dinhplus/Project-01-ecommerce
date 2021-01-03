@@ -39,7 +39,6 @@ class Order extends Model
         }
         $query .=  " LIMIT ".$recordPerPage." OFFSET ".(($pageNumber -1) * $recordPerPage);
         $req = self::getConnection()->prepare($query);
-        $req->setFetchMode(PDO::FETCH_ASSOC);
         $req->execute();
         return $req->fetchAll();
     }
