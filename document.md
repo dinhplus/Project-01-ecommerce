@@ -446,6 +446,14 @@ action: "ClientController@updatePassword"
 permistion: "self user"
 description: "recieve password and new passsword, confirm then update when the old is valid"
 ```
+13. Cancel Order
+```
+method: POST
+router:  "/user/order/cancel"
+action: "ClientController@cancelOrder"
+permistion: "self user"
+description: "Cancel order for self user"
+```
 ## Cart Controller
 
 1. Show cart

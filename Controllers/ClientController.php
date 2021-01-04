@@ -374,4 +374,36 @@ class ClientController extends Controller
             pd($e);
         }
     }
+    public function cancelOrder()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $oid = $_POST["oid"] ?? null;
+            $note = $_POST["change_status_note"] ?? null;
+            if($oid){
+                $order = $this->orderModel->getOrderById($oid) ?? null;
+            }
+            if ( isset($order) && $order["customer_id"] === $user["id"]) {
+                if($order["status_id"] < 4){
+                    $onCancelOrder = $this->orderModel->updateOrderStatus($oid, 6, $order["staff_ref"], $note);
+                    if($onCancelOrder){
+                        $this->popup("/user/order/list", "Cancelled Success!");
+                    }
+                    else{
+                        $this->popup("/user/order/list", "Cancellation failed! Kindly try again");
+                    }
+                }
+                else{
+                    $this->popup("/user/order/list", "This order cannot be cancelled! <br> Please waiting for recieving the payload");
+                }
+            } else {
+                $this->popup("/user/order/list", "This order do not exist");
+            }
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
 }

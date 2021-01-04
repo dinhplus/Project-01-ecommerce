@@ -71,29 +71,14 @@
         </div>
     </div>
     <div class="action">
-        <?php if ($order["status_id"] == 1) { ?>
-            <form action="/dashboard/order-manager/change-status" method="POST">
-                <input type="hidden" name="oid" value="<?= $order["id"] ?>">
-                <input type="hidden" name="status_id" value="2">
-                <button type="submit" id="" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Confirm the Order</button>
-            </form>
-        <?php } ?>
-
-        <?php if ($order["status_id"] < 4) { ?>
-            <form action="/dashboard/order-manager/change-status" method="POST">
-                <input type="hidden" name="oid" value="<?= $order["id"] ?>">
-                <input type="hidden" name="status_id" value="4">
-                <button type="submit" id="" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Complete Order</button>
-            </form>
-
+    <?php if ($order["status_id"] < 4) { ?>
         <hr>
-        <form action="/dashboard/order-manager/change-status" method="POST">
+        <form action="/user/order/cancel" method="POST">
             <input type="hidden" name="oid" value="<?= $order["id"] ?>">
-            <input type="hidden" name="status_id" value="6">
-            <button type="submit" id="" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Cancel Order</button>
+            <input type="hidden" name="change_status_note" id="change_status_note">
+            <button type="submit"  onclick="return cancelOrderConfirm()">Cancel Order</button>
         </form>
         <?php } ?>
-
 
 
     </div>

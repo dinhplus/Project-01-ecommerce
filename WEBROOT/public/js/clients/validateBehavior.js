@@ -208,3 +208,12 @@ function loginHandling() {
     }
     return validateOk;
 }
+function cancelOrderConfirm(){
+    var reason = window.prompt("Enter the reason:");
+    if(reason){
+        document.getElementById("change_status_note").value = "Customer cancel because:" + reason ;
+        return true;
+    }
+    else return false;
+
+}
