@@ -460,7 +460,7 @@ description: "Cancel order for self user"
 
     ```
     method: get
-    router: "/cart/show-cart?uid=:uid"
+    router: "/cart/show-cart"
     action: "CartController@showCart"
     permistion: "self user"
     description: "Show all product with more infor which added to cart"
@@ -468,7 +468,7 @@ description: "Cancel order for self user"
 2. add to cart
 
     ```
-    method: POST
+    method: GET
     router: "/cart/add-item"
     action: "CartController@addItem"
     permistion: "self user"
@@ -496,7 +496,7 @@ description: "Cancel order for self user"
 
     ```
     method: GET
-    router: "/cart/confirm?pid=:pid&cid=:cid"
+    router: "/cart/get-confirm"
     action: "CartController@confirmOrder"
     permistion: "self user"
     description: "Show cart with readOnly method, by confirm Shop Manager will show this Order"
@@ -505,7 +505,7 @@ description: "Cancel order for self user"
 
     ```
     method: POST
-    router: "/cart/confirm?pid=:pid&cid=:cid"
+    router: "/cart/push-confirm?pid=:pid&cid=:cid"
     action: "CartController@pushOrder"
     permistion: "self user"
     description: "Push this Order to 'Order' table then manager can show this Order from dashboard. final, show the order status"

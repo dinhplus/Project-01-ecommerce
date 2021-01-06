@@ -87,7 +87,7 @@ class OrderController extends Controller
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
             }
             $next_status = $_POST["status_id"];
-            $oid = $_POST["oid"];
+            $oid = $_POST["oid"];       
             $note = $_POST["change_status_note"] ?? null;
             $order = $this->orderModel->getOrderById($oid);
             if ($next_status > $order["status_id"] && $order["status_id"] <= 3) {

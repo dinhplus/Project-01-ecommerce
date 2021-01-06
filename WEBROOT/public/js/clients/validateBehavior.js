@@ -211,7 +211,7 @@ function loginHandling() {
 function cancelOrderConfirm(){
     var reason = window.prompt("Enter the reason:");
     if(reason){
-        document.getElementById("change_status_note").value = "Customer cancel because:" + reason ;
+        document.getElementById("change_status_note").value = "Customer cancel because: <br> " + reason ;
         return true;
     }
     else return false;

@@ -75,11 +75,16 @@ Router::GET( "/user/edit-profile", "ClientController@editUserProfile");
 Router::POST("/user/update-profile",  "ClientController@updateUserProfile");
 Router::GET("/user/change-password", "ClientController@getChangePassword");
 Router::POST("/user/update-password", "ClientController@updatePassword");
-
 Router::GET("/user/order/list", "ClientController@showOrders");
 Router::GET("/user/order/show", "ClientController@showOrderDetail");
 Router::POST("/user/order/cancel", "ClientController@cancelOrder");
 
+Router::GET("/cart/show-cart", "CartController@showCart");
+Router::GET("/cart/add-item", "CartController@addItem");
+Router::POST("/cart/update-quantity", "CartController@updateItemQuantity");
+Router::POST("/cart/delete-item",  "CartController@deleteItem");
+Router::GET( "/cart/get-confirm",  "CartController@confirmOrder");
+Router::POST("/cart/push-confirm", "CartController@pushOrder");
 
 
 

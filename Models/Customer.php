@@ -1,6 +1,7 @@
 <?php
 
-class Customer extends Model{
+class Customer extends Model
+{
     public function getCustomerByUsername($username)
     {
         $query = "SELECT * FROM customers WHERE username = :username";

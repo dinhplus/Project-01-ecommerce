@@ -1,111 +1,110 @@
 <?php
 use Controller\BaseController as Controller;
-require_once(ROOT."Models/Product.php");
-class ManagerController extends Controller {
+require_once(ROOT . "Models/Cart.php");
+require_once(ROOT . "Models/Product.php");
+require_once(ROOT . "Models/Order.php");
+require_once(ROOT . "Models/Customer.php");
+require_once(ROOT . "Controllers/AdminController.php");
+class CartController extends Controller {
 
     public function __construct() {
         $this->layout = "defaultLayout";
-        if(!(isset($_COOKIE["username"]) && isset($_COOKIE["user_level"]) && $_COOKIE["user_level"]>1)){
-            header("Location:"."http://".HOST."/acount/login");
-        }
+        $this->customerModel = new Customer();
         $this->productModel = new Product();
+        $this->orderModel = new Order();
+        $this->cartModel = new Cart();
     }
+    public function checkLogin()
+    {
 
-    public function index(){
-        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $products = $this->productModel->getProducts(1);
-        $products->execute(["condition" => 1]);
-        $temp = $products->rowCount();
-
-        // var_dump($temp);
-        // $productQuantity = $this->productModel->getProductQuantity();
-        $this->render("manageProduct");
-    }
-
-    public function createProduct(){
-        $this->render("createProduct");
-    }
-    public function storeProduct(){
-        $name = $_POST["name"];
-        $description = $_POST["description"];
-        $price = $_POST["price"];
-        $quantity = $_POST["quantity"];
-
-
-        $img_store_target = ROOT.'WEBROOT\\public\\upload\\images\\';
-        $img_ref_target = WEBROOT.'public/upload/images/';
-
-        $img_base_name = basename($_FILES["img_ref"]["name"]);
-        $img_store_name = explode(".",$img_base_name)[0].microtime(true).".".explode(".",$img_base_name)[1];
-
-        $img_store_path =  $img_store_target.$img_store_name;
-        $img_ref =  $img_ref_target.$img_store_name;
-
-        $imageFileType = strtolower(pathinfo($img_store_path,PATHINFO_EXTENSION));
-        $uploadOK = true;
-
-        if(isset($_POST["submit"])){
-            $check = getimagesize($_FILES["img_ref"]["tmp_name"]);
-            $data["message"]["image"] = '';
-            if(!$check) {
-                //TODO: return alert "File is not an image";
-                $data["message"]["image"] = $data["message"]["image"]."<br>File is not an image.";
-                $uploadOk = false;
+        if (
+            isset($_SESSION["customerUsername"])
+            && isset($_SESSION["customer-token"])
+        ) {
+            $account = $this->customerModel->checkLogin($_SESSION["customerUsername"], $_SESSION["customer-token"]);
+            if ($account !== false && count($account) > 0) {
+                $checkLogin = $account;
+            } else {
+                $checkLogin = false;
             }
-
-            if(
-                $imageFileType != "jpg"
-                && $imageFileType != "png"
-                && $imageFileType != "jpeg"
-                && $imageFileType != "gif"
-            ) {
-                //TODO
-                $data["message"]["image"] = $data["message"]["image"]."<br> Only JPG, JPEG, PNG & GIF files are allowed.";
-                $uploadOk = false;
-            }
-
-            if(!$uploadOK){
-                //TODO Alert smthg
-                $data["message"]["image"] = "File uploaded is invalid <br>".$data["message"]["image"];
-            }else{
-                if (move_uploaded_file($_FILES["img_ref"]["tmp_name"], $img_store_path)) {
-                    $data["onSuccess"]["image"] =  "The file ". htmlspecialchars( basename( $_FILES["img_ref"]["name"])). " has been uploaded.";
-                } else {
-                    $data["message"]["image"] = $data["message"]["image"]."<br> Sorry, there was an error uploading your file.";
-                    $uploadOK = false;
-                }
-            }
-
-
-
+        } else {
+            $checkLogin = false;
         }
-        if(!$uploadOK){
-            $this -> set($data);
-            $this->render("createProduct");
+        return $checkLogin;
+    }
+    public function showCart(){
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $data["cart"] = $this->cartModel->getCart($user["id"]);
+            $this->set($data);
+            pd($data);
+            $this->render("showCart");
+        } catch (Exception $e) {
+            pd($e);
         }
-        else{
-            $product = [
-                "name" => $name,
-                "description" => $description,
-                "price" => $price,
-                "quantity" => $quantity,
-                "img_ref" => $img_ref
-            ];
-
-            $onStoreProduct = $this->productModel->storeProduct($product);
-            if( $onStoreProduct ){
-                $data["onSuccess"]["storeProduct"] = "Successed to store product";
-                $this -> set($data);
-                header("Location:"."http://".HOST."/manager/create-product");
+    }
+    public function addItem(){
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
-            else {
-                $data["onSuccess"]["storeProduct"] = "Failed to store product";
-                $this -> set($data);
-                $this->render("createProduct");
-
+            $pid = $_GET["pid"] ?? null;
+            $item_quantity = $_GET["qtt"] ?? 1;
+            if($pid){
+                $productAvailable = $this->productModel->getProductAvailable($pid, $item_quantity);
+                $addable = $this->cartModel->getAddable($user["id"], $pid);
             }
 
+            if(isset($productAvailable) && $productAvailable && count($productAvailable) > 0 && $addable) {
+                $addItemSuccess = $this->cartModel->addItem($user["id"], $pid, $item_quantity);
+            }
+            else{
+                $this->popup("/home", "This product is not available, exist in your cart or Out of stock! <br> Kindly choose another or decrease Item quantity");
+            }
+            // TODO: Redirect to current page;
+            if(isset($addItemSuccess) && $addItemSuccess){
+                header("Location:"."http://".HOST."/home");
+            }
+            else{
+                header("Location:"."http://".HOST."/home");
+            }
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function updateItemQuantity()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $pid = $_GET["pid"] ?? null;
+            $item_quantity = $_GET["qtt"] ?? 1;
+            if($pid){
+                $productAvailable = $this->productModel->getProductAvailable($pid, $item_quantity);
+                $addable = $this->cartModel->getAddable($user["id"], $pid);
+            }
 
+            if(isset($productAvailable) && $productAvailable && count($productAvailable) > 0 && $addable) {
+                $addItemSuccess = $this->cartModel->addItem($user["id"], $pid, $item_quantity);
+            }
+            else{
+                $this->popup("/home", "This product is not available, exist in your cart or Out of stock! <br> Kindly choose another or decrease Item quantity");
+            }
+            // TODO: Redirect to current page;
+            if(isset($addItemSuccess) && $addItemSuccess){
+                header("Location:"."http://".HOST."/home");
+            }
+            else{
+                header("Location:"."http://".HOST."/home");
+            }
+        } catch (Exception $e) {
+            pd($e);
         }
     }
 }

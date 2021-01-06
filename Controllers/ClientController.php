@@ -104,8 +104,8 @@ class ClientController extends Controller
     public function postLogin()
     {
         try {
-            $customerId = $_SESSION["customerId"] ?? null;
-            if ($customerId) {
+            $user = $this->checkLogin();
+            if ($user) {
                 $this->popup("/", "Please logout before Login");
             }
             $username = $_POST["username"] ?? null;

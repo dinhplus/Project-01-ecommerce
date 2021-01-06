@@ -113,4 +113,13 @@ class Product extends Model
             "status_id" => $product["status_id"]
         ]);
     }
+    public function getProductAvailable($pid, $expect_quantity = 1){
+        $query = "SELECT p.id from products p WHERE p.id = :pid AND p.quantity >= :expect_quantity";
+        $req = self::getConnection()->prepare($query);
+        $req->execute([
+            "pid" => $pid,
+            "expect_quantity" => $expect_quantity
+        ]);
+        return $req->fetchAll();
+    }
 }
