@@ -10,7 +10,7 @@ class Cart extends Model
         ]);
         return $req->fetchAll();
     }
-    public function addItem($uid,$pid,$item_quantity = 1)
+    public function addItem($uid, $pid, $item_quantity = 1)
     {
         $query = "INSERT INTO carts (customer_id, product_id, quantity) VALUES (:uid, :pid, :quantity)";
         $req = self::getConnection()->prepare($query);
@@ -19,6 +19,27 @@ class Cart extends Model
             "pid" => $pid,
             "quantity" => $item_quantity
         ]);
+    }
+
+    public function updateCartItemQuantity($uid, $pid, $item_quantity = 0)
+    {
+        $query = "UPDATE carts SET quantity = :quantity WHERE customer_id = :uid AND  product_id = :pid";
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            'uid' => $uid,
+            "pid" => $pid,
+            "quantity" => $item_quantity
+        ]);
+    }
+    public function getItemQuantity($uid, $pid){
+        $query = "SELECT sum(c.quantity) quantity FROM (SELECT quantity FROM carts WHERE product_id = :pid AND customer_id != :uid) c";
+        $req = self::getConnection()->prepare($query);
+        $req->execute([
+            'uid' => $uid,
+            "pid" => $pid,
+        ]);
+        $res = $req->fetch();
+        return $res["quantity"];
     }
     public function getAddable($uid, $pid){
         $query = "SELECT product_id, customer_id from carts where customer_id = :uid AND product_id = :pid";
@@ -33,5 +54,11 @@ class Cart extends Model
         }
         else return false;
     }
-
+    public function cleanUpCart($uid){
+        $query = "DELETE FROM carts where customer_id = :uid";
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            'uid' => intval($uid)
+        ]);
+    }
 }

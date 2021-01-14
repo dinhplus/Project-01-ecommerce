@@ -505,7 +505,7 @@ description: "Cancel order for self user"
 
     ```
     method: POST
-    router: "/cart/push-confirm?pid=:pid&cid=:cid"
+    router: "/cart/push-confirm"
     action: "CartController@pushOrder"
     permistion: "self user"
     description: "Push this Order to 'Order' table then manager can show this Order from dashboard. final, show the order status"

@@ -85,12 +85,3 @@ Router::POST("/cart/update-quantity", "CartController@updateItemQuantity");
 Router::POST("/cart/delete-item",  "CartController@deleteItem");
 Router::GET( "/cart/get-confirm",  "CartController@confirmOrder");
 Router::POST("/cart/push-confirm", "CartController@pushOrder");
-
-
-
-
-
-Router::GET("/quick-checker", function(){
-    dd($_GET["check"]);
-
-});
