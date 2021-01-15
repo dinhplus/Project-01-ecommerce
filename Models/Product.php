@@ -113,4 +113,22 @@ class Product extends Model
             "status_id" => $product["status_id"]
         ]);
     }
+    public function getProductAvailable($pid, $expect_quantity = 1, $currentSelectedQtt){
+        $query = "SELECT p.id from products p WHERE p.id = :pid AND p.quantity >= (:expect_quantity + :crrQtt)";
+        $req = self::getConnection()->prepare($query);
+        $req->execute([
+            "pid" => $pid,
+            "expect_quantity" => $expect_quantity,
+            "crrQtt" => $currentSelectedQtt
+        ]);
+        return $req->fetch();
+    }
+    function decreaseProductQuantity($pid, $decreaseQuantity){
+        $query = "UPDATE products SET quantity = quantity - :dQtt WHERE id = :pid";
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            "pid" => $pid,
+            "dQtt" => $decreaseQuantity
+        ]);
+    }
 }

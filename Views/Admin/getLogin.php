@@ -8,12 +8,12 @@
 
         <label for="username">
             User Name <br>
-            <input type="text" name="username" id="username" placeholder="Username or email..."  value="<?php if(isset($inputted)) echo($inputted["username"])?>">
+            <input type="text" name="username" id="username1" placeholder="Username or email..."  value="<?php if(isset($inputted)) echo($inputted["username"])?>">
             <span id="username-err" class="warning err"></span>
         </label><br>
         <label for="password">
             Password <br>
-            <input type="password" name="password" id="password" placeholder="Password..."   value="<?php if(isset($inputted)) echo($inputted["password"])?>">
+            <input type="password" name="password" id="password1" placeholder="Password..."   value="<?php if(isset($inputted)) echo($inputted["password"])?>">
             <span id="password-err" class="warning err"></span>
         </label><br>
         <div id="login-form-action">
@@ -24,7 +24,7 @@
                 <span>
 
             </a>
-            <input type="submit" id="submit" name="submit" value="Submit">
+            <input type="submit" id="submit" name="submit" value="Submit" onclick="return loginHandling()">
             <br><br>
 
         </div>

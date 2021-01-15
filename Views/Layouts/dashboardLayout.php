@@ -46,12 +46,12 @@
                                 </a>
 
 
-                                <li>Analytics</li>
+                                <!-- <li>Analytics</li> -->
 
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/change-password") ?>">
                                     <li>Change Passwords</li>
                                 </a>
-                                <li>Show Sefl Acount detail</li>
+                                <!-- <li>Show Sefl Acount detail</li> -->
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/admin-manager/edit-staff?uid=" . $_SESSION["uid"]) ?>">
 
                                     <li>Edit Self Profile</li>
@@ -63,7 +63,7 @@
                         </div>
                     </label>
                     <input id="Sales" name="checkbox" type="checkbox"></input>
-                    <label for="Sales">
+                    <!-- <label for="Sales">
                         <i class="icofont-sale-discount icofont-2x"></i>
                         <span>Sales Manager</span>
                         <div class="lil_arrow"></div>
@@ -76,7 +76,7 @@
                                 <li>Deliveries</li>
                             </ul>
                         </div>
-                    </label>
+                    </label> -->
                     <input id="Messages" name="checkbox" type="checkbox"></input>
                     <label for="Messages">
                         <i class="icofont-listine-dots icofont-2x"></i>
@@ -91,7 +91,7 @@
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/index") ?>">
                                     <li>Show all Product</li>
                                 </a>
-                                <li>Import data</li>
+                                <!-- <li>Import data</li> -->
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/remainder") ?>">
                                     <li>Product remainder</li>
                                 </a>
@@ -163,7 +163,8 @@
     </div>
 
     <script src="/public/assets/bootstrap/Jquery/jquery-3.2.1.slim.min.js"></script>
-    <!-- <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/public/js/dashboard/validateBehavior.js"></script>
 </body>
 
 </html>

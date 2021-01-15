@@ -21,11 +21,10 @@ class Model
                     PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ));
-                // self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             return self::$conn;
     } catch (PDOException $e) {
-        die("Connect database false: $e ");
+        pd("Connect database false: $e ");
     }
 
     }

@@ -47,7 +47,6 @@ class OrderController extends Controller
             foreach ($data["orders"] as &$order) {
                 $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
             }
-            pd($order);
             unset($order);
 
             $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
@@ -94,16 +93,20 @@ class OrderController extends Controller
             if ($next_status > $order["status_id"] && $order["status_id"] <= 3) {
                 $onUpdate = $this->orderModel->updateOrderStatus($oid, $next_status, $acount["id"], $note);
                 if ($onUpdate) {
+                    if($next_status == 4) {
+                        $order_detail = $this->orderModel->getOrderDetail($oid);
+                        foreach($order_detail as $item){
+                            $this->productModel->decreaseProductQuantity($item["product_id"], $item["quantity"]);
+                        }
+                    }
                     $this->popup("/dashboard/order-manager", "The order status has been updated! <br> Click ok then redirect Dashboard");
                 }
             } else if ($order["status_id"] > 3) {
                 $data["message"] = "This order status is the lastest status. You cannot modify!";
                 $data["order"] = $order;
-                dd($data);
             } else {
                 $data["message"] = "Can not change this order status";
                 $data["order"] = $order;
-                dd($data);
             }
         } catch (Exception $e) {
             dd($e);

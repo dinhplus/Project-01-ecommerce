@@ -35,15 +35,15 @@ class ClientController extends Controller
                 $data["customer"] = $customer;
             }
             $allProduct = $this->productModel->getAllProduct($productName, $category, $brand, $productStatus);
-            $data["categories"] = $this->productModel->getCategories();
-            $data["brands"] = $this->productModel->getBrands();
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
             // dd($data);
             $this->render("index");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function productDetail()
@@ -55,8 +55,8 @@ class ClientController extends Controller
             }
             if ($product && count($product) > 0) {
                 if ($product["status_id"] > 1) {
-                    $data["categories"] = $this->productModel->getCategories();
-                    $data["brands"] = $this->productModel->getBrands();
+                    // $data["categories"] = $this->productModel->getCategories();
+                    // $data["brands"] = $this->productModel->getBrands();
                     $data["product"] = $product;
                     $this->set($data);
                     $this->render("showProductDetail");
@@ -67,7 +67,7 @@ class ClientController extends Controller
                 $this->popup("/", "This product is not exist! 👆👆👆👆👆👆");
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function checkLogin()
@@ -104,8 +104,8 @@ class ClientController extends Controller
     public function postLogin()
     {
         try {
-            $customerId = $_SESSION["customerId"] ?? null;
-            if ($customerId) {
+            $user = $this->checkLogin();
+            if ($user) {
                 $this->popup("/", "Please logout before Login");
             }
             $username = $_POST["username"] ?? null;
@@ -132,7 +132,7 @@ class ClientController extends Controller
                 header("Location:" . "http://" . HOST . $_SESSION["location"]);
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function storeUser()
@@ -183,7 +183,7 @@ class ClientController extends Controller
                 }
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function getRegister()
@@ -196,7 +196,7 @@ class ClientController extends Controller
             $this->layout = "blankLayout";
             $this->render("getRegister");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function getLogout()
@@ -216,10 +216,12 @@ class ClientController extends Controller
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $data["user"] = $user;
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $this->set($data);
             $this->render("showUser");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function editUserProfile()
@@ -229,11 +231,13 @@ class ClientController extends Controller
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
             $data["user"] = $user;
             $this->set($data);
             $this->render("editUser");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function updateUserProfile()
@@ -263,7 +267,7 @@ class ClientController extends Controller
                 $this->editUserProfile();
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function getChangePassword()
@@ -273,9 +277,12 @@ class ClientController extends Controller
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
+            // $this->set($data);
             $this->render("changePassword");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function updatePassword()
@@ -293,7 +300,7 @@ class ClientController extends Controller
                 if ($updateUser) {
                     $retrieveUser = $this->customerModel->getCustomerByUsername($user["username"]);
                     $_SESSION["customer-token"] = $retrieveUser["password"];
-                    $this->popup("/", " <h2>Updated successfully! </h2> <hr> Please remember new password: ".$uInfo['password']);
+                    $this->popup("/", " <h2>Updated successfully! </h2> <hr> Please remember new password: " . $uInfo['password']);
                 } else {
                     $this->popup("/", "Updated failed!");
                 }
@@ -303,7 +310,100 @@ class ClientController extends Controller
                 $this->getChangePassword();
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
+        }
+    }
+    public function showOrders()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $pageNumber = $_GET["page"] ?? 1;
+            $recordPerPage = PAGINATE;
+            $status_id = $_GET["status_id"] ?? null;
+            $oid = $_GET["oid"] ?? null;
+            $cid = $user["id"];
+            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $allOrders = $this->orderModel->getAllOrder(
+                $pageNumber,
+                $recordPerPage,
+                $descTotalPrice,
+                $status_id,
+                $cid,
+                $oid
+            );
+            $data = [];
+            $data["orders"] = $allOrders; // array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
+            foreach ($data["orders"] as &$order) {
+                $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
+            }
+            unset($order);
+            // $data["categories"] = $this->productModel->getCategories();
+            // $data["brands"] = $this->productModel->getBrands();
+            $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
+            $this->set($data);
+            $this->render("showOrderList");
+        } catch (Exception $e) {
+            // pd($e);
+        }
+    }
+    public function showOrderDetail()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $oid = $_GET["oid"] ?? 1;
+            $order = $this->orderModel->getOrderById($oid) ?? null;
+            if ($order && $order["customer_id"] === $user["id"]) {
+                $order["products"] = $this->orderModel->getOrderDetail($oid);
+                $data["order"] = $order;
+                // $data["enableSearch"] = false;
+                // $data["categories"] = $this->productModel->getCategories();
+                // $data["brands"] = $this->productModel->getBrands();
+                $this->set($data);
+                // $this->render("orderDetail");
+                $this->render("showOrderDetail");
+            } else {
+                $this->popup("/user/order/list", "This order do not exist");
+            }
+        } catch (Exception $e) {
+            // pd($e);
+        }
+    }
+    public function cancelOrder()
+    {
+        try {
+            $user = $this->checkLogin();
+            if (!$user) {
+                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+            }
+            $oid = $_POST["oid"] ?? null;
+            $note = $_POST["change_status_note"] ?? null;
+            if($oid){
+                $order = $this->orderModel->getOrderById($oid) ?? null;
+            }
+            if ( isset($order) && $order["customer_id"] === $user["id"]) {
+                if($order["status_id"] < 4){
+                    $onCancelOrder = $this->orderModel->updateOrderStatus($oid, 6, $order["staff_ref"], $note);
+                    if($onCancelOrder){
+                        $this->popup("/user/order/list", "Cancelled Success!");
+                    }
+                    else{
+                        $this->popup("/user/order/list", "Cancellation failed! Kindly try again");
+                    }
+                }
+                else{
+                    $this->popup("/user/order/list", "This order cannot be cancelled! <br> Please waiting for recieving the payload");
+                }
+            } else {
+                $this->popup("/user/order/list", "This order do not exist");
+            }
+        } catch (Exception $e) {
+            // pd($e);
         }
     }
 }

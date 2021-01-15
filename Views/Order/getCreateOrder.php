@@ -86,13 +86,13 @@ if (empty($_GET["page"])) {
                             </div>
                         </td>
                         <td>
-                            <div class="product-cover-img">
+                            <div class="product-cover-img" >
                                 <img src="<?php if (preg_match("/^http?/", $product["img_ref"])) {
                                                 echo ($product["img_ref"]);
                                             } else {
                                                 echo ("http://" . HOST . $product["img_ref"]);
                                             }
-                                            ?>" alt="">
+                                            ?>" alt="" width="250px">
                             </div>
                         </td>
                         <td>

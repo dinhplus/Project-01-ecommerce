@@ -15,6 +15,9 @@ if (empty($_GET["page"])) {
                         <img class="card-img-top" src="<?= imageRender($product["img_ref"]) ?>" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title"><?= $product["name"] ?></h5>
+                            <p class="card-text"><b> Price: </b> <?=$product["price"]?> </p>
+                            <p class="card-text"><b> Brand: </b> <?=$product["brand"]?> </p>
+                            <p class="card-text"><b> Category: </b> <?=$product["category"]?> </p>
                             <p class="card-text"><?php
                                                     if (strlen(($product["description"])) > 150) {
                                                         echo (substr($product["description"], 0, 150));

@@ -106,11 +106,11 @@ if (empty($_GET["page"])) {
                                             } else {
                                                 echo ("http://" . HOST . $product["img_ref"]);
                                             }
-                                            ?>" alt="">
+                                            ?>" alt="" style="width:300px">
                             </div>
                         </td>
                         <td>
-                            <div class="product-action">
+                            <div class="product-action" style="width:200px">
                                 <form action="/dashboard/product-manager/delete-product" method="POST">
                                     <input type="hidden" name="pid" value="<?= $product["id"] ?>">
                                     <button type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Delete</button>

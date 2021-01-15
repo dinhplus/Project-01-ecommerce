@@ -406,16 +406,16 @@
 
     ```
     method: GET
-    router: "/user/order?uid=:uid"
+    router: "/user/order/list"
     action: "ClientController@showOrders"
     permistion: "self user"
     description: "show all order for this customer with status , linked to Order detail"
     ```
-9. Show Order list
+9. Show Order Detail
 
     ```
     method: GET
-    router: "/user/order?uid=:uid&oid=:oid"
+    router: "/user/order/show?oid=:oid"
     action: "ClientController@showOrderDetail"
     permistion: "self user"
     description: "show all information for this Order"
@@ -446,13 +446,21 @@ action: "ClientController@updatePassword"
 permistion: "self user"
 description: "recieve password and new passsword, confirm then update when the old is valid"
 ```
+13. Cancel Order
+```
+method: POST
+router:  "/user/order/cancel"
+action: "ClientController@cancelOrder"
+permistion: "self user"
+description: "Cancel order for self user"
+```
 ## Cart Controller
 
 1. Show cart
 
     ```
     method: get
-    router: "/cart/show-cart?uid=:uid"
+    router: "/cart/show-cart"
     action: "CartController@showCart"
     permistion: "self user"
     description: "Show all product with more infor which added to cart"
@@ -460,7 +468,7 @@ description: "recieve password and new passsword, confirm then update when the o
 2. add to cart
 
     ```
-    method: POST
+    method: GET
     router: "/cart/add-item"
     action: "CartController@addItem"
     permistion: "self user"
@@ -488,7 +496,7 @@ description: "recieve password and new passsword, confirm then update when the o
 
     ```
     method: GET
-    router: "/cart/confirm?pid=:pid&cid=:cid"
+    router: "/cart/get-confirm"
     action: "CartController@confirmOrder"
     permistion: "self user"
     description: "Show cart with readOnly method, by confirm Shop Manager will show this Order"
@@ -497,7 +505,7 @@ description: "recieve password and new passsword, confirm then update when the o
 
     ```
     method: POST
-    router: "/cart/confirm?pid=:pid&cid=:cid"
+    router: "/cart/push-confirm"
     action: "CartController@pushOrder"
     permistion: "self user"
     description: "Push this Order to 'Order' table then manager can show this Order from dashboard. final, show the order status"

@@ -34,7 +34,7 @@ class ProductController extends Controller
             $this->set($data);
             $this->render("index");
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
 
@@ -56,7 +56,7 @@ class ProductController extends Controller
             $this->layout = "dashboardLayout";
             $this->render("getCreateProduct");
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
 
@@ -75,7 +75,7 @@ class ProductController extends Controller
             $brand_id = $_POST["brand"];
             $category_id = $_POST["category"];
             $warranty_cycle = $_POST["warranty-cycle"];
-            $status = $_POST["status"] ?? 0;
+            $status = $_POST["status"] ?? 2;
             $img_selector = $_POST["image-selector"] ?? 1;
             if ($img_selector == 2) {
                 $img_base_name = basename($_FILES["img_ref"]["name"]) ?? null;
@@ -150,7 +150,7 @@ class ProductController extends Controller
                 }
             }
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
 
@@ -174,7 +174,7 @@ class ProductController extends Controller
                 }
             }
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
     public function productRemainder()
@@ -190,13 +190,13 @@ class ProductController extends Controller
             $isSort = $_GET["sort"] ?? 1; //sort = 1 ?? -1
             $category = null;
             $brand = null;
-            $allProduct = $this->productModel->getAllProduct($productName, $category, $brand, $isSort);
+            $allProduct = $this->productModel->getAllProduct($productName, $category, $brand, null, $isSort);
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
             $this->render("index");
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
     public function showProductDetail()
@@ -218,7 +218,7 @@ class ProductController extends Controller
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
             }
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
 
@@ -246,7 +246,7 @@ class ProductController extends Controller
                 $this->popup("/dashboard/product-manager", "This product is not exist! 👆👆👆👆👆👆");
             }
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
     public function updateProduct()
@@ -266,7 +266,7 @@ class ProductController extends Controller
             $brand_id = $_POST["brand"];
             $category_id = $_POST["category"];
             $warranty_cycle = $_POST["warranty-cycle"];
-            $status = $_POST["status"] ?? 0;
+            $status = $_POST["status"] ?? 2;
             $img_selector = $_POST["image-selector"] ?? 1;
             if ($img_selector == 2) {
                 $img_base_name = basename($_FILES["img_ref"]["name"]) ?? null;
@@ -354,7 +354,7 @@ class ProductController extends Controller
                 }
             }
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
 
@@ -366,7 +366,7 @@ class ProductController extends Controller
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
             }
         } catch (Exception $e) {
-            pd($e);
+            //pd($e);
         }
     }
 }
