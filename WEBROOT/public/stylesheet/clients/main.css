@@ -38,3 +38,6 @@
     border: 1px double rgb(95, 95, 235);
     border-radius: 10px;
 }
+.form-group label{
+    width: 100%;
+}

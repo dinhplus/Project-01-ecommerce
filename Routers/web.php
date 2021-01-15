@@ -82,6 +82,7 @@ Router::POST("/user/order/cancel", "ClientController@cancelOrder");
 Router::GET("/cart/show-cart", "CartController@showCart");
 Router::GET("/cart/add-item", "CartController@addItem");
 Router::POST("/cart/update-quantity", "CartController@updateItemQuantity");
-Router::POST("/cart/delete-item",  "CartController@deleteItem");
+Router::GET("/cart/delete-item",  "CartController@deleteItem");
 Router::GET( "/cart/get-confirm",  "CartController@confirmOrder");
+Router::GET("/cart/clean-up", "CartController@cleanUpCart");
 Router::POST("/cart/push-confirm", "CartController@pushOrder");

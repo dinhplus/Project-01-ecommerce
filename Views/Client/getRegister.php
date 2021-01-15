@@ -10,7 +10,7 @@
                                 <div class="form-group">
                                     <label for="username">
 
-                                        <input type="text" class="form-control" name="username" id="username" placeholder="Username ..." require pattern="^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$" value="<?php if (isset($_SESSION["username"]) && $_SESSION["username"]) echo ($_SESSION["username"]) ?>">
+                                        <input type="text" class="form-control" name="username" id="username" placeholder="Username ..." require value="<?php if (isset($_SESSION["username"]) && $_SESSION["username"]) echo ($_SESSION["username"]) ?>">
                                         <span id="r-username-err" class="warning err"></span>
                                     </label>
                                 </div>
@@ -18,21 +18,21 @@
                                     <label for="name">
 
 
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Your name ..." require pattern="^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$" value="<?php if (isset($_SESSION["name"]) && $_SESSION["name"]) echo ($_SESSION["name"]) ?>">
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Your name ..." require value="<?php if (isset($_SESSION["name"]) && $_SESSION["name"]) echo ($_SESSION["name"]) ?>">
                                         <span id="r-name-err" class="warning err"></span>
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label for="password">
 
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password..." require pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}" value="<?php if (isset($_SESSION["password"]) && $_SESSION["password"]) echo ($_SESSION["password"]) ?>">
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password..." require value="<?php if (isset($_SESSION["password"]) && $_SESSION["password"]) echo ($_SESSION["password"]) ?>">
                                         <span id="r-password-err" class="warning err"></span>
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label for="cf-password">
 
-                                        <input type="password" class="form-control" name="cf-password" id="cf-password" placeholder="Confirm your password...." require pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}" value="<?php if (isset($_SESSION["password"]) && $_SESSION["password"]) echo ($_SESSION["password"]) ?>">
+                                        <input type="password" class="form-control" name="cf-password" id="cf-password" placeholder="Confirm your password...." require value="<?php if (isset($_SESSION["password"]) && $_SESSION["password"]) echo ($_SESSION["password"]) ?>">
                                         <span id="cf-password-err" class="warning err"></span>
                                     </label>
                                 </div>

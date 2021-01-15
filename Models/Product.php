@@ -120,8 +120,15 @@ class Product extends Model
             "pid" => $pid,
             "expect_quantity" => $expect_quantity,
             "crrQtt" => $currentSelectedQtt
-
         ]);
-        return $req->fetchAll();
+        return $req->fetch();
+    }
+    function decreaseProductQuantity($pid, $decreaseQuantity){
+        $query = "UPDATE products SET quantity = quantity - :dQtt WHERE id = :pid";
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            "pid" => $pid,
+            "dQtt" => $decreaseQuantity
+        ]);
     }
 }

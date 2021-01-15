@@ -4,21 +4,21 @@ if (empty($_GET["page"])) {
 }
 ?>
 
-<div class="list-orders">
+<div class="container list-orders">
 
     <div class="data">
-        <table>
+        <table class="table table-striped">
             <tr>
-                <th>
+                <th scope="col">
                     Order index
                 </th>
-                <th>
+                <th scope="col">
                     Customer Information
                 </th>
-                <th>
+                <th scope="col">
                     Order common
                 </th>
-                <th>
+                <th scope="col">
                     Order Detail
                 </th>
                 <th> Other Action</th>
@@ -49,7 +49,7 @@ if (empty($_GET["page"])) {
                     // pd($order);
             ?>
                     <tr>
-                        <td>
+                        <td scope="row">
                             <?= $order["id"] ?>
                         </td>
                         <td>
@@ -121,17 +121,9 @@ if (empty($_GET["page"])) {
                         </td>
                         <td>
                             <div class="order-action">
-                                <!-- <form action="/dashboard/order-manager/delete-order" method="POST">
-                                    <input type="hidden" name="pid" value="<?= $order["id"] ?>">
-                                    <button type="submit" id="delete-order-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Delete</button>
-                                </form>
-                                <form action="/dashboard/order-manager/edit-order?pid=<?= $order['id'] ?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?= $order['id'] ?>">
-                                    <button type="submit" id="edit-order-btn">Edit Order</button>
-                                </form> -->
                                 <form action="/user/order/show" method="GET">
                                     <input type="hidden" name="oid" id="oid" value="<?= $order['id'] ?>">
-                                    <button type="submit" id="show-order-btn"> Show Detail</button>
+                                    <button type="submit" id="show-order-btn" class="btn btn-primary"> Show Detail</button>
                                 </form>
                             </div>
                         </td>

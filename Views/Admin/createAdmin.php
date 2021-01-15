@@ -51,7 +51,7 @@
                 </td>
                 <td>
                     <input type="text" name="displayname" id="displayname" placeholder="Full name ..." value="<?php if(isset($inputted)) echo($inputted["name"])?>">
-                    <span id="username-err" class="warning err"></span>
+                    <span id="displayname-err" class="warning err"></span>
                 </td>
             </tr>
             <tr>
@@ -79,7 +79,7 @@
         <div id="action">
             &emsp;
             <input type="reset" id="reset" name="reset" value="Reset Input value">
-            <input type="submit" id="submit" name="submit" value="Create Account">
+            <input type="submit" id="submit" name="submit" value="Create Account" onclick="return createStaffHandling()">
             <br><br>
         </div>
 

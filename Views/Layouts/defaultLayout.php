@@ -24,19 +24,16 @@
 <body>
     <div class="site-header menu_bar_mod">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="<?="http://".HOST.'/home'?>">Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto navbar_menu">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="<?="http://".HOST.'/home'?>">Home</a>
-                    </li>
-                    <li class="nav-item active">
+                    <!-- <li class="nav-item active">
                         <a class="nav-link" href="<?="http://".HOST.'/about'?>">About</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item active">
                         <a class="nav-link" href="<?="http://".HOST.'/product'?>">Product</a>
                     </li>
@@ -89,7 +86,7 @@
                             <?php
                             if (!empty($_SESSION["customerId"])) {
                             ?>
-                                <a class="dropdown-item" href="<?= "http://" . HOST . "/user/order/list" ?>" ?> Show Shoppinh History</a>
+                                <a class="dropdown-item" href="<?= "http://" . HOST . "/user/order/list" ?>" ?> Show order History</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/show-profile" ?>" ?> Show Profile</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/edit-profile" ?>" ?> Edit Profile</a>
                                 <a class="dropdown-item" href="<?= "http://" . HOST . "/user/change-password" ?>" ?> Change Password</a>
@@ -187,7 +184,7 @@
                                     <span id="r-username-err" class="warning err"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Your name ..." require pattern="^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$" value="<?php if (isset($_SESSION["name"]) && $_SESSION["name"]) echo ($_SESSION["name"]) ?>">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Your name ..." require value="<?php if (isset($_SESSION["name"]) && $_SESSION["name"]) echo ($_SESSION["name"]) ?>">
                                     <span id="r-name-err" class="warning err"></span>
                                 </div>
                                 <div class="form-group">

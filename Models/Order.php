@@ -61,7 +61,7 @@ class Order extends Model
         return $req->fetchAll();
     }
     public function getOrderById($oid = 0){
-        $query = 'SELECT  o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id JOIN customers c ON o.customer_id = c.id  WHERE o.id = :oid';
+        $query = 'SELECT  o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address, o.name, o.phone, o.address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id JOIN customers c ON o.customer_id = c.id  WHERE o.id = :oid';
         $req = self::getConnection()->prepare($query);
         $req->setFetchMode(PDO::FETCH_ASSOC);
         $req->execute([
@@ -91,14 +91,15 @@ class Order extends Model
             "address" => $address,
             "note" => $note,
         ]);
-        $lastRecordQrr = "SELECT `AUTO_INCREMENT` as id FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'project_01' AND TABLE_NAME = orders';";
+        $lastRecordQrr = "SELECT `AUTO_INCREMENT` as id FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'project_01' AND TABLE_NAME = 'orders'";
         $getLastRC = self::getConnection()->prepare($lastRecordQrr);
         $getLastRC->execute();
+
         return $getLastRC->fetch();
 
     }
     public function pushOrderDetail($oid, $uid = 0){
-        $query = "INSERT INTO orders_detail(order_id, product_id, quantity, unit_price)
+        $query = "INSERT INTO order_detail(order_id, product_id, quantity, unit_price)
             SELECT  :oid, i.product_id, i.quantity, i.unit_price
             FROM
                 (select c.product_id  product_id, c.quantity quantity, p.price unit_price

@@ -12,5 +12,6 @@
     ?>
     </main>
     <script src="/public/js/clients/validateBehavior.js"></script>
+    <!-- <script src="/public/js/dashboard/validateBehavior.js"></script> -->
 </body>
 </html>

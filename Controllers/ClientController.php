@@ -43,7 +43,7 @@ class ClientController extends Controller
             // dd($data);
             $this->render("index");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function productDetail()
@@ -67,7 +67,7 @@ class ClientController extends Controller
                 $this->popup("/", "This product is not exist! 👆👆👆👆👆👆");
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function checkLogin()
@@ -132,7 +132,7 @@ class ClientController extends Controller
                 header("Location:" . "http://" . HOST . $_SESSION["location"]);
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function storeUser()
@@ -183,7 +183,7 @@ class ClientController extends Controller
                 }
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function getRegister()
@@ -196,7 +196,7 @@ class ClientController extends Controller
             $this->layout = "blankLayout";
             $this->render("getRegister");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function getLogout()
@@ -221,7 +221,7 @@ class ClientController extends Controller
             $this->set($data);
             $this->render("showUser");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function editUserProfile()
@@ -237,7 +237,7 @@ class ClientController extends Controller
             $this->set($data);
             $this->render("editUser");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function updateUserProfile()
@@ -267,7 +267,7 @@ class ClientController extends Controller
                 $this->editUserProfile();
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function getChangePassword()
@@ -282,7 +282,7 @@ class ClientController extends Controller
             // $this->set($data);
             $this->render("changePassword");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function updatePassword()
@@ -310,7 +310,7 @@ class ClientController extends Controller
                 $this->getChangePassword();
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function showOrders()
@@ -346,7 +346,7 @@ class ClientController extends Controller
             $this->set($data);
             $this->render("showOrderList");
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function showOrderDetail()
@@ -361,7 +361,7 @@ class ClientController extends Controller
             if ($order && $order["customer_id"] === $user["id"]) {
                 $order["products"] = $this->orderModel->getOrderDetail($oid);
                 $data["order"] = $order;
-                $data["enableSearch"] = false;
+                // $data["enableSearch"] = false;
                 // $data["categories"] = $this->productModel->getCategories();
                 // $data["brands"] = $this->productModel->getBrands();
                 $this->set($data);
@@ -371,7 +371,7 @@ class ClientController extends Controller
                 $this->popup("/user/order/list", "This order do not exist");
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
     public function cancelOrder()
@@ -403,7 +403,7 @@ class ClientController extends Controller
                 $this->popup("/user/order/list", "This order do not exist");
             }
         } catch (Exception $e) {
-            pd($e);
+            // pd($e);
         }
     }
 }
