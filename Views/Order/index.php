@@ -16,6 +16,9 @@ if (empty($_GET["page"])) {
                     Customer Information
                 </th>
                 <th>
+                Consignee information
+                </th>
+                <th>
                     Order common
                 </th>
                 <th>
@@ -71,6 +74,24 @@ if (empty($_GET["page"])) {
                                 <div class="td-row">
                                     <b>Adress: &nbsp;</b>
                                     <?= $order["customer_address"] ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="customer-infor">
+
+
+                                <div class="td-row">
+                                    <b>Consignee Name: </b>
+                                    <?= $order["name"] ?>
+                                </div>
+                                <div class="td-row">
+                                    <b>Consignee Number: &nbsp;</b>
+                                    <?= $order["phone"] ?>
+                                </div>
+                                <div class="td-row">
+                                    <b>Consignee Adress: &nbsp;</b>
+                                    <?= $order["address"] ?>
                                 </div>
                             </div>
                         </td>

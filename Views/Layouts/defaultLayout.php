@@ -166,7 +166,7 @@
                 </div>
             </div>
             <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="asd" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-dialog modal-dialog-centered" role="document" style="overflow-y: auto;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title" id="exampleModalLongTitle">Register</h3>

@@ -20,7 +20,8 @@ class BaseController
 
     function render($filename, $isFileDir = false)
     {
-
+        $this->vars["currentUrl"] = $_SERVER["REQUEST_URI"];
+        $_SESSION["currentUrl"] =  $_SERVER["REQUEST_URI"];
         extract($this->vars);
         ob_start();
         if (!$isFileDir) {

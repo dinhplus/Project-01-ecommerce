@@ -56,9 +56,12 @@ Router::GET("/dashboard/order-manager/pending", "OrderController@getPendingOrder
 Router::GET("/dashboard/order-manager/processing", "OrderController@getProcessingOrder");
 Router::GET("/dashboard/order-manager/cancelled", "OrderController@getCancelledOrder");
 Router::GET("/dashboard/order-manager/completed", "OrderController@getCompletedOrder");
-Router::GET( "/dashboard/order-manager/create-order", "OrderController@getCreateOrder");
-Router::POST( "/dashboard/order-manager/create-order", "OrderController@generateOrder");
-
+Router::POST("/dashboard/order-manager/add-item", "OrderController@addItem");
+Router::GET( "/dashboard/order-manager/confirm-new-order", "OrderController@getConfirmOrder");
+Router::POST( "/dashboard/order-manager/generate-order", "OrderController@generateOrder");
+Router::POST("/dashboard/order-manager/update-temp-item-quantity", "OrderController@updateTempItemQuantity");
+Router::POST("/dashboard/order-manager/delete-temp-item",  "OrderController@deleteTempItem");
+Router::GET("/dashboard/order-manager/clean-up-temp-cart", "OrderController@cleanUpTempCart");
 
 Router::GET("/product/index", "ClientController@listProduct");
 Router::GET("/product", "ClientController@listProduct");
@@ -83,6 +86,6 @@ Router::GET("/cart/show-cart", "CartController@showCart");
 Router::GET("/cart/add-item", "CartController@addItem");
 Router::POST("/cart/update-quantity", "CartController@updateItemQuantity");
 Router::GET("/cart/delete-item",  "CartController@deleteItem");
-Router::GET( "/cart/get-confirm",  "CartController@confirmOrder");
 Router::GET("/cart/clean-up", "CartController@cleanUpCart");
+Router::GET( "/cart/get-confirm",  "CartController@confirmOrder");
 Router::POST("/cart/push-confirm", "CartController@pushOrder");

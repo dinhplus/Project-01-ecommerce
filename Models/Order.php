@@ -14,7 +14,7 @@ class Order extends Model
         $startTimeRange = null,
         $endTimeRange = null
     ) {
-        $query = 'SELECT o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id JOIN customers c ON o.customer_id = c.id  WHERE 1';
+        $query = 'SELECT o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id LEFT JOIN customers c ON o.customer_id = c.id  WHERE 1';
         if($status_ids){
             $query .= ' AND o.status_id in ('.$status_ids.')';
         }
@@ -61,7 +61,7 @@ class Order extends Model
         return $req->fetchAll();
     }
     public function getOrderById($oid = 0){
-        $query = 'SELECT  o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address, o.name, o.phone, o.address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id JOIN customers c ON o.customer_id = c.id  WHERE o.id = :oid';
+        $query = 'SELECT  o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address, o.name, o.phone, o.address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id LEFT JOIN customers c ON o.customer_id = c.id  WHERE o.id = :oid';
         $req = self::getConnection()->prepare($query);
         $req->setFetchMode(PDO::FETCH_ASSOC);
         $req->execute([
@@ -112,6 +112,19 @@ class Order extends Model
         return $req->execute([
             "oid" => $oid,
             "uid" => $uid
+        ]);
+    }
+    public function pushNewOrderByStaff($oid, $pid, $itemQtt = 1){
+        $query = "INSERT INTO order_detail(order_id, product_id, quantity, unit_price)
+            SELECT  :oid, :pid, :itemQtt, p.price
+            FROM
+                (select price from products where id = :pid
+            ) p";
+        $req = self::getConnection()->prepare($query);
+        return $req->execute([
+            "oid" => $oid,
+            "pid" => $pid,
+            "itemQtt" => $itemQtt
         ]);
     }
     public function updateTotalPrice($oid, $totalPrice){

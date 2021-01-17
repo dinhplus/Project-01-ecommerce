@@ -42,12 +42,12 @@
                 <br> <b>Quantity: &nbsp;</b>
                 <?= $product["quantity"] ?>
                 <div class="item-img">
-                <img src="<?php if (preg_match("/^http?/", $product["img_ref"])) {
-                                                echo ($product["img_ref"]);
-                                            } else {
-                                                echo ("http://" . HOST . $product["img_ref"]);
-                                            }
-                                            ?>" alt="">
+                    <img src="<?php if (preg_match("/^http?/", $product["img_ref"])) {
+                                    echo ($product["img_ref"]);
+                                } else {
+                                    echo ("http://" . HOST . $product["img_ref"]);
+                                }
+                                ?>" alt="">
                 </div>
             </div>
         <?php } ?>
@@ -70,6 +70,22 @@
             <?= $order["customer_address"] ?>
         </div>
     </div>
+    <hr>
+    <div class="customer-infor">
+
+        <div class="td-row">
+            <b>Consignee Name: </b>
+            <?= $order["name"] ?>
+        </div>
+        <div class="td-row">
+            <b>Consignee Number: &nbsp;</b>
+            <?= $order["phone"] ?>
+        </div>
+        <div class="td-row">
+            <b>Consignee Adress: &nbsp;</b>
+            <?= $order["address"] ?>
+        </div>
+    </div>
     <div class="action">
         <?php if ($order["status_id"] == 1) { ?>
             <form action="/dashboard/order-manager/change-status" method="POST">
@@ -86,12 +102,12 @@
                 <button type="submit" id="" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Complete Order</button>
             </form>
 
-        <hr>
-        <form action="/dashboard/order-manager/change-status" method="POST">
-            <input type="hidden" name="oid" value="<?= $order["id"] ?>">
-            <input type="hidden" name="status_id" value="6">
-            <button type="submit" id="" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Cancel Order</button>
-        </form>
+            <hr>
+            <form action="/dashboard/order-manager/change-status" method="POST">
+                <input type="hidden" name="oid" value="<?= $order["id"] ?>">
+                <input type="hidden" name="status_id" value="6">
+                <button type="submit" id="" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Cancel Order</button>
+            </form>
         <?php } ?>
 
 

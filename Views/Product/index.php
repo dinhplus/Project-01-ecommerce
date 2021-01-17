@@ -92,7 +92,7 @@ if (empty($_GET["page"])) {
                             <div class="product-description">
                                 <?php
                                 if (strlen(($product["description"])) > 200) {
-                                    echo (substr($product["description"],0, 200));
+                                    echo (substr($product["description"], 0, 200));
                                 } else echo ($product["description"]);
 
                                 ?>
@@ -110,19 +110,28 @@ if (empty($_GET["page"])) {
                             </div>
                         </td>
                         <td>
-                            <div class="product-action" style="width:200px">
-                                <form action="/dashboard/product-manager/delete-product" method="POST">
-                                    <input type="hidden" name="pid" value="<?= $product["id"] ?>">
-                                    <button type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')">Delete</button>
-                                </form>
-                                <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id']?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
-                                    <button type="submit" id="edit-product-btn">Edit Product</button>
-                                </form>
-                                <form action="/dashboard/product-manager/product-detail?pid=<?=$product['id']?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
-                                    <button type="submit" id="show-product-btn"> Show Detail</button>
-                                </form>
+                            <div class="" style="display: flex;">
+                                <div class="product-action">
+                                    <form action="/dashboard/order-manager/add-item" method="POST">
+                                        <input type="hidden" name="pid" value="<?= $product["id"] ?>">
+                                        <input type="hidden" name="itemQtt" id="" value=1>
+                                        <button type="submit" id="delete-product-btn" onclick="return window.confirm('Add this product to new order?')" style="background: green; color:white; width:80px; height:40px">add items to temp order</button>
+                                    </form>
+                                </div>
+                                <div class="product-action" style="width:200px">
+                                    <form action="/dashboard/product-manager/delete-product" method="POST">
+                                        <input type="hidden" name="pid" value="<?= $product["id"] ?>">
+                                        <button type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')" style="background: red; color:white; width:80px; height:30px">Delete</button>
+                                    </form>
+                                    <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id'] ?>" method="GET">
+                                        <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
+                                        <button type="submit" id="edit-product-btn" style="background: blue; color:white; width:80px; height:30px">Edit Product</button>
+                                    </form>
+                                    <form action="/dashboard/product-manager/product-detail?pid=<?= $product['id'] ?>" method="GET">
+                                        <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
+                                        <button type="submit" id="show-product-btn" style="background: blue; color:white; width:80px; height:30px"> Show Detail</button>
+                                    </form>
+                                </div>
                             </div>
                         </td>
 

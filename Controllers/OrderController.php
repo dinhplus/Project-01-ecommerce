@@ -48,7 +48,7 @@ class OrderController extends Controller
                 $order["products"] = $this->orderModel->getOrderDetail($order["id"]);
             }
             unset($order);
-
+            // pd($data);
             $data["pageQtt"] = $allOrders ? ceil(count($allOrders) / $recordPerPage) : 1;
             $this->set($data);
             $this->render("index");
@@ -93,9 +93,9 @@ class OrderController extends Controller
             if ($next_status > $order["status_id"] && $order["status_id"] <= 3) {
                 $onUpdate = $this->orderModel->updateOrderStatus($oid, $next_status, $acount["id"], $note);
                 if ($onUpdate) {
-                    if($next_status == 4) {
+                    if ($next_status == 4) {
                         $order_detail = $this->orderModel->getOrderDetail($oid);
-                        foreach($order_detail as $item){
+                        foreach ($order_detail as $item) {
                             $this->productModel->decreaseProductQuantity($item["product_id"], $item["quantity"]);
                         }
                     }
@@ -265,7 +265,7 @@ class OrderController extends Controller
             dd($e);
         }
     }
-    public function getCreateOrder()
+    public function addItem()
     {
         try {
             $acount = $this->AdminController->checkLogin();
@@ -275,20 +275,44 @@ class OrderController extends Controller
             if ($acount["role_id"] < 2) {
                 $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
             } else {
-                $pageNumber = $_GET["page"] ?? 1;
-                $recordPerPage = PAGINATE;
-                $productName = $_GET["q"] ?? null;
-                $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
-                $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
-                $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
-                $data["enableSearch"] = true;
-                $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
-                $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
-                $this->set($data);
-                $this->render("getCreateOrder");
+                $_SESSION["tempCart"][$_POST["pid"]] = $_SESSION["tempCart"][$_POST["pid"]] ?? 1;
+                header("Location:" . "http://" . HOST . $_SESSION["currentUrl"]);
             }
         } catch (Exception $e) {
-            die($e);
+            pd($e);
+        }
+    }
+    public function getConfirmOrder()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if ($acount["role_id"] < 2) {
+                $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
+            } else {
+                $tempOrder = $_SESSION["tempCart"] ?? [];
+                // pd($_SESSION);
+                $newOrder = [];
+                $totalPrice = 0;
+                foreach ($tempOrder as $pid => $itemQtt) {
+                    $item = $this->productModel->getProductById($pid);
+                    if ($item && count($item) > 0) {
+                        $item["item_quantity"] = $itemQtt;
+                        $item["unit_price"] = $item["price"];
+                        $newOrder[$pid] = $item;
+                        $totalPrice += intval($itemQtt) * intval($item["price"]);
+                    }
+                }
+                $data["totalPrice"] = $totalPrice;
+                $data['cart'] = $newOrder;
+                // pd($data);
+                $this->set($data);
+                $this->render("getConfirmOrder");
+            }
+        } catch (Exception $e) {
+            pd($e);
         }
     }
     //TODO: define action for generateOrder()
@@ -302,15 +326,86 @@ class OrderController extends Controller
             if ($acount["role_id"] < 2) {
                 $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
             } else {
-                $cart = $_POST["cart"] ?? null;
-                if($cart){
-                    //TODO: define function createOrder, generateOrderDetail
-                    $oid = $this->orderModel->createOrder($acount["id"], $cart);
-                    $this->ordeModel->generateOrderDetail($oid, $cart);
+                $tempOrder = $_SESSION["tempCart"] ?? [];
+                if ($tempOrder && count($tempOrder) === 0) {
+                    $this->popup("/dashboard/product-manager/index", "The basket is empty!");
                 }
+
+                //TODO: define function createOrder, generateOrderDetail
+                $name = $_POST["name"];
+                $address = $_POST["address"];
+                $phone = $_POST["phone"];
+                $note = $_POST["note"] ?? '';
+                $newOrder = $this->orderModel->generateOrder(null, $acount["id"], $name, $phone, $address, $note);
+                foreach ($tempOrder as $pid => $itemQtt) {
+                    $this->orderModel->pushNewOrderByStaff($newOrder["id"] - 1, $pid, $itemQtt);
+                }
+                $orderDetail = $this->orderModel->getOrderDetail($newOrder["id"] - 1);
+                $totalPrice = 0;
+                foreach ($orderDetail as $item) {
+                    $totalPrice += intval($item["quantity"]) * intval($item["unit_price"]);
+                }
+                $this->orderModel->updateTotalPrice($newOrder["id"] - 1, $totalPrice);
+                unset($_SESSION["tempCart"]);
+                header("Location:" . "http://" . HOST . "/dashboard/order-manager");
             }
         } catch (Exception $e) {
-            die($e);
+            pd($e);
         }
     }
+    public function updateTempItemQuantity()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if ($acount["role_id"] < 2) {
+                $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
+            }
+            $_SESSION["tempCart"][$_POST["pid"]] = $_POST["qtt"] ?? $_SESSION["tempCart"][$_POST["pid"]];
+            header("Location:" . "http://" . HOST . $_SESSION["currentUrl"]);
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function deleteTempItem()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if ($acount["role_id"] < 2) {
+                $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
+            }
+            // pd($_SESSION["tempCart"][$_POST["pid"]]);
+            if (isset($_SESSION["tempCart"][$_POST["pid"]])) {
+                unset($_SESSION["tempCart"][$_POST["pid"]]);
+            }
+            header("Location:" . "http://" . HOST . $_SESSION["currentUrl"]);
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function cleanUpTempCart()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if ($acount["role_id"] < 2) {
+                $this->popup("/dashboard", "You do not have enough promised, kindly contact administrator!!");
+            }
+            // pd($_SESSION["tempCart"][$_POST["pid"]]);
+            if (isset($_SESSION["tempCart"])) {
+                unset($_SESSION["tempCart"]);
+            }
+            header("Location:" . "http://" . HOST . $_SESSION["currentUrl"]);
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+
 }

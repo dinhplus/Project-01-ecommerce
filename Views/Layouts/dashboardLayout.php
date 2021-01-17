@@ -138,8 +138,8 @@
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/completed") ?>">
                                     <li>Completed Order</li>
                                 </a>
-                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/create-order") ?>">
-                                    <li>Create New Order</li>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/order-manager/confirm-new-order") ?>">
+                                    <li>Confirm new order</li>
                                 </a>
                             </ul>
                         </div>

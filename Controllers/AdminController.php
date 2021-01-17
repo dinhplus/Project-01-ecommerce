@@ -243,64 +243,82 @@ class AdminController extends Controller
 
     public function editStaff()
     {
-        $accountLoginned = $this->checkLogin();
-        if (!$accountLoginned) {
-            header("Location:" . "http://" . HOST . "/dashboard/login");
-        }
-        $uid = $_GET["uid"];
-        if ($uid && ($_GET["uid"] === $accountLoginned["id"] || $accountLoginned["role_id"] > 4)) {
-            $currentAccount = $this->adminModel->getAccountById($uid);
+        try {
+
+
+            $accountLoginned = $this->checkLogin();
             if (!$accountLoginned) {
-                $this->popup("/dashboard/admin-manager", "This account do not existed : <br> uid = " . $accountLoginned["username"]);
-            } else {
-                $_SESSION["uid-editting"] = $currentAccount["id"];
-                $roles = $this->adminModel->getRoles();
-                $data["currentAccount"] = $currentAccount;
-                $data["accountLoginned"] = $accountLoginned;
-                $data["roles"] = $roles;
-                $this->set($data);
-                $this->render("getEditAdmin");
+                header("Location:" . "http://" . HOST . "/dashboard/login");
             }
-        } else {
-            $this->popup("/dashboard/admin-manager", "You do not have permission to edit this account : <br> Username:" . $accountLoginned["username"]);
+            $uid = $_GET["uid"];
+            if ($uid && ($_GET["uid"] === $accountLoginned["id"] || $accountLoginned["role_id"] > 4)) {
+                $currentAccount = $this->adminModel->getAccountById($uid);
+                if (!$accountLoginned) {
+                    $this->popup("/dashboard/admin-manager", "This account do not existed : <br> uid = " . $accountLoginned["username"]);
+                } else {
+                    $_SESSION["uid-editting"] = $currentAccount["id"];
+                    $roles = $this->adminModel->getRoles();
+                    $data["currentAccount"] = $currentAccount;
+                    $data["accountLoginned"] = $accountLoginned;
+                    $data["roles"] = $roles;
+                    $this->set($data);
+                    $this->render("getEditAdmin");
+                }
+            } else {
+                $this->popup("/dashboard/admin-manager", "You do not have permission to edit this account : <br> Username:" . $accountLoginned["username"]);
+            }
+        } catch (Exception $th) {
+            //throw $th;
         }
     }
     public function updateStaff()
     {
-        $accountLoginned = $this->checkLogin();
-        if (!$accountLoginned) {
-            $this->popup("/dashboard/login", "Sorry <br> Please login to continute this action");
-        } else {
-            $uid = $_SESSION["uid-editting"];
-            unset($_SESSION["uid-editting"]);
-            $temp = $this->adminModel->getAccountById($uid);
-            if (intval($_POST["role"]) > intval($temp["role_id"])) {
-                $temp["role_id"] = $temp["role_id"];
+        try {
+            $accountLoginned = $this->checkLogin();
+            if (!$accountLoginned) {
+                $this->popup("/dashboard/login", "Sorry <br> Please login to continute this action");
             } else {
-                $temp["role_id"] = $_POST["role"];
+                $uid = $_SESSION["uid-editting"];
+                unset($_SESSION["uid-editting"]);
+                $temp = $this->adminModel->getAccountById($uid);
+                if (intval($_POST["role"]) > intval($temp["role_id"])) {
+                    $temp["role_id"] = $temp["role_id"];
+                } else {
+                    $temp["role_id"] = $_POST["role"];
+                }
+                $temp["name"] = $_POST["name"];
+                $onUpdate = $this->adminModel->updateAccount($temp);
+                if ($onUpdate) {
+                    $this->popup("/dashboard/admin-manager", "<h1>Update Staff Success</h1>");
+                } else {
+                    $this->popup("/dashboard/admin-manager", "<h1>Update Staff Failed</h1>");
+                }
             }
-            $temp["name"] = $_POST["name"];
-            $onUpdate = $this->adminModel->updateAccount($temp);
-            if ($onUpdate) {
-                $this->popup("/dashboard/admin-manager", "<h1>Update Staff Success</h1>");
-            } else {
-                $this->popup("/dashboard/admin-manager", "<h1>Update Staff Failed</h1>");
-            }
+        } catch (Exception $th) {
+            //throw $th;
         }
     }
     public function deleteStaff()
     {
-        $accountLoginned = $this->checkLogin();
-        if (!$accountLoginned) {
-            $this->popup("/dashboard/login", "Sorry <br> Please login to continute this action");
-        } else if ($accountLoginned["role_id"] < 5) {
-            $this->popup("/dashboard/admin-manager", "Sorry <br> You do not have permission to implement this action");
-        } else {
-            $uid = $_POST["staff-id"];
-            $onDelete = $this->adminModel->deleteStaff($uid);
-            if ($onDelete) {
-                header("Location:" . "http://" . HOST . "/dashboard/admin-manager");
+        try {
+
+            $accountLoginned = $this->checkLogin();
+            if (!$accountLoginned) {
+                $this->popup("/dashboard/login", "Sorry <br> Please login to continute this action");
+            } else if ($accountLoginned["role_id"] < 5) {
+                $this->popup("/dashboard/admin-manager", "Sorry <br> You do not have permission to implement this action");
+            } else {
+                $uid = $_POST["staff-id"];
+                if($uid == $accountLoginned["id"]){
+                    $this->popup("/dashboard/admin-manager", "You can not delete your self!");
+                }
+                $onDelete = $this->adminModel->deleteStaff($uid);
+                if ($onDelete) {
+                    header("Location:" . "http://" . HOST . "/dashboard/admin-manager");
+                }
             }
+        } catch (Exception $th) {
+            //throw $th;
         }
     }
 }
