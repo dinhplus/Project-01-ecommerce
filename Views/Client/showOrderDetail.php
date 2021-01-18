@@ -1,4 +1,4 @@
-<div class="container order-detail" style="margin-top:100px">
+<div class="container order-detail row" style="margin-top:100px">
     <div class="order-common">
         <div class="td-row">
             <b>Order index: &nbsp;</b>

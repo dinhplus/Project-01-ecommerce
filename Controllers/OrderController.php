@@ -102,11 +102,13 @@ class OrderController extends Controller
                     $this->popup("/dashboard/order-manager", "The order status has been updated! <br> Click ok then redirect Dashboard");
                 }
             } else if ($order["status_id"] > 3) {
-                $data["message"] = "This order status is the lastest status. You cannot modify!";
-                $data["order"] = $order;
+                // $data["message"] = "This order status is the lastest status. You cannot modify!";
+                // $data["order"] = $order;
+                $this->popup("/dashboard/order-manager", "This order status is the lastest status. You cannot modify!");
             } else {
-                $data["message"] = "Can not change this order status";
-                $data["order"] = $order;
+                $this->popup("/dashboard/order-manager", "Can not change this order status");
+                // $data["message"] = "Can not change this order status";
+                // $data["order"] = $order;
             }
         } catch (Exception $e) {
             dd($e);

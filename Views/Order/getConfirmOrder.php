@@ -1,7 +1,7 @@
 <?php if(count($cart) > 0) { ?>
 
     <a href="<?= "http://" . HOST . "/dashboard/order-manager/clean-up-temp-cart"?>" class="btn btn-danger">Clean Up Temp Cart </a>
-<div class="row" style="width: 100%; margin-bottom:50px; margin-top: 100px">
+<div class="row" style=" margin-bottom:50px; margin-top: 100px">
 
     <div class="order-detail row col-12 col-xl-5 col-lg-5 col-md-6">
 

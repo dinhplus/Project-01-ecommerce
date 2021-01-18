@@ -149,8 +149,8 @@
 
 
         </div>
-        <div role="main" class="container" id="main-site">
-            <div class="starter-template">
+        <div role="main" class="dashboard-layout" id="main-site">
+            <div class="starter-template" style="padding-left: 10px;">
 
                 <?php
                 echo $content_for_layout;

@@ -287,15 +287,17 @@ input[type="checkbox"]:checked + label li:nth-of-type(5) {
 .site-header #query-submit-btn:hover{
 	background: rgb(58, 103, 201);
 }
-
-.container{
+.dashboard-layout{
+	padding-top: 50px;
+}
+/* .container{
 	width: 85vw;
 	display: flex;
 	margin: 0 auto;
 	justify-content: center;
 	padding-top: 50px;
 
-}
+} */
 #main-site .starter-template{
 	width: 92%;
 	/* margin-left: 15vw; */
