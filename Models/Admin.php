@@ -49,7 +49,7 @@ class Admin extends Model
         ]);
         $account  = $req->fetch();
 
-        if(password_verify($password,$account["password"])){
+        if($account && password_verify($password,$account["password"])){
             return $account;
         }
         else return false;
