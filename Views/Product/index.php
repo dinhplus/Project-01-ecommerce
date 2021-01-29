@@ -1,9 +1,11 @@
 <?php
+
 if (empty($_GET["page"])) {
     $_GET["page"] = 1;
 }
+
 ?>
-<div class="list-products">
+<div class="list-products" style="width: 100%;">
     <div class="action">
 
         <?php
@@ -14,33 +16,35 @@ if (empty($_GET["page"])) {
             <div class="generate-product">
                 <form action="/dashboard/product-manager/create-product" method="GET">
                     <!-- <input type="text"> -->
-                    <button type="submit" id="create-product-btn"> New Product</button>
+                    <button type="submit" id="create-product-btn" class="btn btn-primary btn-round"> New Product</button>
                 </form>
-            </div>
+            </div> <br>
         <?php } ?>
+
     </div>
-    <div class="data">
-        <table>
+    <div class="container" style="width: 100%;">
+        <table style="width: inherit;" class="table table-striped">
             <tr>
-                <th>
+                <th scope="col">
                     id
                 </th>
-                <th>
+                <th scope="col">
                     Information
                 </th>
-                <th>
+                <th scope="col">
                     Description
                 </th>
-                <th>
+                <th scope="col">
                     Cover Image
                 </th>
-                <th> Other Action</th>
+                <th scope="col"> Other Action</th>
             </tr>
             <?php
             if (!empty($products) && isset($pageQtt)) {
                 $paginate = '';
                 for ($page = 1; $page <= $pageQtt; $page++) {
-                    $paginate .= '<a href=http://' . HOST . '/dashboard/product-manager/index?page=' . $page;
+                    $paginate .= '<a href=http://' . HOST . '/dashboard/product-manager/remainder?page=' . $page;
+                    $paginate .= '&sort=' . ($_GET["sort"]??1);
                     if (isset($_GET["q"]) && !(preg_match("/^[\s]*$/", $_GET["q"]) || $_GET["q"] == '')) {
                         $paginate .= '&q=' . $_GET["q"];
                     }
@@ -55,7 +59,7 @@ if (empty($_GET["page"])) {
                 foreach ($products as $key => $product) {
             ?>
                     <tr>
-                        <td>
+                        <td scope="row">
                             <?= $product["id"] ?>
                         </td>
                         <td>
@@ -110,27 +114,28 @@ if (empty($_GET["page"])) {
                             </div>
                         </td>
                         <td>
-                            <div class="" style="display: flex;">
+                            <div class="row container-fluid center" style="display: flex;">
                                 <div class="product-action">
                                     <form action="/dashboard/order-manager/add-item" method="POST">
                                         <input type="hidden" name="pid" value="<?= $product["id"] ?>">
                                         <input type="hidden" name="itemQtt" id="" value=1>
-                                        <button type="submit" id="delete-product-btn" onclick="return window.confirm('Add this product to new order?')" style="background: green; color:white; width:80px; height:40px">add items to temp order</button>
+                                        <button type="submit" id="delete-product-btn" onclick="return window.confirm('Add this product to new order?')" style="background: green; color:white; " class="btn btn-round">add to order</button>
+                                    </form>
+                                    <form action="/dashboard/product-manager/product-detail?pid=<?= $product['id'] ?>" method="GET">
+                                        <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
+                                        <button class="btn btn-round" type="submit" id="show-product-btn" style="background: blue; color:white; "> Show Detail</button>
                                     </form>
                                 </div>
                                 <div class="product-action" style="width:200px">
                                     <form action="/dashboard/product-manager/delete-product" method="POST">
                                         <input type="hidden" name="pid" value="<?= $product["id"] ?>">
-                                        <button type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')" style="background: red; color:white; width:80px; height:30px">Delete</button>
+                                        <button class="btn btn-round" type="submit" id="delete-product-btn" onclick="return window.confirm('Are You sure? This action can not revert, Continute?')" style="background: red; color:white; ">Delete</button>
                                     </form>
                                     <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id'] ?>" method="GET">
                                         <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
-                                        <button type="submit" id="edit-product-btn" style="background: blue; color:white; width:80px; height:30px">Edit Product</button>
+                                        <button class="btn btn-round" type="submit" id="edit-product-btn" style="background: blue; color:white; ">Edit Product</button>
                                     </form>
-                                    <form action="/dashboard/product-manager/product-detail?pid=<?= $product['id'] ?>" method="GET">
-                                        <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
-                                        <button type="submit" id="show-product-btn" style="background: blue; color:white; width:80px; height:30px"> Show Detail</button>
-                                    </form>
+
                                 </div>
                             </div>
                         </td>

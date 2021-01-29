@@ -1,25 +1,20 @@
-<div class="product-detail">
+<div class=" container" style="margin-bottom: 50px;">
     <div class="product-infor-row" id="product-detail-name">
         <h1><b>Name: </b>
-        <?= $product["name"] ?>
+            <?= $product["name"] ?>
         </h1>
     </div>
-    <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id']?>" method="GET">
-                                    <input type="hidden" name="pid" id="pid" value="<?=$product['id']?>">
-                                    <button type="submit" id="edit-product-btn">Edit Product</button>
-                                </form>
+    <form action="/dashboard/product-manager/edit-product?pid=<?= $product['id'] ?>" method="GET">
+        <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
+        <button type="submit" id="edit-product-btn" class="btn btn-warning" style="position:fixed; bottom:0; right:0; width:80%">Edit Product</button>
+    </form>
     <hr>
     <div class="detail-body">
-        <div class="product-image">
-            <img src="<?php if (preg_match("/^http?/", $product["img_ref"])) {
-                            echo ($product["img_ref"]);
-                        } else {
-                            echo ("http://" . HOST . $product["img_ref"]);
-                        }
-                        ?>" alt="<?= $product["name"] ?>">
+        <div class="product-image container col-12">
+            <img style="width: 100%;" src="<?= imageRender($product["img_ref"]) ?>" alt="<?= $product["name"] ?>">
         </div>
-
-        <div class="product-infor">
+        <br> <br>
+        <div class="product-infor container">
 
             <div class="product-infor-row">
                 <b>Brand: &nbsp;</b>
@@ -43,8 +38,8 @@
             </div>
         </div>
     </div>
-    <div class="product-description">
-        <h2>Description: <br></h2>
-        <?=$product["description"] ?>
+    <div class="product-description container container-fluid">
+        <h2>Description: <br></h2> <br> <br>
+        <?= $product["description"] ?>
     </div>
 </div>

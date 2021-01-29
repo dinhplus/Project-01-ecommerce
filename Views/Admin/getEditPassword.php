@@ -1,6 +1,6 @@
 
 <div class="edit-password-form">
-    <form action="/dashboard/admin-manager/update-password" method="post">
+    <form action="/dashboard/admin-manager/change-password" method="post">
         <h1 align="center">
             Change Password
         </h1>
@@ -9,7 +9,7 @@
         <label for="current-password">
             Current Password <br>
             <input type="password" name="current-password" id="current-password" placeholder="Your current password...">
-            <span id="password-err" class="warning err"></span>
+            <span id="current-password-err" class="warning err"></span>
         </label><br>
         <label for="password">
             New Password <br>
@@ -19,10 +19,10 @@
         <label for="confirm-password">
             Confirm New Password <br>
             <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm New Password...">
-            <span id="password-err" class="warning err"></span>
+            <span id="cf-password-err" class="warning err"></span>
         </label><br>
         <div id="form-action">
-            <input type="submit" id="submit" name="submit" value="Submit">
+            <button type="submit" id="submit" name="submit" onclick="return updatePasswordBehavior()"> Submit </button>
             <br><br>
         </div>
 

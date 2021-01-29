@@ -33,17 +33,18 @@ class OrderController extends Controller
             $status_id = $_GET["status_id"] ?? null;
             $oid = $_GET["oid"] ?? null;
             $cid = $_GET["cid"] ?? null;
-            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
-            $getLastOrder = $_GET["getLastOrder"] ?? null;
-
+            $cheapest = $_GET["cheapest"] ?? null;
+            $timeRange = $_GET["timeRange"] ?? null;
+            $newest = $_GET["newest"] ?? null;
             $allOrders = $this->orderModel->getAllOrder(
                 $pageNumber,
                 $recordPerPage,
-                $descTotalPrice,
+                $cheapest,
                 $status_id,
-                $getLastOrder,
+                $timeRange,
                 $cid,
-                $oid
+                $oid,
+                $newest
             );
             $data = [];
             $data["orders"] = array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
@@ -129,15 +130,15 @@ class OrderController extends Controller
             $status_id = 1;
             $oid = $_GET["oid"] ?? null;
             $cid = $_GET["cid"] ?? null;
-            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
-            $getLastOrder = $_GET["getLastOrder"] ?? null;
+            $cheapest = $_GET["cheapest"] ?? null;
+            $timeRange = $_GET["timeRange"] ?? null;
 
             $allOrders = $this->orderModel->getAllOrder(
                 $pageNumber,
                 $recordPerPage,
-                $descTotalPrice,
+                $cheapest,
                 $status_id,
-                $getLastOrder,
+                $timeRange,
                 $cid,
                 $oid
             );
@@ -168,15 +169,15 @@ class OrderController extends Controller
             $status_id = '6,5';
             $oid = $_GET["oid"] ?? null;
             $cid = $_GET["cid"] ?? null;
-            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
-            $getLastOrder = $_GET["getLastOrder"] ?? null;
+            $cheapest = $_GET["cheapest"] ?? null;
+            $timeRange = $_GET["timeRange"] ?? null;
 
             $allOrders = $this->orderModel->getAllOrder(
                 $pageNumber,
                 $recordPerPage,
-                $descTotalPrice,
+                $cheapest,
                 $status_id,
-                $getLastOrder,
+                $timeRange,
                 $cid,
                 $oid
             );
@@ -206,15 +207,15 @@ class OrderController extends Controller
             $status_id = '4';
             $oid = $_GET["oid"] ?? null;
             $cid = $_GET["cid"] ?? null;
-            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
-            $getLastOrder = $_GET["getLastOrder"] ?? null;
+            $cheapest = $_GET["cheapest"] ?? null;
+            $timeRange = $_GET["timeRange"] ?? null;
 
             $allOrders = $this->orderModel->getAllOrder(
                 $pageNumber,
                 $recordPerPage,
-                $descTotalPrice,
+                $cheapest,
                 $status_id,
-                $getLastOrder,
+                $timeRange,
                 $cid,
                 $oid
             );
@@ -244,15 +245,15 @@ class OrderController extends Controller
             $status_id = '2,3';
             $oid = $_GET["oid"] ?? null;
             $cid = $_GET["cid"] ?? null;
-            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
-            $getLastOrder = $_GET["getLastOrder"] ?? null;
+            $cheapest = $_GET["cheapest"] ?? null;
+            $timeRange = $_GET["timeRange"] ?? null;
 
             $allOrders = $this->orderModel->getAllOrder(
                 $pageNumber,
                 $recordPerPage,
-                $descTotalPrice,
+                $cheapest,
                 $status_id,
-                $getLastOrder,
+                $timeRange,
                 $cid,
                 $oid
             );

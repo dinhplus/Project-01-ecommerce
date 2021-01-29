@@ -76,9 +76,9 @@
         <div class="form-component" id="image-selecting">
         Image <br>
             <div id="old-product-image">
-                <span>
+                <!-- <span>
                     Do nothing to keep old image.
-                </span>
+                </span> -->
                 <img src="<?php if (preg_match("/^http?/", $product["img_ref"])) {
                                 echo ($product["img_ref"]);
                             } else {

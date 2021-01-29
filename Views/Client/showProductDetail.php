@@ -8,7 +8,7 @@
             </div>
             <form action="/cart/add-item?pid=<?= $product['id'] ?>" method="GET">
                 <input type="hidden" name="pid" id="pid" value="<?= $product['id'] ?>">
-                <button type="submit" class="btn-primary" id="add-to-cart-btn">Add to cart</button>
+                <button type="submit" class="btn btn-primary" id="add-to-cart-btn">Add to cart</button>
             </form>
             <hr>
             <div class="detail-body container">
@@ -49,8 +49,17 @@
 
     </div>
     <?php if (isset($_SESSION["customerId"])) { ?>
-        <div class="col-6 col-xl-2 col-lg-3 col-md-6 cart_info row">
-            <!-- <?php print_r($customer) ?> -->
+        <div class="col-6 col-xl-2 col-lg-3 col-md-6 cart_info" style="margin-top: 20px; position: relative;" >
+            <div class="" style="position: fixed ; width:100%; top: 80px;">
+                <h4> Welcome: <br> <?= $customer["name"]?></h4> <hr>
+                <h5><b>Current Shopping session:</b></h5> <br>
+                <b>Total Item:</b> <?=$totalItem?> <br>
+
+                <b>Total Price:</b> $<?= $totalPrice ?> <br>
+            </div>
+            <form action="/cart/show-cart" style="position: fixed ; width:100%; bottom: 0;">
+                <button type="submit" class="btn btn-success" style="width:15%;"> Go to checkout</button>
+            </form>
         </div>
     <?php } ?>
 </div>

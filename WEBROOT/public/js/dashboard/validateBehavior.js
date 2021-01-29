@@ -120,36 +120,38 @@ function editUserProfileBehavior() {
 }
 function updatePasswordBehavior() {
     var validateOk = true;
-    var password = document.getElementById("password").value;
-    var newPassword = document.getElementById("new-password").value;
-    var cfNewPassword = document.getElementById("cf-new-password").value;
-    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
-    const newPasswordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
+    // alert("salihjjghd");
+    var password = document.getElementById("current-password").value;
+    var newPassword = document.getElementById("password").value;
+    var cfNewPassword = document.getElementById("confirm-password").value;
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/;
+    const newPasswordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/;
     if ((!passwordPattern.test(password)) || password.length < 6) {
         validateOk = false;
         var passwordErrMessage = "Password is required, have beetwen 6 and 32 character, least one of word upper case, lowercase and digit ";
-        document.getElementById("password-err").innerHTML = passwordErrMessage;
+        document.getElementById("current-password-err").innerHTML = passwordErrMessage;
     }
     else {
-        document.getElementById("password-err").innerHTML = '';
+        document.getElementById("current-password-err").innerHTML = '';
     }
     if ((!newPasswordPattern.test(newPassword)) || newPassword.length < 6) {
         validateOk = false;
         var newPasswordErrMessage = "New Password is required, have beetwen 6 and 32 character, least one of word upper case, lowercase and digit ";
-        document.getElementById("new-password-err").innerHTML = newPasswordErrMessage;
+        document.getElementById("password-err").innerHTML = newPasswordErrMessage;
     }
     else {
-        document.getElementById("new-password-err").innerHTML = '';
+        document.getElementById("password-err").innerHTML = '';
     }
     if (newPassword != cfNewPassword || cfNewPassword.length < 6) {
         validateOk = false;
         var cfNewPasswordErrMessage = "Confirm new password must be equal new password";
-        document.getElementById("cf-new-password-err").innerHTML = cfNewPasswordErrMessage;
+        document.getElementById("cf-password-err").innerHTML = cfNewPasswordErrMessage;
     }
     else {
-        document.getElementById("cf-new-password-err").innerHTML = '';
+        document.getElementById("cf-password-err").innerHTML = '';
     }
-    return validateOk
+    if(validateOk) return confirm ("Are you sure?");
+    else return false;
 
 }
 

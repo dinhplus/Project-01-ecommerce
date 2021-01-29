@@ -32,7 +32,7 @@ class ProductController extends Controller
             $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
             $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
             $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
-            pd($allProduct);
+            // pd($allProduct);
             $data["enableSearch"] = true;
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
@@ -200,7 +200,7 @@ class ProductController extends Controller
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
-            $this->render("index");
+            $this->render("remainder");
         } catch (Exception $e) {
             //pd($e);
         }

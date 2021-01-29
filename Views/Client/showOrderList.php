@@ -105,18 +105,16 @@ if (empty($_GET["page"])) {
                             </div>
                         </td>
                         <td>
-                            <div class="order-detail">
-                                <?php foreach ($order["products"] as $product) { ?>
-                                    <div class="td-row" style="border: 1px solid blue; border-collapse:collapse">
-                                        <b><?=$product["product_id"]?>. &nbsp;</b>
-                                        <?= $product["name"] ?>
-                                        <!-- <br>
-                                        <b>Unit Price: &nbsp;</b>
-                                        <?= $product["unit_price"] ?>
-                                        <br> <b>Quantity: &nbsp;</b>
-                                        <?= $product["quantity"] ?> -->
-                                    </div>
-                                <?php } ?>
+                            <div class="order-details">
+                                <ul class="list-group">
+                                    <?php foreach ($order["products"] as $product) { ?>
+                                        <li class="list-group-item list-group-item-action">
+                                            <b><?= $product["product_id"] ?>. &nbsp;</b>
+                                            <?= $product["name"] ?>
+
+                                        </li>
+                                    <?php } ?>
+                                </ul>
                             </div>
                         </td>
                         <td>

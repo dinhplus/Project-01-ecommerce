@@ -14,7 +14,7 @@ Router::POST("/dashboard/login", "AdminController@postLogin");
 Router::GET("/dashboard/logout", "AdminController@logout");
 
 Router::GET("/dashboard/admin-manager/change-password","AdminController@editPassword");
-Router::POST("/dashboard/admin-manager/update-password", "AdminController@updatePassword");
+Router::POST("/dashboard/admin-manager/change-password", "AdminController@updatePassword");
 
 Router::GET("/dashboard/admin-manager/index","AdminController@showAdmin");
 Router::GET("/dashboard/admin-manager","AdminController@showAdmin");
@@ -82,7 +82,7 @@ Router::GET("/user/show-profile", "ClientController@showProfile");
 Router::GET( "/user/edit-profile", "ClientController@editUserProfile");
 Router::POST("/user/update-profile",  "ClientController@updateUserProfile");
 Router::GET("/user/change-password", "ClientController@getChangePassword");
-Router::POST("/user/update-password", "ClientController@updatePassword");
+Router::POST("/user/change-password", "ClientController@updatePassword");
 Router::GET("/user/order/list", "ClientController@showOrders");
 Router::GET("/user/order/show", "ClientController@showOrderDetail");
 Router::POST("/user/order/cancel", "ClientController@cancelOrder");

@@ -35,28 +35,28 @@ class Product extends Model
 
     public function getAllProduct($productName, $category = null, $brand = null, $product_status = null, $isSort = false)
     {
-        // dd($productName);
+
         //FIXME: Can not binding params with template
         $query = "SELECT p.*, c.label category , b.name brand, stt.label status FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id JOIN product_status stt ON stt.id = p.status_id WHERE 1 ";
-        if ($productName) {
+        // if ($productName) {
             $query .= "AND p.name LIKE :productName";
-        }
+        // }
         if ($category) {
-            $query .= " AND p.category_id in ('1','2')" ;//. $category;
+            $query .= " AND p.category_id = :category" ;//. $category;
         }
         else {
-            $query .= " AND p.category_id not in (:category)" ;
+            $query .= " AND p.category_id != :category" ;
         }
         if ($brand) {
-            $query .= " AND p.brand_id in ('1','2')"; //. $brand;
+            $query .= " AND p.brand_id = :brand"; //. $brand;
         } else {
-            $query .= " AND p.brand_id not in (:brand)";
+            $query .= " AND p.brand_id != :brand";
         }
         if ($product_status) {
-            $query .= " AND p.status_id = 2";// . $product_status;
+            $query .= " AND p.status_id = :product_status";// . $product_status;
         }
         else{
-            $query .= " AND p.status_id != '1'";// . $product_status;
+            $query .= " AND p.status_id != :product_status";// . $product_status;
         }
         if ($isSort == 1) {
             $query .= " ORDER BY p.quantity ASC";
@@ -66,22 +66,14 @@ class Product extends Model
         }
         // pd($query);
         $req = self::getConnection()->prepare($query);
-        pd($req);
-        $arr = [
-            "productName" => "'%".$productName."%'",
-            "category" => "'1','2'",
-            "brand" => "'1','2'",
-            "product_status" => $product_status
-        ];
-        // dd($arr);
         $req->execute([
-            "productName" => "'%".$productName."%'"
-            // "category" => "'1','2'",
-            // "brand" => "'1','2'",
-            // "product_status" => $product_status
+            "productName" => $productName?"%".$productName."%":"%%",
+            "category" => $category??'' ,
+            "brand" => $brand??'' ,
+            "product_status" => $product_status??''
         ]);
         // $req->setFetchMode(PDO::FETCH_ASSOC);
-        dd($req->fetchAll());
+        // dd($req->fetchAll());
         return $req->fetchAll();
     }
     public function getCategories()

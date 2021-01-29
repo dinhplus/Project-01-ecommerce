@@ -3,21 +3,21 @@ if (empty($_GET["page"])) {
     $_GET["page"] = 1;
 }
 ?>
-<div class="list-categories">
+<div class="list-categories" style="width: 100%;">
     <h3>List Category</h3>
     <br>
     <?php if ($_SESSION["role"] > 3) { ?>
 
         <div class="add-new">
-            <form action="/dashboard/product-manager/add-category" method="POST">
-                <input type="text" name="category" id="add-category" placeholder="New Category ...">
-                <input type="submit" onclick="return addCategoryCheck()" value="Add new Category" class="btn btn-info btn-block btn-round"> <br>
+            <form action="/dashboard/product-manager/add-category" method="POST" class="row" >
+                <input type="text" name="category" id="add-category" placeholder="New Category ..." class="form-control" style="width: 40%;">
+                <input type="submit" onclick="return addCategoryCheck()" value="Add new Category" class="btn btn-info btn-round" class="form-control" style="width: 40%;"> <br>
                 <span id="add-category-err" class="warning"></span>
             </form>
         </div>
     <?php } ?>
     <hr>
-    <table class="table table-striped table-dark">
+    <table class="table table-striped table-infor" style="width: 100%;">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -63,11 +63,11 @@ if (empty($_GET["page"])) {
                                     <div class="edit-category-form" id="<?= 'edit-ctg-' . $id ?>" style="display: none;">
                                         <form action="/dashboard/product-manager/update-category" method="post" id="<?= 'form-edit-ctg-' . $id ?>">
                                             <input type="hidden" name="category_id" value="<?= $id ?>">
-                                            <input type="text" name="category" id="<?= "category-" . $id ?>" value="<?= $label ?>" placeholder="Category label...">
-                                            <br>
+                                            <input type="text" name="category" id="<?= "category-" . $id ?>" value="<?= $label ?>" placeholder="Category label..." class="form-control">
+
                                             <span class="warning" id="category-err-<?= $id ?>"></span> <br>
-                                            <input type="submit" onclick="return editCategoryCheck(<?= $id ?>)" class="btn btn-info btn-block btn-round">
-                                            <button onclick="cancelEditCategory(<?= $id ?>)" type="reset" class="btn btn-danger btn-block btn-round"> Cancel</button>
+                                            <input type="submit" onclick="return editCategoryCheck(<?= $id ?>)" class="btn btn-info btn-block btn-round" class="form-control" style="width: 49%;">
+                                            <button onclick="cancelEditCategory(<?= $id ?>)" type="reset" class="btn btn-danger btn-block btn-round" class="form-control"  style="width: 49%;"> Cancel</button>
                                         </form>
                                     </div>
                                 <?php } ?>

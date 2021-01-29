@@ -7,12 +7,13 @@ class Order extends Model
     public function getAllOrder(
         $pageNumber = 1,
         $recordPerPage = 20,
-        $descTotalPrice = false,
+        $cheapest = false,
         $status_ids = null,
+        $timeRange = null,
         $cid = null,
         $oid = null,
-        $startTimeRange = null,
-        $endTimeRange = null
+        $newest = null
+
     ) {
         $query = 'SELECT o.*, stt.label order_status, c.email customer_email, c.name customer_name, c.phone customer_phone_number, c.address customer_address FROM orders o JOIN order_status_define stt ON o.status_id = stt.id LEFT JOIN customers c ON o.customer_id = c.id  WHERE 1';
         if($status_ids){
@@ -25,17 +26,20 @@ class Order extends Model
         if($cid){
             $query .= ' AND o.customer_id = '.$cid;
         }
-        if($startTimeRange){
-            $query .= ' AND o.create_at >= '.$startTimeRange;
+        if($timeRange){
+            $query .= ' AND month(o.created_at) = month('.$timeRange.') AND year(o.created_at) = year('.$timeRange.')';
         }
-        if($endTimeRange){
-            $query .= 'AND o.create_at <= '.$startTimeRange;
-        }
-        if($descTotalPrice !== false && $descTotalPrice > 0){
+        if($cheapest !== false && $cheapest < 0){
             $query .= ' ORDER BY o.total_price DESC';
         }
-        else if( $descTotalPrice !== false && $descTotalPrice < 0){
+        else if( $cheapest !== false && $cheapest > 0){
             $query .= ' ORDER BY o.total_price ASC';
+        }
+        if($newest && $newest > 0){
+            $query .= ' ORDER BY o.id ASC';
+        }
+        else if($newest && $newest < 0){
+            $query .= ' ORDER BY o.id DESC';
         }
         $query .=  " LIMIT ".$recordPerPage." OFFSET ".(($pageNumber -1) * $recordPerPage);
         $req = self::getConnection()->prepare($query);

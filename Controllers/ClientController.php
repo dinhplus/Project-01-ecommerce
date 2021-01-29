@@ -2,6 +2,7 @@
 
 use Controller\BaseController as Controller;
 
+require_once(ROOT . "Models/Cart.php");
 require_once(ROOT . "Models/Product.php");
 require_once(ROOT . "Models/Order.php");
 require_once(ROOT . "Models/Customer.php");
@@ -17,10 +18,29 @@ class ClientController extends Controller
         $this->customerModel = new Customer();
         $this->productModel = new Product();
         $this->orderModel = new Order();
+        $this->cartModel = new Cart();
     }
     public function index()
     {
         $this->render("index");
+    }
+    protected function clientLoadInfor($customerId)
+    {
+        $data["cart"] = $this->cartModel->getCart($customerId);
+        // pd($data["cart"]);
+        $totalPrice = 0;
+        foreach ($data["cart"] as $item) {
+            $totalPrice += intval($item["item_quantity"]) * intval($item["unit_price"]);
+        }
+        $data["totalItem"] = array_reduce(
+            $data["cart"],
+            function($currentValue,$accumulator){
+                return $currentValue + $accumulator["item_quantity"];
+            },
+            0
+        );
+        $data["totalPrice"] = $totalPrice;
+        $this->set($data);
     }
     public function listProduct()
     {
@@ -32,18 +52,16 @@ class ClientController extends Controller
             $productStatus = 2;
             $category = isset($_GET["category"]) ?  $_GET["category"]  : null;
             $brand = isset($_GET["brand"]) ? $_GET["brand"]  : null;
-            $customerUsername = $_SESSION["customerUsername"] ?? null;
-            if ($customerUsername) {
-                $customer = $this->customerModel->getCustomerByUsername($customerUsername);
-                $data["customer"] = $customer;
-            }
+            $customer = $this->checkLogin();
             $allProduct = $this->productModel->getAllProduct($productName, $category, $brand, $productStatus);
-            // $data["categories"] = $this->productModel->getCategories();
-            // $data["brands"] = $this->productModel->getBrands();
+            if ($customer) {
+                $data["customer"] = $customer;
+                $this->clientLoadInfor($customer["id"]);
+            }
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
-            dd($data);
+            // dd($data);
             $this->render("index");
         } catch (Exception $e) {
             pd($e);
@@ -58,8 +76,11 @@ class ClientController extends Controller
             }
             if ($product && count($product) > 0) {
                 if ($product["status_id"] > 1) {
-                    // $data["categories"] = $this->productModel->getCategories();
-                    // $data["brands"] = $this->productModel->getBrands();
+                    $customer = $this->checkLogin();
+                    if ($customer) {
+                        $data["customer"] = $customer;
+                        $this->clientLoadInfor($customer["id"]);
+                    }
                     $data["product"] = $product;
                     $this->set($data);
                     $this->render("showProductDetail");
@@ -328,14 +349,18 @@ class ClientController extends Controller
             $status_id = $_GET["status_id"] ?? null;
             $oid = $_GET["oid"] ?? null;
             $cid = $user["id"];
-            $descTotalPrice = $_GET["descTotalPrice"] ?? null;
+            $timeRange = $_GET["timeRange"] ?? null;
+            $cheapest = $_GET["cheapest"] ?? null;
+            $newest = $_GET["newest"] ?? null;
             $allOrders = $this->orderModel->getAllOrder(
                 $pageNumber,
                 $recordPerPage,
-                $descTotalPrice,
+                $cheapest,
                 $status_id,
+                $timeRange,
                 $cid,
-                $oid
+                $oid,
+                $newest,
             );
             $data = [];
             $data["orders"] = $allOrders; // array_slice($allOrders, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
@@ -386,20 +411,18 @@ class ClientController extends Controller
             }
             $oid = $_POST["oid"] ?? null;
             $note = $_POST["change_status_note"] ?? null;
-            if($oid){
+            if ($oid) {
                 $order = $this->orderModel->getOrderById($oid) ?? null;
             }
-            if ( isset($order) && $order["customer_id"] === $user["id"]) {
-                if($order["status_id"] < 4){
+            if (isset($order) && $order["customer_id"] === $user["id"]) {
+                if ($order["status_id"] < 4) {
                     $onCancelOrder = $this->orderModel->updateOrderStatus($oid, 6, $order["staff_ref"], $note);
-                    if($onCancelOrder){
+                    if ($onCancelOrder) {
                         $this->popup("/user/order/list", "Cancelled Success!");
-                    }
-                    else{
+                    } else {
                         $this->popup("/user/order/list", "Cancellation failed! Kindly try again");
                     }
-                }
-                else{
+                } else {
                     $this->popup("/user/order/list", "This order cannot be cancelled! <br> Please waiting for recieving the payload");
                 }
             } else {

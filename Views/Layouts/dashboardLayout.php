@@ -94,6 +94,12 @@
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/remainder") ?>">
                                     <li>Product remainder</li>
                                 </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/category-manage") ?>">
+                                    <li>Category manager</li>
+                                </a>
+                                <a href="<?php echo ("http://" . HOST . "/dashboard/product-manager/brand-manage") ?>">
+                                    <li>Brand Manager</li>
+                                </a>
                             </ul>
                         </div>
                     </label>

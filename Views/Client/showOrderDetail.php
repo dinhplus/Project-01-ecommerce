@@ -1,5 +1,10 @@
-<div class="container order-detail row" style="margin-top:100px">
-    <div class="order-common">
+<div class="order-detail row" style="width: 100%; margin-top:100px;  margin-bottom: 80px; justify-content:space-around">
+    <div class="row" style="width: 100%;">
+
+    </div>
+    <div class="order-common col-4">
+        <hr><br>
+        <h3>Order Summary</h3>
         <div class="td-row">
             <b>Order index: &nbsp;</b>
             <?= $order["id"] ?>
@@ -30,39 +35,10 @@
                 <?= $order["note"] ?>
             </div>
         <?php } ?>
-    </div>
-    <div class="list-item">
-        <?php foreach ($order["products"] as $product) { ?>
-            <div class="row" style="border: 1px solid blue; border-collapse:collapse; margin-bottom: 30px; padding: 20px; border-radius: 10px">
 
-                <div class="item-img col-12 col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <a href="<?= "http://" . HOST . "/product/detail?pid=" . $product["id"] ?>">
-                        <img src="<?php if (preg_match("/^http?/", $product["img_ref"])) {
-                                        echo ($product["img_ref"]);
-                                    } else {
-                                        echo ("http://" . HOST . $product["img_ref"]);
-                                    }
-                                    ?>" alt="" style=" max-height: 200px; max-width: 250px">
-                    </a>
-                </div>
-                <div class="content-summary col-12 col-xl-6 col-lg-6 col-md-6 col-sm-11" style="margin-left: 10px; ">
-                    <b>
-                        <h3>
-                            <?= $product["name"] ?>
-                        </h3>
-                    </b>
-                    <b>Unit Price: &nbsp;</b>
-                    <?= $product["unit_price"] ?>
-                    <br> <b>Quantity: &nbsp;</b>
-                    <?= $product["quantity"] ?>
-                </div>
-
-            </div>
-        <?php } ?>
-    </div>
-    <hr>
-    <div class="customer-infor">
-        <h3>Customer info</h3>
+        <hr>
+        <h3>Customer summary</h3>
+        <br>
         <div class="td-row">
             <b>Customer Name: </b>
             <?= $order["customer_name"] ?>
@@ -96,14 +72,39 @@
             <?= $order["address"] ?>
         </div>
     </div>
+    <div class="col-6 col-xl-6 col-md-6">
+        <?php foreach ($order["products"] as $product) { ?>
+            <div class="row col-12 col-xl-12 col-md-12" style="border: 1px solid blue; border-collapse:collapse; margin-bottom: 30px; border-radius: 10px ; width:100% ; padding:10px" >
 
-    <div class="action">
+            <div class="item-img col-5 col-xl-5 col-lg-4">
+                    <a href="<?= "http://" . HOST . "/product/detail?pid=" . $product["product_id"] ?>">
+                        <img src="<?= imageRender($product["img_ref"]) ?>" alt="" style=" max-height: 200px; max-width: 250px">
+                    </a>
+                </div>
+                <div class="content-summary col-5 col-xl-6 col-lg-6 col-md-6 col-sm-11" style="margin-left: 10px; ">
+                    <b>
+                        <h4>
+                            <?= $product["name"] ?>
+                        </h4>
+                    </b>
+                    <b>Unit Price: &nbsp;</b>
+                    <?= $product["unit_price"] ?>
+                    <br> <b>Quantity: &nbsp;</b>
+                    <?= $product["quantity"] ?>
+                </div>
+
+            </div>
+        <?php } ?>
+    </div>
+
+
+    <div class="row" style=" position: fixed; bottom:0;width:85%; justify-content: center;">
         <?php if ($order["status_id"] < 4) { ?>
             <hr>
-            <form action="/user/order/cancel" method="POST">
+            <form action="/user/order/cancel" method="POST" style="width: 80%;">
                 <input type="hidden" name="oid" value="<?= $order["id"] ?>">
                 <input type="hidden" name="change_status_note" id="change_status_note">
-                <button type="submit" onclick="return cancelOrderConfirm()" class="btn btn-light" style="width: 100%;">Cancel Order</button>
+                <button type="submit" onclick="return cancelOrderConfirm()" class="btn btn-danger form-control" style="width: 100%;">Cancel Order</button>
             </form>
         <?php } ?>
 

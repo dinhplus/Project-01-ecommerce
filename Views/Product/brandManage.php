@@ -3,20 +3,20 @@ if (empty($_GET["page"])) {
     $_GET["page"] = 1;
 }
 ?>
-<div class="list-brands">
+<div class="list-brands" style="width: 100%;">
     <h3>List Brand</h3>
     <br>
     <?php if ($_SESSION["role"] > 3) { ?>
     <div class="add-new">
-        <form action="/dashboard/product-manager/add-brand" method="POST">
-            <input type="text" name="brand" id="add-brand" placeholder="New Brand ..." >
-            <input type="submit" onclick="return addBrandCheck()" value="Add new Brand" class="btn btn-info btn-block btn-round" > <br>
+        <form action="/dashboard/product-manager/add-brand" method="POST" class="row">
+            <input type="text" name="brand" id="add-brand" placeholder="New Brand ..." class="form-control" style="width: 40%;">
+            <input type="submit" onclick="return addBrandCheck()" value="Add new Brand" class="btn btn-info btn-block btn-round" class="form-control" style="width: 40%;"> <br>
             <span id="add-brand-err" class="warning"></span>
         </form>
     </div>
     <?php } ?>
     <hr>
-    <table class="table table-striped table-dark">
+    <table class="table table-striped table-dark" style="width: 100%;">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -62,11 +62,11 @@ if (empty($_GET["page"])) {
                                 <div class="edit-brand-form" id="<?= 'edit-brand-' . $id ?>" style="display: none;">
                                     <form action="/dashboard/product-manager/update-brand" method="post" id="<?= 'form-edit-brand-' . $id ?>">
                                         <input type="hidden" name="brand_id" value="<?= $id ?>">
-                                        <input type="text" name="brand" id="<?= "brand-" . $id ?>" value="<?= $name ?>" placeholder="Brand label...">
+                                        <input type="text" name="brand" id="<?= "brand-" . $id ?>" value="<?= $name ?>" placeholder="Brand label..." class="form-control">
                                         <br>
                                         <span class="warning" id="brand-err-<?= $id ?>"></span> <br>
-                                        <input type="submit" onclick="return editBrandCheck(<?= $id ?>)" class="btn btn-info btn-block btn-round">
-                                        <button onclick="cancelEditBrand(<?= $id ?>)" type="reset"  class="btn btn-danger btn-block btn-round"> Cancel</button>
+                                        <input type="submit" onclick="return editBrandCheck(<?= $id ?>)" class="btn btn-info btn-block btn-round" class="form-control" style="width: 49%;">
+                                        <button onclick="cancelEditBrand(<?= $id ?>)" type="reset"  class="btn btn-danger btn-block btn-round" class="form-control" style="width: 49%;"> Cancel</button>
                                     </form>
                                 </div>
                                 <?php } ?>
