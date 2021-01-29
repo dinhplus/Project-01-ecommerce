@@ -10,6 +10,9 @@ class ClientController extends Controller
 {
     public function __construct()
     {
+        $_POST = $this->secure_form($_POST);
+        $_GET = $this->secure_form($_GET);
+        $_REQUEST = $this->secure_form($_REQUEST);
         $this->layout = "defaultLayout";
         $this->customerModel = new Customer();
         $this->productModel = new Product();
@@ -25,10 +28,10 @@ class ClientController extends Controller
             $data = [];
             $pageNumber = $_GET["page"] ?? 1;
             $recordPerPage = PAGINATE;
-            $productName = $_GET["q"] ?? null;
+            $productName = $_GET["q"] ?? '';
             $productStatus = 2;
-            $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
-            $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
+            $category = isset($_GET["category"]) ?  $_GET["category"]  : null;
+            $brand = isset($_GET["brand"]) ? $_GET["brand"]  : null;
             $customerUsername = $_SESSION["customerUsername"] ?? null;
             if ($customerUsername) {
                 $customer = $this->customerModel->getCustomerByUsername($customerUsername);
@@ -40,10 +43,10 @@ class ClientController extends Controller
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
-            // dd($data);
+            dd($data);
             $this->render("index");
         } catch (Exception $e) {
-            // pd($e);
+            pd($e);
         }
     }
     public function productDetail()

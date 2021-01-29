@@ -33,30 +33,21 @@ class Product extends Model
         ]);
     }
 
-    public function getAllProduct($productName, $category = null, $brand = null, $product_status = null, $isSort = false)
+    public function getAllProduct($productName, $category, $brand, $product_status = null, $isSort = false)
     {
-        // dd($productName);
         //FIXME: Can not binding params with template
         $query = "SELECT p.*, c.label category , b.name brand, stt.label status FROM products p JOIN product_categories c ON c.id = p.category_id JOIN product_brand b ON b.id = p.brand_id JOIN product_status stt ON stt.id = p.status_id WHERE 1 ";
         if ($productName) {
-            $query .= "AND p.name LIKE :productName";
+            $query .= "AND p.name LIKE '%" . $productName . "%'";
         }
         if ($category) {
-            $query .= " AND p.category_id in ('1','2')" ;//. $category;
-        }
-        else {
-            $query .= " AND p.category_id not in (:category)" ;
+            $query .= " AND p.category_id in " . $category;
         }
         if ($brand) {
-            $query .= " AND p.brand_id in ('1','2')"; //. $brand;
-        } else {
-            $query .= " AND p.brand_id not in (:brand)";
+            $query .= " AND p.brand_id in " . $brand;
         }
-        if ($product_status) {
-            $query .= " AND p.status_id = 2";// . $product_status;
-        }
-        else{
-            $query .= " AND p.status_id != '1'";// . $product_status;
+        if($product_status){
+            $query .= " AND p.status_id = " . $product_status;
         }
         if ($isSort == 1) {
             $query .= " ORDER BY p.quantity ASC";
@@ -64,24 +55,9 @@ class Product extends Model
         if ($isSort == -1) {
             $query .= " ORDER BY p.quantity DESC";
         }
-        // pd($query);
         $req = self::getConnection()->prepare($query);
-        pd($req);
-        $arr = [
-            "productName" => "'%".$productName."%'",
-            "category" => "'1','2'",
-            "brand" => "'1','2'",
-            "product_status" => $product_status
-        ];
-        // dd($arr);
-        $req->execute([
-            "productName" => "'%".$productName."%'"
-            // "category" => "'1','2'",
-            // "brand" => "'1','2'",
-            // "product_status" => $product_status
-        ]);
-        // $req->setFetchMode(PDO::FETCH_ASSOC);
-        dd($req->fetchAll());
+        $req->execute();
+        $req->setFetchMode(PDO::FETCH_ASSOC);
         return $req->fetchAll();
     }
     public function getCategories()
@@ -137,8 +113,7 @@ class Product extends Model
             "status_id" => $product["status_id"]
         ]);
     }
-    public function getProductAvailable($pid, $expect_quantity = 1, $currentSelectedQtt)
-    {
+    public function getProductAvailable($pid, $expect_quantity = 1, $currentSelectedQtt){
         $query = "SELECT p.id from products p WHERE p.id = :pid AND p.quantity >= (:expect_quantity + :crrQtt)";
         $req = self::getConnection()->prepare($query);
         $req->execute([
@@ -148,79 +123,12 @@ class Product extends Model
         ]);
         return $req->fetch();
     }
-    function decreaseProductQuantity($pid, $decreaseQuantity)
-    {
+    function decreaseProductQuantity($pid, $decreaseQuantity){
         $query = "UPDATE products SET quantity = quantity - :dQtt WHERE id = :pid";
         $req = self::getConnection()->prepare($query);
         return $req->execute([
             "pid" => $pid,
             "dQtt" => $decreaseQuantity
         ]);
-    }
-    public function storeCategory($category)
-    {
-        if ($category) {
-
-            $query = "INSERT INTO product_categories(label) VALUE (:category)";
-            $req = self::getConnection()->prepare($query);
-            return $req->execute([
-                "category" => $category
-            ]);
-        } else return false;
-    }
-    public function updateCategory($categoryId, $category)
-    {
-        if (isset($categoryId) && isset($category)) {
-
-            $query = "UPDATE product_categories SET label = :category WHERE id = :category_id";
-            $req = self::getConnection()->prepare($query);
-            return $req->execute([
-                "category_id" => $categoryId,
-                "category" => $category
-            ]);
-        } else return false;
-    }
-    public function deleteCategory($categoryId)
-    {
-        if (isset($categoryId)) {
-
-            $query = "DELETE FROM product_categories  WHERE id = :category_id";
-            $req = self::getConnection()->prepare($query);
-            return $req->execute([
-                "category_id" => $categoryId,
-            ]);
-        } else return false;
-    }
-
-    public function storeBrand($brand)
-    {
-        $query = "INSERT INTO product_brand(name) VALUE (:brand)";
-        $req = self::getConnection()->prepare($query);
-        return $req->execute([
-            "brand" => $brand
-        ]);
-    }
-    public function updateBrand($brandId, $brand)
-    {
-        if (isset($brandId) && isset($brand)) {
-
-            $query = "UPDATE product_brand SET name = :brand WHERE id = :brand_id";
-            $req = self::getConnection()->prepare($query);
-            return $req->execute([
-                "brand_id" => $brandId,
-                "brand" => $brand
-            ]);
-        } else return false;
-    }
-    public function deleteBrand($brandId)
-    {
-        if (isset($brandId)) {
-
-            $query = "DELETE FROM product_brand  WHERE id = :brand_id";
-            $req = self::getConnection()->prepare($query);
-            return $req->execute([
-                "brand_id" => $brandId,
-            ]);
-        } else return false;
     }
 }

@@ -4,6 +4,9 @@ require_once(ROOT."Models/User.php");
 class UserController extends Controller{
 
     public function __construct(){
+        $_POST = $this->secure_form($_POST);
+        $_GET = $this->secure_form($_GET);
+        $_REQUEST = $this->secure_form($_REQUEST);
         $this->layout = "blankLayout";
         $this->userModel = new User();
     }

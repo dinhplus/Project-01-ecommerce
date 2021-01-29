@@ -13,6 +13,7 @@ class BaseController
     var $vars = [];
     var $layout = "defaultAplication";
     var $messageLayout = [];
+
     function set($data)
     {
         $this->vars = array_merge($this->vars, $data);
@@ -70,7 +71,7 @@ class BaseController
         $dateTimeResult = mktime($timeContainer[0], $timeContainer[1], $timeContainer[2], $dateContainer[1], $dateContainer[2], $dateContainer[0] );
         return date(DATE_TIME_FORMAT, $dateTimeResult);
     }
-    private function secure_input($data)
+    public function secure_input($data)
     {
         $data = trim($data);
         $data = stripslashes($data);
@@ -78,10 +79,11 @@ class BaseController
         return $data;
     }
 
-    protected function secure_form($form)
+    public function secure_form(&$form)
     {
-        foreach ($form as $key => $value) {
-            $form[$key] = $this->secure_input($value);
+        foreach ($form as &$value) {
+            $value = $this->secure_input($value);
         }
+        return $form;
     }
 }

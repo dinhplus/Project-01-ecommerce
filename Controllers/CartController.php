@@ -8,6 +8,9 @@ require_once(ROOT . "Controllers/AdminController.php");
 class CartController extends Controller {
 
     public function __construct() {
+        $_POST = $this->secure_form($_POST);
+        $_GET = $this->secure_form($_GET);
+        $_REQUEST = $this->secure_form($_REQUEST);
         $this->layout = "defaultLayout";
         $this->customerModel = new Customer();
         $this->productModel = new Product();

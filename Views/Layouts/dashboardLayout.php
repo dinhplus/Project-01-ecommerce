@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplication</title>
-    <!-- <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css"> -->
+    <title>Dashboard || IMedia</title>
     <link rel="stylesheet" href="/public/assets/icofont/icofont.min.css">
     <link rel="stylesheet" href="/public/stylesheet/dashboardStyleSheet.css">
 

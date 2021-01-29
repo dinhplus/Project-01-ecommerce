@@ -34,7 +34,7 @@
                     <?php if (isset($roles) && count($roles) > 0) {
                         foreach ($roles as $key => $role) {
                     ?>
-                            <option value="<?= $role["level"] ?>">
+                            <option value="<?= $role["level"] ?>" <?=$currentAccount["role_id"]==$role["level"]?"selected":""?>>
                                 <?= $role["label"] ?>
                             </option>
                     <?php }

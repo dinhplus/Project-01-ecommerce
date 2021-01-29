@@ -9,10 +9,14 @@ class ProductController extends Controller
 {
     public function __construct()
     {
+        $_POST = $this->secure_form($_POST);
+        $_GET = $this->secure_form($_GET);
+        $_REQUEST = $this->secure_form($_REQUEST);
         $this->layout = "dashboardLayout";
         $this->adminModel = new Admin();
         $this->productModel = new Product();
         $this->AdminController = new AdminController();
+
     }
     public function index()
     {
@@ -24,17 +28,18 @@ class ProductController extends Controller
             $pageNumber = $_GET["page"] ?? 1;
             $recordPerPage = PAGINATE;
             $productName = $_GET["q"] ?? null;
-
+            // pd($productName);
             $category = isset($_GET["category"]) ? "(" . $_GET["category"] . ")" : null;
             $brand = isset($_GET["brand"]) ? "(" . $_GET["brand"] . ")" : null;
             $allProduct = $this->productModel->getAllProduct($productName, $category, $brand);
+            pd($allProduct);
             $data["enableSearch"] = true;
             $data["products"] = array_slice($allProduct, ($pageNumber - 1) * $recordPerPage, $recordPerPage) ?? [];
             $data["pageQtt"] = $allProduct ? ceil(count($allProduct) / $recordPerPage) : 1;
             $this->set($data);
             $this->render("index");
         } catch (Exception $e) {
-            //pd($e);
+            pd($e);
         }
     }
 
@@ -67,9 +72,10 @@ class ProductController extends Controller
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
             }
-
+            // dd($_POST);
             $name = $_POST["name"];
             $description = $_POST["description"];
+            // dd($description);
             $price = $_POST["price"];
             $quantity = $_POST["quantity"];
             $brand_id = $_POST["brand"];
@@ -358,13 +364,154 @@ class ProductController extends Controller
         }
     }
 
-    public function createCategory()
+    public function showCategoryManage(){
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $data["categories"] = $this->productModel->getCategories();
+            $this->set($data);
+            // pd($data);
+            $this->render("categoryManage");
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function storeCategory()
     {
         try {
             $acount = $this->AdminController->checkLogin();
             if (!$acount) {
                 $this->popup("/dashboard/login", "please login to access dashboard!!");
             }
+            if($acount["role_id"] < 4){
+                $this->popup("/dashboard/login", "please check your permission!!");
+            }
+            $category = $_POST["category"] ?? '';
+            $onStore = true;
+            if(strlen($category) > 1){
+                $onStore = $this->productModel->storeCategory($category);
+            }
+            else{
+                $onStore = false;
+            }
+            if($onStore){
+                $data["alert"] = "Store new category successfully";
+            }
+            else{
+                $data["alert"] = "Store new category failed with unexpected error! Kindly try again!";
+            }
+            $this->popup("http://" . HOST . $_SESSION["currentUrl"],  $data["alert"]);
+
+        } catch (Exception $e) {
+            //pd($e);
+        }
+    }
+    public function updateCategory()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if($acount["role_id"] < 4){
+                $this->popup("/dashboard/login", "please check your permission!!");
+            }
+            $categoryId = $_POST["category_id"] ?? '';
+            $category = $_POST["category"] ?? '';
+            $onStore = true;
+            if(strlen($category) > 1){
+                $onStore = $this->productModel->updateCategory($categoryId, $category);
+            }
+            else{
+                $onStore = false;
+            }
+            if($onStore){
+                $data["alert"] = "Update new category successfully";
+            }
+            else{
+                $data["alert"] = "Update new category failed with unexpected error! Kindly try again!";
+            }
+            $this->popup("http://" . HOST . $_SESSION["currentUrl"],  $data["alert"]);
+        } catch (Exception $e) {
+            //pd($e);
+        }
+    }
+
+    public function showBrandManage(){
+        try {
+
+            $acount = $this->AdminController->checkLogin();
+            // dd($acount);
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            $data["brands"] = $this->productModel->getBrands();
+            $this->set($data);
+            // pd($data);
+            $this->render("brandManage");
+        } catch (Exception $e) {
+            pd($e);
+        }
+    }
+    public function storeBrand()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if($acount["role_id"] < 4){
+                $this->popup("/dashboard/login", "please check your permission!!");
+            }
+
+            $brand = $_POST["brand"] ?? '';
+            $onStore = true;
+            if(strlen($brand) > 1){
+                $onStore = $this->productModel->storeBrand($brand);
+            }
+            else{
+                $onStore = false;
+            }
+            if($onStore){
+                $data["alert"] = "Store new brand successfully";
+            }
+            else{
+                $data["alert"] = "Store new brand failed with unexpected error! Kindly try again!";
+            }
+            $this->popup("http://" . HOST . $_SESSION["currentUrl"],  $data["alert"]);
+
+        } catch (Exception $e) {
+            //pd($e);
+        }
+    }
+    public function updateBrand()
+    {
+        try {
+            $acount = $this->AdminController->checkLogin();
+            if (!$acount) {
+                $this->popup("/dashboard/login", "please login to access dashboard!!");
+            }
+            if($acount["role_id"] < 4){
+                $this->popup("/dashboard/login", "please check your permission!!");
+            }
+            $brandId = $_POST["brand_id"] ?? '';
+            $brand = $_POST["brand"] ?? '';
+            $onStore = true;
+            if(strlen($brand) > 1){
+                $onStore = $this->productModel->updateBrand($brandId, $brand);
+            }
+            else{
+                $onStore = false;
+            }
+            if($onStore){
+                $data["alert"] = "Update new category successfully";
+            }
+            else{
+                $data["alert"] = "Update new category failed with unexpected error! Kindly try again!";
+            }
+            $this->popup("http://" . HOST . $_SESSION["currentUrl"],  $data["alert"]);
         } catch (Exception $e) {
             //pd($e);
         }

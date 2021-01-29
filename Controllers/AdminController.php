@@ -8,6 +8,9 @@ class AdminController extends Controller
 
     public function __construct()
     {
+        $_POST = $this->secure_form($_POST);
+        $_GET = $this->secure_form($_GET);
+        $_REQUEST = $this->secure_form($_REQUEST);
         $this->layout = "dashboardLayout";
         $this->adminModel = new Admin();
     }
@@ -23,7 +26,7 @@ class AdminController extends Controller
                 $this->render("getDashboard");
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -48,7 +51,7 @@ class AdminController extends Controller
             }
             return $checkLogin;
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -64,7 +67,7 @@ class AdminController extends Controller
                 header("Location:" . "http://" . HOST . "/dashboard/");
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -95,7 +98,7 @@ class AdminController extends Controller
                 header("Location:" . "http://" . HOST . "/dashboard");
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -109,7 +112,7 @@ class AdminController extends Controller
             confirm("use are logged out");
             header("Location:" . "http://" . HOST . "/home");
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -118,6 +121,7 @@ class AdminController extends Controller
         try {
             $account = $this->checkLogin();
             // var_dump($account); die();
+
             if ($account["role_id"] > 4) {
                 $roles = $this->adminModel->getRoles();
                 $data["roles"] = $roles;
@@ -127,7 +131,7 @@ class AdminController extends Controller
                 header("Location:" . "http://" . HOST . "/dashboard");
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -186,13 +190,14 @@ class AdminController extends Controller
                 }
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
     public function editPassword()
     {
         $accountLoginned = $this->checkLogin();
+
         if ($accountLoginned && $accountLoginned["id"]) {
             $this->layout = "dashboardLayout";
             $this->render("getEditPassword");
@@ -244,8 +249,6 @@ class AdminController extends Controller
     public function editStaff()
     {
         try {
-
-
             $accountLoginned = $this->checkLogin();
             if (!$accountLoginned) {
                 header("Location:" . "http://" . HOST . "/dashboard/login");
@@ -253,8 +256,8 @@ class AdminController extends Controller
             $uid = $_GET["uid"];
             if ($uid && ($_GET["uid"] === $accountLoginned["id"] || $accountLoginned["role_id"] > 4)) {
                 $currentAccount = $this->adminModel->getAccountById($uid);
-                if (!$accountLoginned) {
-                    $this->popup("/dashboard/admin-manager", "This account do not existed : <br> uid = " . $accountLoginned["username"]);
+                if (!$currentAccount) {
+                    $this->popup("/dashboard/admin-manager", "This account do not existed : <br> uid = " . $_GET["uid"]);
                 } else {
                     $_SESSION["uid-editting"] = $currentAccount["id"];
                     $roles = $this->adminModel->getRoles();
@@ -268,7 +271,7 @@ class AdminController extends Controller
                 $this->popup("/dashboard/admin-manager", "You do not have permission to edit this account : <br> Username:" . $accountLoginned["username"]);
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
     public function updateStaff()
@@ -295,7 +298,7 @@ class AdminController extends Controller
                 }
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
     public function deleteStaff()
@@ -318,7 +321,7 @@ class AdminController extends Controller
                 }
             }
         } catch (Exception $th) {
-            //throw $th;
+            throw $th;
         }
     }
 }

@@ -1,4 +1,4 @@
-function removeAscent (str) {
+function removeAscent(str) {
     if (str === null || str === undefined) return str;
     str = str.toLowerCase();
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
@@ -10,10 +10,10 @@ function removeAscent (str) {
     str = str.replace(/đ/g, "d");
     return str;
 }
-function isValidName (string) {
+function isValidName(string) {
     var re = /^[\w\s ]{2,}$/g // regex here
     return re.test(removeAscent(string))
-  }
+}
 function createStaffHandling() {
     var validateOk = true;
     var displayname = document.getElementById("displayname").value;
@@ -24,7 +24,7 @@ function createStaffHandling() {
     const usernamePattern = /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
 
-    console.log(password == cfPassword);
+    // console.log(password == cfPassword);
     if (!isValidName(displayname)) {
         validateOk = false;
         var nameErrMessage = "displayName is require and have least 2 character";
@@ -178,16 +178,16 @@ function loginHandling() {
     }
     return validateOk;
 }
-function cancelOrderConfirm(){
+function cancelOrderConfirm() {
     var reason = window.prompt("Enter the reason:");
-    if(reason){
-        document.getElementById("change_status_note").value = "Customer cancel because: <br> " + reason ;
+    if (reason) {
+        document.getElementById("change_status_note").value = "Customer cancel because: <br> " + reason;
         return true;
     }
     else return false;
 
 }
-function confirmOrderHandling(){
+function confirmOrderHandling() {
     var validateOk = true;
     var name = document.getElementById("name").value;
     var phone = document.getElementById("phone").value;
@@ -220,7 +220,7 @@ function confirmOrderHandling(){
     else {
         document.getElementById("address-err").innerHTML = '';
     }
-    if(note.length > 0 &&!isValidName(note) ){
+    if (note.length > 0 && !isValidName(note)) {
         validateOk = false;
         var noteErrMessage = "Address is required that have least 5 charactor";
         document.getElementById("note-err").innerHTML = noteErrMessage;
@@ -228,24 +228,116 @@ function confirmOrderHandling(){
     else {
         document.getElementById("note-err").innerHTML = '';
     }
-    if(validateOk){
+    if (validateOk) {
         return confirm("Are your sure? This action cannot revert.");
     }
     else return false;
 }
-function decrease(pid){
+function decrease(pid) {
     var qttForm = document.getElementById(`formQtt-${pid}`);
     qttForm.style.display = "block";
     var qtt = document.getElementById(`qtt-${pid}`);
-    if(qtt.value > 0) {
-        qtt.value = qtt.value -1;
+    if (qtt.value > 0) {
+        qtt.value = qtt.value - 1;
     } else qtt.value = 0;
 }
-function increase(pid){
+function increase(pid) {
     var qttForm = document.getElementById(`formQtt-${pid}`);
     qttForm.style.display = "block";
     var qtt = document.getElementById(`qtt-${pid}`);
 
-        qtt.value = parseInt(qtt.value) + 1;
+    qtt.value = parseInt(qtt.value) + 1;
 
+}
+function showEditCategory(categoryId) {
+    if (categoryId) {
+        var editCategoryForm = document.getElementById(`edit-ctg-${categoryId}`);
+        editCategoryForm.style.display = "block";
+
+    }
+}
+function cancelEditCategory(categoryId) {
+    if (categoryId) {
+        var editCategoryForm = document.getElementById(`edit-ctg-${categoryId}`);
+        editCategoryForm.style.display = "none";
+
+    }
+}
+function editCategoryCheck(categoryId) {
+
+    if (categoryId) {
+        var validateOk = true;
+        var category = document.getElementById(`category-${categoryId}`).value;
+        if (!isValidName(category)) {
+            validateOk = false;
+            var ctgErrMessage = "category is require and have least 2 character";
+            document.getElementById(`category-err-${categoryId}`).innerHTML = ctgErrMessage;
+        }
+        else {
+            document.getElementById(`category-err-${categoryId}`).innerHTML = "";
+        }
+        if (validateOk) return confirm("Are you sure? This action cannot revert.");
+        else return false;
+    }
+    else return false;
+}
+function addCategoryCheck() {
+    var validateOk = true;
+    var category = document.getElementById("add-category").value;
+    if (!isValidName(category)) {
+        validateOk = false;
+        var ctgErrMessage = "category is require and have least 2 character";
+        document.getElementById(`add-category-err`).innerHTML = ctgErrMessage;
+    }
+    else {
+        document.getElementById(`add-category-err`).innerHTML = "";
+    }
+    if (validateOk) return confirm("Are you sure? This action cannot revert.");
+    else return false;
+}
+function showEditBrand(brandId) {
+    if (brandId) {
+        var editCategoryForm = document.getElementById(`edit-brand-${brandId}`);
+        editCategoryForm.style.display = "block";
+
+    }
+}
+function cancelEditBrand(brandId) {
+    if (brandId) {
+        var editCategoryForm = document.getElementById(`edit-brand-${brandId}`);
+        editCategoryForm.style.display = "none";
+
+    }
+}
+function editBrandCheck(brandId) {
+
+    if (brandId) {
+        var validateOk = true;
+        var brand = document.getElementById(`brand-${brandId}`).value;
+        if (!isValidName(brand)) {
+            validateOk = false;
+            var brandErrMessage = "brand is require and have least 2 character";
+            document.getElementById(`brand-err-${brandId}`).innerHTML = brandErrMessage;
+        }
+        else {
+            document.getElementById(`brand-err-${brandId}`).innerHTML = "";
+        }
+        if (validateOk) return confirm("Are you sure? This action cannot revert.");
+        else return false;
+    }
+    else return false;
+}
+function addBrandCheck() {
+    var validateOk = true;
+    var brand = document.getElementById("add-brand").value;
+    if (!isValidName(brand)) {
+        validateOk = false;
+        var brandErrMessage = "brand is require and have least 2 character";
+        document.getElementById(`add-brand-err`).innerHTML = brandErrMessage;
+    }
+    else {
+        document.getElementById(`add-brand-err`).innerHTML = "";
+    }
+    if (validateOk) return confirm("Are you sure? This action cannot revert.");
+    else return false;
 }

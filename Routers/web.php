@@ -1,6 +1,6 @@
 <?php
 Router::GET("/dashboard/register", function(){
-    echo("<h1 style='color: red; align: center; v-align: center'> This site just a joke!!! LOL🤗🤗🤗🤗🤗🤗🤗🤗</h1>");
+    echo("<h1 style='color: red; align: center; v-align: center'> There is no register method for staff. Please contact your administrator🤗🤗🤗🤗🤗🤗🤗🤗</h1>");
 });
 
 Router::GET("/dashboard", "AdminController@index");
@@ -41,13 +41,18 @@ Router::GET("/dashboard/product-manager/edit-product", "ProductController@editPr
 Router::POST("/dashboard/product-manager/edit-product", "ProductController@updateProduct");
 
 //TODO : Do implement feature later
-// Router::GET("/dashboard/product-manager/add-category", "ProductController@createCategory");
-// Router::POST("/dashboard/product-manager/add-category", "ProductController@storeCategory");
+Router::GET("/dashboard/product-manager/category-manage", "ProductController@showCategoryManage");
+Router::POST("/dashboard/product-manager/add-category", "ProductController@storeCategory");
+Router::POST("/dashboard/product-manager/delete-category", "ProductController@deleteCategory");
+Router::POST("/dashboard/product-manager/update-category", "ProductController@updateCategory");
 
-// Router::GET("/dashboard/product-manager/add-brand", "ProductController@createBrand");
-// Router::POST("/dashboard/product-manager/add-brand", "ProductController@storeBrand");
+Router::GET("/dashboard/product-manager/brand-manage", "ProductController@showBrandManage");
+Router::POST("/dashboard/product-manager/add-brand", "ProductController@storeBrand");
+Router::POST("/dashboard/product-manager/delete-brand", "ProductController@deleteBrand");
+Router::POST("/dashboard/product-manager/update-brand", "ProductController@updateBrand");
 
 
+//FEATURE order:
 Router::GET("/dashboard/order-manager/index", "OrderController@index");
 Router::GET("/dashboard/order-manager", "OrderController@index");
 Router::GET("/dashboard/order-manager/order-detail", "OrderController@showOrderDetail");
