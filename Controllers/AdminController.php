@@ -3,6 +3,7 @@
 use Controller\BaseController as Controller;
 
 require_once(ROOT . "Models/Admin.php");
+require_once(ROOT . "Models/Customer.php");
 class AdminController extends Controller
 {
 
@@ -13,6 +14,7 @@ class AdminController extends Controller
         $_REQUEST = $this->secure_form($_REQUEST);
         $this->layout = "dashboardLayout";
         $this->adminModel = new Admin();
+        $this->customerModel = new Customer();
     }
 
     public function index()
@@ -29,7 +31,42 @@ class AdminController extends Controller
             throw $th;
         }
     }
+    public function resetPassword(){
+        try {
 
+
+            $master = $this->checkLogin();
+            // var_dump($master);
+            if (!$master) {
+                $this->popup("/dashboard/login", "Please login before do anything </h2>");
+            }
+            if ($master && $master["role_id"] <= 5) {
+                $this->popup("/dashboard/admin-manager", "<h2>ERROR!!!</h1> <br><h1>This account do not have permision for this action!!!👃🏿👃🏿👃🏿👃🏿 </h2>");
+            } else {
+                if($_POST["secret-key"] == RESET_STAFF_PASSWORD_SECRET){
+                    $user =  $this->adminModel->getAccountById($_POST["uid"]);
+                    if($user && count($user) > 0){
+                        $user["password"] = password_hash(DEFAULT_PASSWORD_RESET, PASSWORD_DEFAULT);
+                        $onReset = $this->adminModel->updateAccount($user);
+                        if($onReset){
+                            $this->popup("/dashboard/admin-manager", "Reset Password successfully. <br> New password is: ".DEFAULT_PASSWORD_RESET);
+                        }
+                        else{
+                            $this->popup("/dashboard/admin-manager", "Reset Password failed");
+                        }
+                    }
+                    else{
+                        $this->popup("/dashboard/admin-manager", "Reset Password failed! This account is not exist");
+                    }
+                }
+                else{
+                    $this->popup("/dashboard/admin-manager", "Secret Key is invalid. Please re-check or contact technicians ");
+                }
+            }
+        } catch (Exception $th) {
+            throw $th;
+        }
+    }
     public function checkLogin()
     {
         try {
@@ -78,6 +115,14 @@ class AdminController extends Controller
 
             $username = $_POST["username"];
             $password = $_POST["password"];
+            if (!(regexUsename($username) && regexPassword($password))) {
+                $data["message"] = "Please enter correctly according to the specified form!";
+                $data["inputted"] = ["username" => $username, "password" => $password];
+                $_SERVER["REQUEST_METHOD"] = "GET";
+                $this->set($data);
+                $this->getLogin();
+                die();
+            }
             $account = $this->adminModel->fetchAccount($username, $password);
             if (!$account || $account === []) {
                 $data["message"] = "Username or password are invalid!";
@@ -153,6 +198,21 @@ class AdminController extends Controller
                 $password = $_POST["password"];
                 $displayName = $_POST["displayname"];
                 $role_id = $_POST["role"];
+                if (!(regexUsename($username)
+                    && regexPassword($password)
+                    && isValidName($displayName))) {
+                    $data["message"] = "Please enter correctly according to the specified form!";
+                    $data["inputted"] = [
+                        "username" => $username,
+                        "password" => $password,
+                        "name" =>  $displayName,
+                        "role_id" => $role_id
+                    ];
+                    $_SERVER["REQUEST_METHOD"] = "GET";
+                    $this->set($data);
+                    $this->createAdmin();
+                    die();
+                }
                 $account = $this->adminModel->getAccount($username, $password);
                 $newAccount = [
                     "username" => $username,
@@ -209,6 +269,12 @@ class AdminController extends Controller
     public function updatePassword()
     {
         $currentPassword = $_POST["current-password"];
+        if(!regexPassword($_POST["password"])){
+            $data["message"] = "Please enter correctly according to the specified form!";
+            $_SERVER["METHOD"] = "GET";
+            $this->set($data);
+            $this->editPassword();
+        }
         $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
         $username = $_SESSION["username"];
 
@@ -230,19 +296,27 @@ class AdminController extends Controller
 
     public function showAdmin()
     {
-        $accountLoginned = $this->checkLogin();
-        $accountRecords = $this->adminModel->getAccountRecord();
-        if (!$accountLoginned) {
-            header("Location:" . "http://" . HOST . "/dashboard/login");
-        } else {
-            $this->layout = "dashboardLayout";
-            $accountRecords = $this->adminModel->getAccountRecord();
-            // var_dump($accountRecords);
-            $data["enableSearch"] = true;
-            $data["accountLoginned"] = $accountLoginned;
-            $data["records"] = $accountRecords;
-            $this->set($data);
-            $this->render("index");
+        try{
+
+            $accountLoginned = $this->checkLogin();
+            // $accountRecords = $this->adminModel->getAccountRecord();
+            if (!$accountLoginned) {
+                header("Location:" . "http://" . HOST . "/dashboard/login");
+            } else {
+                $this->layout = "dashboardLayout";
+                $username = $_GET["q"] ?? null;
+
+                $accountRecords = $this->adminModel->getAccountRecord($username);
+                // var_dump($accountRecords);
+                $data["enableSearch"] = true;
+                $data["accountLoginned"] = $accountLoginned;
+                $data["records"] = $accountRecords;
+                $this->set($data);
+                $this->render("index");
+            }
+        }
+        catch(Exception $e){
+            pd($e);
         }
     }
 
@@ -312,12 +386,72 @@ class AdminController extends Controller
                 $this->popup("/dashboard/admin-manager", "Sorry <br> You do not have permission to implement this action");
             } else {
                 $uid = $_POST["staff-id"];
-                if($uid == $accountLoginned["id"]){
+                if ($uid == $accountLoginned["id"]) {
                     $this->popup("/dashboard/admin-manager", "You can not delete your self!");
                 }
                 $onDelete = $this->adminModel->deleteStaff($uid);
                 if ($onDelete) {
                     header("Location:" . "http://" . HOST . "/dashboard/admin-manager");
+                }
+            }
+        } catch (Exception $th) {
+            throw $th;
+        }
+    }
+    public function getResetClientPassword()
+    {
+        try {
+
+
+            $master = $this->checkLogin();
+            // var_dump($master);
+            if (!$master) {
+                $this->popup("/dashboard/login", "Please login before do anything </h2>");
+            }
+            if ($master && $master["role_id"] <= 5) {
+                $this->popup("/dashboard/admin-manager", "<h2>ERROR!!!</h1> <br><h1>This account do not have permision for this action!!!👃🏿👃🏿👃🏿👃🏿 </h2>");
+            } else {
+                $filterKey = $_GET["filter"] ?? null;
+                $filterResult = $this->customerModel->filterCustomer($filterKey);
+                $data["customers"] = $filterResult;
+                $this->set($data);
+                $this->render("getResetClientPassword");
+            }
+        } catch (Exception $th) {
+            throw $th;
+        }
+    }
+    public function postResetClientPassword()
+    {
+        try {
+
+
+            $master = $this->checkLogin();
+            // var_dump($master);
+            if (!$master) {
+                $this->popup("/dashboard/login", "Please login before do anything </h2>");
+            }
+            if ($master && $master["role_id"] <= 5) {
+                $this->popup("/dashboard/admin-manager", "<h2>ERROR!!!</h1> <br><h1>This account do not have permision for this action!!!👃🏿👃🏿👃🏿👃🏿 </h2>");
+            } else {
+                if($_POST["secret-key"] == RESET_CLIENT_PASSWORD_SECRET){
+                    $user =  $this->customerModel->getCustomerByUsername($_POST["username"]);
+                    if($user && count($user) > 0){
+                        $user["password"] = PASSWORD_DEFAULT;
+                        $onReset = $this->customerModel->updateUserPassword($user);
+                        if($onReset){
+                            $this->popup("/dashboard/client-manager/reset-password", "Reset Password successfully. <br> New password is: ".DEFAULT_PASSWORD_RESET);
+                        }
+                        else{
+                            $this->popup("/dashboard/client-manager/reset-password", "Reset Password failed");
+                        }
+                    }
+                    else{
+                        $this->popup("/dashboard/client-manager/reset-password", "Reset Password failed! This account is not exist");
+                    }
+                }
+                else{
+                    $this->popup("/dashboard", "Secret Key is invalid. Please re-check or contact technicians ");
                 }
             }
         } catch (Exception $th) {

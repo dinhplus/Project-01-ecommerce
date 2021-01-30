@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <div class="site-header menu_bar_mod">
+    <div class="site-header menu_bar_mod" style="z-index: 999;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
             <a class="navbar-brand" href="<?="http://".HOST.'/home'?>">Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

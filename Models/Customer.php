@@ -95,4 +95,26 @@ class Customer extends Model
             "username" => $user["username"]
         ]);
     }
+    public function filterCustomer($filterKey = null)
+    {
+        try{
+            if(!$filterKey || strlen($filterKey) == 0){
+                return null;
+            }
+            else{
+                $query = "SELECT * FROM customers c WHERE c.username like :filterKey or c.name like :filterKey or c.phone like :filterKey or c.email like :filterKey ORDER BY c.id ASC";
+                $req = self::getConnection()->prepare($query);
+                $req->setFetchMode(PDO::FETCH_ASSOC);
+                $req->execute([
+                    "filterKey" => "%".$filterKey."%"
+                ]);
+                $customers = $req->fetchAll();
+                return $customers;
+            }
+        }
+        catch(Exception $e)
+        {
+            throw $e;
+        }
+    }
 }

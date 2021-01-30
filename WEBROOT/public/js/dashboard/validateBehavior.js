@@ -21,7 +21,7 @@ function createStaffHandling() {
     var password = document.getElementById("password").value;
     var cfPassword = document.getElementById("cf-password").value;
 
-    const usernamePattern = /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
+    const usernamePattern = /^(?=[a-zA-Z0-9._]{5,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
 
     // console.log(password == cfPassword);
@@ -342,4 +342,20 @@ function addBrandCheck() {
     }
     if (validateOk) return confirm("Are you sure? This action cannot revert.");
     else return false;
+}
+function showResetPassword(){
+    var resetForm = document.getElementById("reset-form");
+    resetForm.style.display = "block";
+}
+function hideResetPassword(){
+    var resetForm = document.getElementById("reset-form");
+    resetForm.style.display = "none";
+}
+function showResetClientPassword(username){
+    var resetForm = document.getElementById(`reset-form-${username}`);
+    resetForm.style.display = "block";
+}
+function hideResetClientPassword(username){
+    var resetForm = document.getElementById(`reset-form-${username}`);
+    resetForm.style.display = "none";
 }

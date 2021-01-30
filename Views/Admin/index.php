@@ -2,6 +2,7 @@
     if(empty($_GET["page"])){
         $_GET["page"] = 1;
     }
+    $pageQtt = 0;
 ?>
 <div class="list-staffs">
     <div class="action">

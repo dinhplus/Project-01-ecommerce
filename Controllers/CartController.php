@@ -1,13 +1,17 @@
 <?php
+
 use Controller\BaseController as Controller;
+
 require_once(ROOT . "Models/Cart.php");
 require_once(ROOT . "Models/Product.php");
 require_once(ROOT . "Models/Order.php");
 require_once(ROOT . "Models/Customer.php");
 require_once(ROOT . "Controllers/AdminController.php");
-class CartController extends Controller {
+class CartController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $_POST = $this->secure_form($_POST);
         $_GET = $this->secure_form($_GET);
         $_REQUEST = $this->secure_form($_REQUEST);
@@ -35,7 +39,8 @@ class CartController extends Controller {
         }
         return $checkLogin;
     }
-    public function showCart(){
+    public function showCart()
+    {
         try {
             $user = $this->checkLogin();
             if (!$user) {
@@ -44,9 +49,9 @@ class CartController extends Controller {
             $data["cart"] = $this->cartModel->getCart($user["id"]);
             $data["customer"] = $user;
             $totalPrice = 0;
-                foreach ($data["cart"] as $item) {
-                    $totalPrice += intval($item["item_quantity"])* intval($item["unit_price"]);
-                }
+            foreach ($data["cart"] as $item) {
+                $totalPrice += intval($item["item_quantity"]) * intval($item["unit_price"]);
+            }
             $data["totalPrice"] = $totalPrice;
             $this->set($data);
             // pd($data);
@@ -55,7 +60,8 @@ class CartController extends Controller {
             //pd($e);
         }
     }
-    public function addItem(){
+    public function addItem()
+    {
         try {
             $user = $this->checkLogin();
             if (!$user) {
@@ -63,25 +69,23 @@ class CartController extends Controller {
             }
             $pid = $_GET["pid"] ?? null;
             $item_quantity = $_GET["qtt"] ?? 1;
-            if($pid){
+            if ($pid) {
                 $selectedItemQuantity = $this->cartModel->getItemQuantity($user["id"], $pid) ?? 0;
                 $productAvailable = $this->productModel->getProductAvailable($pid, $item_quantity, $selectedItemQuantity);
                 $addable = $this->cartModel->getAddable($user["id"], $pid);
                 // pd([$selectedItemQuantity, $productAvailable, $addable]);
             }
 
-            if(isset($productAvailable) && isset( $addable) && $productAvailable && count($productAvailable) > 0 && $addable) {
+            if (isset($productAvailable) && isset($addable) && $productAvailable && count($productAvailable) > 0 && $addable) {
                 $addItemSuccess = $this->cartModel->addItem($user["id"], $pid, $item_quantity);
-            }
-            else{
+            } else {
                 $this->popup("/home", "This product is not available, exist in your cart or Out of stock! <br> Kindly choose another or decrease Item quantity");
             }
             // TODO: Redirect to current page;
-            if(isset($addItemSuccess) && $addItemSuccess){
-                header("Location:"."http://".HOST."/home");
-            }
-            else{
-                header("Location:"."http://".HOST."/home");
+            if (isset($addItemSuccess) && $addItemSuccess) {
+                header("Location:" . "http://" . HOST . "/home");
+            } else {
+                header("Location:" . "http://" . HOST . "/home");
             }
         } catch (Exception $e) {
             //pd($e);
@@ -95,25 +99,23 @@ class CartController extends Controller {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $pid = $_POST["pid"] ?? null;
-            $item_quantity = $_POST["qtt"] ?? 1;
-            if($pid){
+            $item_quantity = (isset($_POST["qtt"]) && intval($_POST["qtt"]) > 0) ? intval($_POST["qtt"]) : 0;
+            if ($pid) {
                 $selectedItemQuantity = $this->cartModel->getItemQuantity($user["id"], $pid) ?? 0;
                 $productAvailable = $this->productModel->getProductAvailable($pid, $item_quantity, $selectedItemQuantity);
                 $addable = $this->cartModel->getAddable($user["id"], $pid);
             }
             // pd([$selectedItemQuantity, $productAvailable, $addable]);
-            if(isset($productAvailable) && isset( $addable) && $productAvailable && count($productAvailable) > 0 && !$addable) {
+            if (isset($productAvailable) && isset($addable) && $productAvailable && count($productAvailable) > 0 && !$addable) {
                 $addItemSuccess = $this->cartModel->updateCartItemQuantity($user["id"], $pid, $item_quantity);
-            }
-            else{
+            } else {
                 $this->popup("/home", "Number of products requested is more than the number of available products");
             }
             // TODO: Redirect to current page;
-            if(isset($addItemSuccess) && $addItemSuccess){
-                header("Location:"."http://".HOST."/cart/show-cart");
-            }
-            else{
-                header("Location:"."http://".HOST."/cart/show-cart");
+            if (isset($addItemSuccess) && $addItemSuccess) {
+                header("Location:" . "http://" . HOST . "/cart/show-cart");
+            } else {
+                header("Location:" . "http://" . HOST . "/cart/show-cart");
             }
         } catch (Exception $e) {
             //pd($e);
@@ -127,44 +129,43 @@ class CartController extends Controller {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $pid = $_GET["pid"] ?? null;
-            if($pid){
+            if ($pid) {
                 $addable = $this->cartModel->getAddable($user["id"], $pid);
             }
 
-            if(isset($addable) && !$addable) {
+            if (isset($addable) && !$addable) {
                 $deleteItemSuccess = $this->cartModel->deleteItem($user["id"], $pid);
-            }
-            else{
+            } else {
                 $this->popup("/home", "This product is not exist in your cart!");
             }
             // TODO: Redirect to current page;
-            if(isset($deleteItemSuccess) && $deleteItemSuccess){
-                header("Location:"."http://".HOST."/cart/show-cart");
-            }
-            else{
-                header("Location:"."http://".HOST."/cart/show-cart");
+            if (isset($deleteItemSuccess) && $deleteItemSuccess) {
+                header("Location:" . "http://" . HOST . "/cart/show-cart");
+            } else {
+                header("Location:" . "http://" . HOST . "/cart/show-cart");
             }
         } catch (Exception $e) {
             //pd($e);
         }
     }
-    public function confirmOrder(){
+    public function confirmOrder()
+    {
         try {
             $user = $this->checkLogin();
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
-            $data = [];
+
             $data["customer"] = $user;
             $data["cart"] = $this->cartModel->getCart($user["id"]);
             $totalPrice = 0;
-                foreach ($data["cart"] as $item) {
-                    $totalPrice += intval($item["item_quantity"])* intval($item["unit_price"]);
-                }
+            foreach ($data["cart"] as $item) {
+                $totalPrice += intval($item["item_quantity"]) * intval($item["unit_price"]);
+            }
             $data["totalPrice"] = $totalPrice;
             $this->set($data);
             $this->render("confirmOrder");
-        } catch  (Exception $e) {
+        } catch (Exception $e) {
             //pd($e);
         }
     }
@@ -187,19 +188,33 @@ class CartController extends Controller {
             $address = $_POST["address"];
             $phone = $_POST["phone"];
             $note = $_POST["note"] ?? '';
+            if (
+                !(isValidName($_POST["name"])
+                    && regexPhoneNumber($_POST["phone"])
+                    && isValidAddress($_POST["address"])
+                    && (isValidAddress($_POST["note"]) || $note == ''))
+            ) {
+
+
+                $data["message"] = "Push Order failed. Please enter correctly according to the specified form ";
+                $data["registerFailed"] = true;
+                $this->set($data);
+                $this->confirmOrder();
+                die();
+            }
             $newOrder = $this->orderModel->generateOrder($user["id"], null, $name, $phone, $address, $note);
-            $pushOrderDetail = $this->orderModel->pushOrderDetail($newOrder["id"] -1, $user["id"]);
-            if($pushOrderDetail){
-                $orderDetail = $this->orderModel->getOrderDetail($newOrder["id"] -1);
+            $pushOrderDetail = $this->orderModel->pushOrderDetail($newOrder["id"] - 1, $user["id"]);
+            if ($pushOrderDetail) {
+                $orderDetail = $this->orderModel->getOrderDetail($newOrder["id"] - 1);
                 $totalPrice = 0;
                 foreach ($orderDetail as $item) {
-                    $totalPrice += intval($item["quantity"])* intval($item["unit_price"]);
+                    $totalPrice += intval($item["quantity"]) * intval($item["unit_price"]);
                 }
                 $this->orderModel->updateTotalPrice($newOrder["id"] - 1, $totalPrice);
                 $this->cartModel->cleanUpCart($user["id"]);
             }
-            header("Location:"."http://".HOST."/user/order/show?oid=".($newOrder["id"] - 1));
-        } catch  (Exception $e) {
+            header("Location:" . "http://" . HOST . "/user/order/show?oid=" . ($newOrder["id"] - 1));
+        } catch (Exception $e) {
             //pd($e);
         }
     }
@@ -210,9 +225,9 @@ class CartController extends Controller {
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
-                $this->cartModel->cleanUpCart($user["id"]);
-            header("Location:"."http://".HOST."/cart/show-cart");
-        } catch  (Exception $e) {
+            $this->cartModel->cleanUpCart($user["id"]);
+            header("Location:" . "http://" . HOST . "/cart/show-cart");
+        } catch (Exception $e) {
             //pd($e);
         }
     }

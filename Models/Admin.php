@@ -80,15 +80,16 @@ class Admin extends Model
         ]);
     }
 
-    public function getAccountRecord(){
-        $query = "SELECT s.id, s.name, s.username, s.role_id, r.label from staffs s join staff_role r on s.role_id = r.level";
+    public function getAccountRecord($username = null){
+        $query = "SELECT s.id, s.name, s.username, s.role_id, r.label from staffs s join staff_role r on s.role_id = r.level where s.username like :username";
         $req = self::getConnection()->prepare($query);
         $req->setFetchMode(PDO::FETCH_ASSOC);
-        $req->execute();
+        $req->execute([
+            "username" => $username? "%".$username."%" : "%%"
+        ]);
         $staffs = $req->fetchAll();
         return $staffs;
     }
-
     public function getAccountById($uid){
         $query = "SELECT s.id, s.name, s.username,s.password, s.role_id, r.label from staffs s join staff_role r on s.role_id = r.level WHERE s.id = :uid";
         $req = self::getConnection() -> prepare($query);
@@ -109,5 +110,4 @@ class Admin extends Model
             "id" => $uid
         ]);
     }
-
 }

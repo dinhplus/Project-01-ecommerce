@@ -19,13 +19,13 @@
             </h1>
         </div>
         <div class="query-field">
-        <?php if(isset($enableSearch) && $enableSearch) { ?>
-            <form action="#" method="GET" >
-                <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if (isset($_GET["q"])) echo ($_GET["q"]) ?>">
-                <button type="submit" id="query-submit-btn"><i class="icofont-search-2"></i> Search</button>
+            <?php if (isset($enableSearch) && $enableSearch) { ?>
+                <form action="#" method="GET">
+                    <input type="text" placeholder=" Type some thing to search..." name="q" id="query" value="<?php if (isset($_GET["q"])) echo ($_GET["q"]) ?>">
+                    <button type="submit" id="query-submit-btn"><i class="icofont-search-2"></i> Search</button>
 
-            </form>
-            <?php }?>
+                </form>
+            <?php } ?>
         </div>
     </div>
     <div id="root">
@@ -55,6 +55,13 @@
 
                                     <li>Edit Self Profile</li>
                                 </a>
+                                <?php if ($_SESSION["role"] > 4) { ?>
+                                    <a href="<?php echo ("http://" . HOST . "/dashboard/client-manager/reset-password") ?>">
+
+                                        <li>Client Manger</li>
+                                    </a>
+                                <?php } ?>
+
                                 <a href="<?php echo ("http://" . HOST . "/dashboard/logout") ?>">
                                     <li>Logout</li>
                                 </a>

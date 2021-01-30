@@ -82,7 +82,7 @@
                 </form>
             </div>
             <div class="confirm-order">
-                <form action="<?= "http://" . HOST . "/cart/get-confirm" ?>" method="get">
+                <form action="<?= "http://" . HOST . "/cart/confirm-order" ?>" method="get">
                     <button type="submit" class="btn btn-info" style="width: 100%;"> Confirm order</button>
                 </form>
             </div>

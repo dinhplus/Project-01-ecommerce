@@ -76,8 +76,9 @@
             <h3>
                 Confirm consignee information
             </h3>
-            <hr>
-            <form action="/cart/push-confirm" method="post">
+
+            <hr><span id="message" class = "warning err" ><?php if(isset($message)){echo($message);} ?></span><br><br>
+            <form action="/cart/confirm-order" method="post">
                 <div class="form-group">
                     <label for="name">
                         <h5>

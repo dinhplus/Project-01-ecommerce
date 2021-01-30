@@ -87,7 +87,7 @@ function removeAscent($str)
 
 function regexUsename($username)
 {
-    $usernamePattern = "/^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/";
+    $usernamePattern = "/^(?=[a-zA-Z0-9._]{5,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/";
     // if(!preg_match($usernamePattern, $username)){
     //     die($username);
     // }

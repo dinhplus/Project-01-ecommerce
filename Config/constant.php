@@ -28,4 +28,6 @@
     define("GMT_10_NEG", -10);
     define("GMT_11_NEG", -11);
     define("DEFAULT_PASSWORD_RESET","1A2b3c4d5e6f");
+    define("RESET_STAFF_PASSWORD_SECRET","saijldhoisqupahd46i234dsfdsfusdf32432434324sdjh");
+    define("RESET_CLIENT_PASSWORD_SECRET","dnas34j0j20fjjf2r3f92h292djsd0239ud231784hdadd");
 //https://regex101.com/r/5X3Pjl/3

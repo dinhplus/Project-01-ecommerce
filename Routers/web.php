@@ -17,9 +17,14 @@ Router::GET("/dashboard/logout", "AdminController@logout");
 
 Router::GET("/dashboard/admin-manager/change-password","AdminController@editPassword");
 Router::POST("/dashboard/admin-manager/change-password", "AdminController@updatePassword");
+Router::POST("/dashboard/admin-manager/reset-staff-password", "AdminController@resetPassword");
 
 Router::GET("/dashboard/admin-manager/index","AdminController@showAdmin");
 Router::GET("/dashboard/admin-manager","AdminController@showAdmin");
+
+Router::GET("/dashboard/client-manager/reset-password","AdminController@getResetClientPassword");
+Router::POST("/dashboard/client-manager/reset-password","AdminController@postResetClientPassword");
+
 
 Router::GET("/dashboard/admin-manager/edit-staff","AdminController@editStaff");
 Router::POST("/dashboard/admin-manager/edit-staff","AdminController@updateStaff");
@@ -94,5 +99,5 @@ Router::GET("/cart/add-item", "CartController@addItem");
 Router::POST("/cart/update-quantity", "CartController@updateItemQuantity");
 Router::GET("/cart/delete-item",  "CartController@deleteItem");
 Router::GET("/cart/clean-up", "CartController@cleanUpCart");
-Router::GET( "/cart/get-confirm",  "CartController@confirmOrder");
-Router::POST("/cart/push-confirm", "CartController@pushOrder");
+Router::GET( "/cart/confirm-order",  "CartController@confirmOrder");
+Router::POST("/cart/confirm-order", "CartController@pushOrder");

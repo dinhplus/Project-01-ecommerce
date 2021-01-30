@@ -199,7 +199,7 @@ class ClientController extends Controller
             }
             $existAcount = $this->customerModel->getCustomerByUsername($_POST["username"]);
             $phoneExisted = $this->customerModel->getExistedPhone($_POST["phone"]);
-            if (( $phoneExisted && count($phoneExisted)) ||($existAcount && count($existAcount) > 0)) {
+            if (($phoneExisted && count($phoneExisted)) || ($existAcount && count($existAcount) > 0)) {
                 $data["message"] = '';
                 $_SESSION["name"] = $_POST["name"];
                 $_SESSION["username"] = $_POST["username"];
@@ -208,10 +208,10 @@ class ClientController extends Controller
                 $_SESSION["email"] = $_POST["email"];
                 $_SESSION["address"] = $_POST["address"];
                 $_SESSION["birth_date"] = $_POST["birth_date"];
-                if($phoneExisted && count($phoneExisted)){
+                if ($phoneExisted && count($phoneExisted)) {
                     $data["message"] .= "This phone number have been used";
                 }
-                if ($existAcount && count($existAcount) > 0){
+                if ($existAcount && count($existAcount) > 0) {
                     $data["message"] .= "This username have been existed";
                 }
                 $data["registerFailed"] = true;
@@ -310,6 +310,14 @@ class ClientController extends Controller
             if (!$user) {
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
+            if (
+                !(isValidName($_POST["name"])
+                    && regexPassword($_POST["password"]) && regexPhoneNumber($_POST["phone"])
+                    && regexEmail($_POST["email"]) && isValidAddress($_POST["address"]))
+            ) {
+                $data["message"] = "Update failed. Please enter correctly according to the specified form ";
+                $this->set($data);
+            }
             $confirmUser = $this->customerModel->fetchAccount($user["username"], $_POST["password"]);
             $uInfo["name"] = $_POST["name"];
             $uInfo["phone"] = $_POST["phone"];
@@ -325,7 +333,7 @@ class ClientController extends Controller
                     $this->popup("/", "Updated failed!");
                 }
             } else {
-                $data["message"] = "The password is invalid. Please try again";
+                $data["message"] = ($data["message"]??"")."The password is invalid. Please try again";
                 $this->set($data);
                 $this->editUserProfile();
             }
@@ -338,7 +346,7 @@ class ClientController extends Controller
         try {
             $user = $this->checkLogin();
             if (!$user) {
-                $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
+                $this->popup("/user/login", " <br> Please log in to be able to perform this action! 👎👎👎👎");
             }
             // $data["categories"] = $this->productModel->getCategories();
             // $data["brands"] = $this->productModel->getBrands();
@@ -356,6 +364,10 @@ class ClientController extends Controller
                 $this->popup("/user/login", "Please log in to be able to perform this action! 👎👎👎👎");
             }
             $confirmUser = $this->customerModel->fetchAccount($user["username"], $_POST["password"]);
+            if (!regexPassword($_POST["new-password"])) {
+                $data["message"] = "Please enter correctly according to the specified form";
+                $this->set($data);
+            }
             if ($confirmUser) {
                 $uInfo["password"] = $_POST["new-password"];
                 $uInfo["username"] = $confirmUser["username"];
@@ -368,9 +380,10 @@ class ClientController extends Controller
                     $this->popup("/", "Updated failed!");
                 }
             } else {
-                $data["message"] = "The current password is invalid. Please try again";
+                $data["message"] = ($data["message"] ?? '') . " <br> The current password is invalid. Please try again";
                 $this->set($data);
                 $this->getChangePassword();
+                die();
             }
         } catch (Exception $e) {
             // pd($e);

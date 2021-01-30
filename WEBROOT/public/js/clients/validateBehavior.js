@@ -11,11 +11,11 @@ function removeAscent (str) {
     return str;
 }
 function isValidName (string) {
-    var re = /^\w[\w \'\"-]{4,}$/gm // regex here
+    var re = /^[\w \'\"-]{2,}$/gm // regex here
     return re.test(removeAscent(string))
 }
 function isValidAddress (string) {
-    var re =/^\w[\w\s+@,.;'\"\/()*&]{4,}$/gm // regex here
+    var re =/^[\w\s+@,.;'\"\/()*&]{2,}$/gm // regex here
     return re.test(removeAscent(string))
 }
 function registerHandling() {
@@ -28,16 +28,16 @@ function registerHandling() {
     var email = document.getElementById("email").value;
     var address = document.getElementById("address").value;
     var birth_date = document.getElementById("birth_date").value;
-    console.log(birth_date);
+    // console.log(birth_date);
     // const namePattern = /^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$/gm;
-    const usernamePattern = /^(?=[a-zA-Z0-9._]{6,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
+    const usernamePattern = /^(?=[a-zA-Z0-9._]{5,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/gm;
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,32}$/gm;
     const phonePattern = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/gm;
     const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm;
     console.log(password == cfPassword);
     if (!isValidName(name)) {
         validateOk = false;
-        var nameErrMessage = "name is require and have least 2 character";
+        var nameErrMessage = "name is require and have least 2 character, and not be included speacial character!";
         document.getElementById("r-name-err").innerHTML = nameErrMessage;
     }
     else {
@@ -45,7 +45,7 @@ function registerHandling() {
     }
     if ((!usernamePattern.test(username)) || username.length < 6) {
         validateOk = false;
-        var usernameErrMessage = "Username is required, have beetwen 6 and 32 words character, digit character and can be included dot, underscore";
+        var usernameErrMessage = "Username is required, have beetwen 5 and 32 words character, digit character and can be included dot, underscore";
         document.getElementById("r-username-err").innerHTML = usernameErrMessage;
     }
     else {
@@ -85,7 +85,7 @@ function registerHandling() {
     }
     if (!isValidAddress(address)) {
         validateOk = false;
-        var addressErrMessage = "Address is required that have least 5 charactor";
+        var addressErrMessage = "Address is required that have least 2 charactor";
         document.getElementById("address-err").innerHTML = addressErrMessage;
     }
     else {

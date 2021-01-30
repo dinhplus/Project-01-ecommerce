@@ -1,6 +1,6 @@
 <div class="container edit-user">
     <div class="col-12 col-md-12">
-        <form action="<?='http://'.HOST.'/user/update-password'?>" class="form " method="POST">
+        <form action="<?='http://'.HOST.'/user/change-password'?>" class="form " method="POST">
                                     <h1>
                                         Edit profile:
                                     </h1>
