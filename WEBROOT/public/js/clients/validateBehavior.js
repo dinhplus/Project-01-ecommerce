@@ -11,9 +11,13 @@ function removeAscent (str) {
     return str;
 }
 function isValidName (string) {
-    var re = /^[\w\s\W ]{5,}$/g // regex here
+    var re = /^\w[\w \'\"-]{4,}$/gm // regex here
     return re.test(removeAscent(string))
-  }
+}
+function isValidAddress (string) {
+    var re =/^\w[\w\s+@,.;'\"\/()*&]{4,}$/gm // regex here
+    return re.test(removeAscent(string))
+}
 function registerHandling() {
     var validateOk = true;
     var name = document.getElementById("name").value;
@@ -79,7 +83,7 @@ function registerHandling() {
     else {
         document.getElementById("email-err").innerHTML = '';
     }
-    if (!isValidName(address)) {
+    if (!isValidAddress(address)) {
         validateOk = false;
         var addressErrMessage = "Address is required that have least 5 charactor";
         document.getElementById("address-err").innerHTML = addressErrMessage;
@@ -138,7 +142,7 @@ function editUserProfileBehavior() {
     else {
         document.getElementById("email-err").innerHTML = '';
     }
-    if (!isValidName(address)) {
+    if (!isValidAddress(address)) {
         validateOk = false;
         var addressErrMessage = "Address is required that have least 2 charactor";
         document.getElementById("address-err").innerHTML = addressErrMessage;
@@ -194,18 +198,23 @@ function loginHandling() {
         validateOk = false;
         var usernameErrMessage = "Username is required, have beetwen 5 and 32 words character, digit charactor and can be included dot, underscore";
         document.getElementById("username-err").innerHTML = usernameErrMessage;
+
     }
     else {
         document.getElementById("username-err").innerHTML = '';
+
+
     }
     if (!passwordPattern.test(password)) {
-        console.log("asdg");
+
         validateOk = false;
         var passwordErrMessage = "Password is required, have beetwen 6 and 32 character, least one of word upper case, lowercase and digit ";
         document.getElementById("password-err").innerHTML = passwordErrMessage;
+
     }
     else {
         document.getElementById("password-err").innerHTML = '';
+
     }
     console.log(validateOk);
     return validateOk;
@@ -244,7 +253,7 @@ function confirmOrderHandling(){
         document.getElementById("phone-err").innerHTML = '';
     }
 
-    if (!isValidName(address)) {
+    if (!isValidAddress(address)) {
         validateOk = false;
         var addressErrMessage = "Address is required that have least 5 charactor";
         document.getElementById("address-err").innerHTML = addressErrMessage;
@@ -252,7 +261,7 @@ function confirmOrderHandling(){
     else {
         document.getElementById("address-err").innerHTML = '';
     }
-    if(note.length > 0 &&!isValidName(note) ){
+    if(note.length > 0 &&!isValidAddress(note) ){
         validateOk = false;
         var noteErrMessage = "Address is required that have least 5 charactor";
         document.getElementById("note-err").innerHTML = noteErrMessage;

@@ -126,18 +126,18 @@
                         </div>
                         <div class="modal-body">
                             <div class="d-flex flex-column text-center">
-                                <span id="message" class="warning"><?php if (isset($loginFailed) && $loginFailed && isset($message)) {
+                                <span id="message" class="warning err"><?php if (isset($loginFailed) && $loginFailed && isset($message)) {
                                                                         echo ($message);
                                                                     } ?></span>
                                 <form id="loginForm" method="post" action="<?= 'http://' . HOST . '/user/login' ?>">
                                     <div class="form-group">
                                         <input type="text" class="form-control" id="username1" placeholder="Your username ..." name="username" value="<?php if (isset($_SESSION["username"]) && $_SESSION["username"]) echo ($_SESSION["username"]) ?>">
-                                        <span id="username-err" class="warining">
+                                        <span id="username-err" class="warining err">
                                         </span>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control" id="password1" placeholder="Your password..." name="password" value="<?php if (isset($_SESSION["password"]) && $_SESSION["password"]) echo ($_SESSION["password"]) ?>">
-                                        <span id="password-err" class="warining">
+                                        <span id="password-err" class="warining err">
                                         </span>
                                     </div>
                                     <div class="form-group">
@@ -176,7 +176,7 @@
                         </div>
                         <div class="modal-body">
                             <form id="register-form" method="post" action="/user/register">
-                                <hr><span id="message" class="warning"><?php if (isset($registerFailed) && $registerFailed && isset($message)) {
+                                <hr><span id="message" class="warning err"><?php if (isset($registerFailed) && $registerFailed && isset($message)) {
                                                                             echo ($message);
                                                                         } ?></span><br><br>
                                 <div class="form-group">

@@ -39,8 +39,8 @@ if (empty($_GET["page"])) {
 
         ?>
     </div>
-    <div class="container" style="width: 100%;">
-        <table style="width: inherit;" class="table table-striped">
+    <div class="" style="width: 100%;">
+        <table style="width: 100%;" class="table table-striped">
             <tr>
                 <th scope="col">
                     id
@@ -109,15 +109,13 @@ if (empty($_GET["page"])) {
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td style="width:30%">
                             <div class="product-description">
                                 <?php
                                 if (strlen(($product["description"])) > 200) {
                                     echo (substr($product["description"], 0, 200));
                                 } else echo ($product["description"]);
-
                                 ?>
-
                             </div>
                         </td>
                         <td>

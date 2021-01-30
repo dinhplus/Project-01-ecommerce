@@ -14,6 +14,17 @@ class Customer extends Model
 
         return $req->fetch();
     }
+    public function getExistedPhone($phone){
+        $query = "SELECT * FROM customers WHERE phone = :phone_number";
+        $req = self::getConnection()->prepare($query);
+        $req->setFetchMode(PDO::FETCH_ASSOC);
+
+        $req->execute([
+            'phone_number' => $phone,
+        ]);
+
+        return $req->fetchAll();
+    }
     public function fetchAccount($username,$password){
         $query = "SELECT * FROM customers WHERE username = :username";
         $req = self::getConnection()->prepare($query);

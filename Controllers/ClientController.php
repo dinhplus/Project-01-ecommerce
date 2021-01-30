@@ -34,7 +34,7 @@ class ClientController extends Controller
         }
         $data["totalItem"] = array_reduce(
             $data["cart"],
-            function($currentValue,$accumulator){
+            function ($currentValue, $accumulator) {
                 return $currentValue + $accumulator["item_quantity"];
             },
             0
@@ -134,9 +134,17 @@ class ClientController extends Controller
             }
             $username = $_POST["username"] ?? null;
             $password = $_POST["password"] ?? null;
+
             $_SESSION["username"] = $_POST["username"] ?? null;
             $_SESSION["password"] = $_POST["password"] ?? null;
             $_SESSION["location"] = $_POST["location"] ?? null;
+            if (!(regexUsename($username) && regexPassword($password))) {
+                $data["message"] = "Please enter correctly according to the specified form";
+                $data["loginFailed"] = true;
+                $this->set($data);
+                $this->listProduct();
+                die();
+            }
             $account = $this->customerModel->fetchAccount($username, $password);
             // dd($account);
             if (!$account || $account === []) {
@@ -166,8 +174,15 @@ class ClientController extends Controller
             if ($customerId) {
                 $this->popup("/", "Please logout before Login");
             }
-            $existAcount = $this->customerModel->getCustomerByUsername($_POST["username"]);
-            if ($existAcount && count($existAcount) > 0) {
+            unset($_SESSION["message"]);
+            unset($_SESSION["loginFailed"]);
+            unset($_SESSION["registerFailed"]);
+            // dd($_POST);
+            if (
+                !(regexUsename($_POST["username"]) && isValidName($_POST["name"])
+                    && regexPassword($_POST["password"]) && regexPhoneNumber($_POST["phone"])
+                    && regexEmail($_POST["email"]) && isValidAddress($_POST["address"]))
+            ) {
                 $_SESSION["name"] = $_POST["name"];
                 $_SESSION["username"] = $_POST["username"];
                 $_SESSION["password"] = $_POST["password"];
@@ -175,11 +190,34 @@ class ClientController extends Controller
                 $_SESSION["email"] = $_POST["email"];
                 $_SESSION["address"] = $_POST["address"];
                 $_SESSION["birth_date"] = $_POST["birth_date"];
-                $_SESSION["location"] = $_POST["location"];
-                $data["message"] = "This username have been existed";
-                $data["loginFailed"] = true;
+
+                $data["message"] = "Register failed. Please enter correctly according to the specified form ";
+                $data["registerFailed"] = true;
                 $this->set($data);
                 $this->listProduct();
+                die();
+            }
+            $existAcount = $this->customerModel->getCustomerByUsername($_POST["username"]);
+            $phoneExisted = $this->customerModel->getExistedPhone($_POST["phone"]);
+            if (( $phoneExisted && count($phoneExisted)) ||($existAcount && count($existAcount) > 0)) {
+                $data["message"] = '';
+                $_SESSION["name"] = $_POST["name"];
+                $_SESSION["username"] = $_POST["username"];
+                $_SESSION["password"] = $_POST["password"];
+                $_SESSION["phone"] = $_POST["phone"];
+                $_SESSION["email"] = $_POST["email"];
+                $_SESSION["address"] = $_POST["address"];
+                $_SESSION["birth_date"] = $_POST["birth_date"];
+                if($phoneExisted && count($phoneExisted)){
+                    $data["message"] .= "This phone number have been used";
+                }
+                if ($existAcount && count($existAcount) > 0){
+                    $data["message"] .= "This username have been existed";
+                }
+                $data["registerFailed"] = true;
+                $this->set($data);
+                $this->listProduct();
+                die();
             } else {
                 $onRegister = $this->customerModel->storeUser(
                     $_POST["name"],
@@ -188,8 +226,7 @@ class ClientController extends Controller
                     $_POST["phone"],
                     $_POST["email"],
                     $_POST["address"],
-                    $_POST["birth_date"],
-                    $_POST["location"]
+                    $_POST["birth_date"]
                 );
                 if ($onRegister) {
                     unset($_SESSION["name"]);
@@ -199,15 +236,17 @@ class ClientController extends Controller
                     unset($_SESSION["email"]);
                     unset($_SESSION["address"]);
                     unset($_SESSION["birth_date"]);
+                    unset($_SESSION["registerFailed"]);
+                    unset($_SESSION["loginFailed"]);
                     $retrieveAccount =  $this->customerModel->getCustomerByUsername($_POST["username"]);
                     $_SESSION["customerId"] = $retrieveAccount["id"];
                     $_SESSION["customerUsername"] = $retrieveAccount["username"];
                     $_SESSION["customer-token"] = $retrieveAccount["password"];
-                    header("Location:" . "http://" . HOST . $_SESSION["location"]);
+                    header("Location:" . "http://" . HOST . '/home');
                 }
             }
         } catch (Exception $e) {
-            // pd($e);
+            pd($e);
         }
     }
     public function getRegister()

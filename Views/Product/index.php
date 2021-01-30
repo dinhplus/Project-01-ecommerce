@@ -22,7 +22,7 @@ if (empty($_GET["page"])) {
         <?php } ?>
 
     </div>
-    <div class="container" style="width: 100%;">
+    <div class="" style="width: 100%;">
         <table style="width: inherit;" class="table table-striped">
             <tr>
                 <th scope="col">
@@ -92,8 +92,8 @@ if (empty($_GET["page"])) {
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div class="product-description">
+                        <td style="width:30%">
+                            <div class="product-description" >
                                 <?php
                                 if (strlen(($product["description"])) > 200) {
                                     echo (substr($product["description"], 0, 200));
@@ -114,8 +114,8 @@ if (empty($_GET["page"])) {
                             </div>
                         </td>
                         <td>
-                            <div class="row container-fluid center" style="display: flex;">
-                                <div class="product-action">
+                            <div class="row" >
+                                <div class="product-action" >
                                     <form action="/dashboard/order-manager/add-item" method="POST">
                                         <input type="hidden" name="pid" value="<?= $product["id"] ?>">
                                         <input type="hidden" name="itemQtt" id="" value=1>

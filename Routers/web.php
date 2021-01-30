@@ -2,7 +2,9 @@
 Router::GET("/dashboard/register", function(){
     echo("<h1 style='color: red; align: center; v-align: center'> There is no register method for staff. Please contact your administrator🤗🤗🤗🤗🤗🤗🤗🤗</h1>");
 });
-
+Router::GET("/dashboard/reset-password", function(){
+    echo("<h1 style='color: red; align: center; v-align: center'> You can not reset your password. Please contact your administrator to learn more🤗🤗🤗🤗🤗🤗🤗🤗</h1>");
+});
 Router::GET("/dashboard", "AdminController@index");
 
 Router::GET( "/dashboard/admin-manager/create-admin", "AdminController@createAdmin");

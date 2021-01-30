@@ -27,5 +27,5 @@
     define("GMT_9_NEG", -9);
     define("GMT_10_NEG", -10);
     define("GMT_11_NEG", -11);
-
+    define("DEFAULT_PASSWORD_RESET","1A2b3c4d5e6f");
 //https://regex101.com/r/5X3Pjl/3

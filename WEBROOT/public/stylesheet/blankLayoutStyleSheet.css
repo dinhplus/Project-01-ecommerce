@@ -76,9 +76,9 @@ form div #submit:hover {
     /* display: none; */
     color:red;
 }
-.err{
+/* .err{
     display: none;
-}
+} */
 .popup{
     width: 600px;
     min-height: 200px;
